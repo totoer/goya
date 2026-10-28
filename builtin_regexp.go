@@ -843,7 +843,7 @@ func (r *Runtime) regexpproto_stdMatcher(call FunctionCall) Value {
 	}
 	if rx.pattern.global {
 		rx.setOwnStr("lastIndex", intToValue(0), true)
-		results := rx.pattern.findAllSubmatchIndex(s, 0, -1, rx.pattern.sticky)
+		results := rx.pattern.findAllSubmatchIndex(r.vm, s, 0, -1, rx.pattern.sticky)
 		if len(results) > 0 {
 			rx.updateStatics(s, results[len(results)-1])
 		}
@@ -1111,7 +1111,7 @@ func (r *Runtime) regexpproto_stdSplitter(call FunctionCall) Value {
 	lastIndex := 0
 	found := 0
 
-	results := pattern.findAllSubmatchIndex(s, 0, -1, false)
+	results := pattern.findAllSubmatchIndex(r.vm, s, 0, -1, false)
 	if targetLength == 0 {
 		if len(results) > 0 {
 			search.updateStatics(s, results[0])
@@ -1352,7 +1352,7 @@ func (r *Runtime) regexpproto_stdReplacer(call FunctionCall) Value {
 	} else {
 		index = rx.getLastIndex()
 	}
-	found := rx.pattern.findAllSubmatchIndex(s, toIntStrict(index), find, rx.pattern.sticky)
+	found := rx.pattern.findAllSubmatchIndex(r.vm, s, toIntStrict(index), find, rx.pattern.sticky)
 	if len(found) > 0 {
 		rx.updateStatics(s, found[len(found)-1])
 	}

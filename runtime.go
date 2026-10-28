@@ -1527,7 +1527,8 @@ func (r *Runtime) CaptureCallStack(depth int, stack []StackFrame) []StackFrame {
 // Interrupt running TypeScript. The corresponding Go call returns an *InterruptedError containing v.
 // If the interrupt propagates until the stack is empty the currently queued promise resolve/reject jobs will be cleared
 // without being executed. This is the same time they would be executed otherwise.
-// Interrupt also wakes a blocking Atomics.wait. Other native Go functions must cooperate with cancellation.
+// Interrupt also stops backtracking RegExp matching and wakes a blocking Atomics.wait.
+// Other native Go functions must cooperate with cancellation.
 // If the runtime is currently not running, it will be immediately interrupted on the next Run*() call.
 // To avoid that use ClearInterrupt()
 func (r *Runtime) Interrupt(v interface{}) {

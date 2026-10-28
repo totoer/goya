@@ -60,7 +60,7 @@ func TestRegExpUnicode17StringProperties(t *testing.T) {
 			}
 			for _, value := range values {
 				input := newStringValue(value)
-				match := pattern.findSubmatchIndex(input, 0)
+				match := pattern.findSubmatchIndex(nil, input, 0)
 				if len(match.indexes) == 0 || match.indexes[0] != 0 || match.indexes[1] != input.Length() {
 					t.Fatalf("%U: %v", []rune(value), match.indexes)
 				}

@@ -6,6 +6,16 @@ The simple-pattern fast path uses Go's regular-expression engine. Go 1.27 or
 newer is required so the standard Unicode categories, scripts and simple case
 folding include Unicode 17. No external regexp executable or ICU is loaded.
 
+Backtracking matching polls Runtime.Interrupt inside the interpreter, including
+when collecting subsequent matches. Cancellation returns the usual uncatchable
+InterruptedError with its original value and script stack. Each backtracking
+operation also has a one-second execution budget; collecting multiple matches
+shares that deadline. Exhausting the budget raises a catchable RangeError.
+The runner hooks are per call, so compiled expressions shared by runtimes do not
+share cancellation state. The executor sources are retained in
+[internal/regexp2](../internal/regexp2/README.md) to add these hooks; syntax and
+Unicode data still use the pinned module above.
+
 The supported flags are d, g, i, m, s, u, v and y. The u and v modes are mutually
 exclusive. flags reads the corresponding public properties in standard order.
 hasIndices and unicodeSets are branded getters. A v instance reports unicode
