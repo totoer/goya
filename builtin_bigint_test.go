@@ -2,6 +2,7 @@ package goya
 
 import (
 	"math/big"
+	"strconv"
 	"testing"
 )
 
@@ -10,6 +11,119 @@ func TestBigInt(t *testing.T) {
 	b := new(big.Int)
 	b.SetString("0xabcdef0123456789abcdef0123", 0)
 	testScript(SCRIPT, (*valueBigInt)(b), t)
+}
+
+func TestBigIntAsN(t *testing.T) {
+	const SCRIPT = `
+for (const bits of [0, 1, 2, 7, 8, 31, 32, 63, 64, 65, 127, 128, 129]) {
+	const modulus = 2n ** BigInt(bits);
+	const half = modulus / 2n;
+	for (const value of [0n, 1n, -1n, half - 1n, half, half + 1n,
+		-half - 1n, -half, -half + 1n, modulus - 1n, modulus, modulus + 1n,
+		-modulus - 1n, -modulus, -modulus + 1n, modulus * modulus + 3n,
+		-modulus * modulus - 3n]) {
+		const unsigned = ((value % modulus) + modulus) % modulus;
+		const signed = bits > 0 && unsigned >= half ? unsigned - modulus : unsigned;
+		assert.sameValue(BigInt.asUintN(bits, value), unsigned, "asUintN " + bits + ": " + value);
+		assert.sameValue(BigInt.asIntN(bits, value), signed, "asIntN " + bits + ": " + value);
+	}
+}
+
+for (const bits of [67108864, 1073741824, 1073741825]) {
+	assert.sameValue(BigInt.asUintN(bits, 0n), 0n);
+	assert.sameValue(BigInt.asUintN(bits, 1n), 1n);
+	assert.sameValue(BigInt.asIntN(bits, 0n), 0n);
+	assert.sameValue(BigInt.asIntN(bits, 1n), 1n);
+	assert.sameValue(BigInt.asIntN(bits, -1n), -1n);
+	assert.sameValue(BigInt.asIntN(bits, -(2n ** 127n)), -(2n ** 127n));
+}
+try {
+	BigInt.asUintN(1073741825, -1n);
+	throw new Error("expected RangeError");
+} catch (e) {
+	assert.sameValue(e instanceof RangeError, true);
+	assert.sameValue(e.message, "Maximum BigInt size exceeded");
+}
+
+for (const convert of [BigInt.asUintN, BigInt.asIntN]) {
+	assert.throws(TypeError, () => convert(0, 1));
+	assert.throws(TypeError, () => convert(1073741825, 1));
+	assert.sameValue(convert(0, -1n), 0n);
+	assert.sameValue(convert(0, true), 0n);
+	assert.sameValue(convert(67108864, "1"), 1n);
+	const log = [];
+	assert.sameValue(convert({valueOf() { log.push("bits"); return 1073741825; }},
+		{valueOf() { log.push("bigint"); return 1n; }}), 1n);
+	assert.sameValue(log.join(","), "bits,bigint");
+	assert.throws(RangeError, () => convert(-1, {valueOf() { log.push("unexpected"); return 1n; }}));
+	assert.sameValue(log.join(","), "bits,bigint");
+}
+`
+	testScriptWithTestLib(SCRIPT, _undefined, t)
+	if strconv.IntSize == 64 {
+		testScriptWithTestLib(`
+assert.sameValue(BigInt.asUintN(Number.MAX_SAFE_INTEGER, 1n), 1n);
+assert.sameValue(BigInt.asIntN(Number.MAX_SAFE_INTEGER, -1n), -1n);
+assert.throws(RangeError, () => BigInt.asUintN(Number.MAX_SAFE_INTEGER, -1n));
+`, _undefined, t)
+	}
+}
+
+func TestBigIntAsNAllocations(t *testing.T) {
+	r := New()
+	for _, tc := range []struct {
+		name string
+		fn   func(FunctionCall) Value
+		x    int64
+	}{
+		{"asUintN/zero", r.bigint_asUintN, 0},
+		{"asUintN/positive", r.bigint_asUintN, 1},
+		{"asIntN/zero", r.bigint_asIntN, 0},
+		{"asIntN/positive", r.bigint_asIntN, 1},
+		{"asIntN/negative", r.bigint_asIntN, -1},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			x := (*valueBigInt)(big.NewInt(tc.x))
+			call := FunctionCall{Arguments: []Value{intToValue(67108864), x}}
+			var result Value
+			allocs := testing.AllocsPerRun(5, func() { result = tc.fn(call) })
+			if !result.SameAs(x) {
+				t.Fatalf("got %v, want %v", result, x)
+			}
+			// ToNumber may box bits; the BigInt conversion itself must not allocate.
+			if allocs > 1 {
+				t.Fatalf("already fitting value allocated %v times per call, want at most 1", allocs)
+			}
+		})
+	}
+}
+
+func BenchmarkBigIntAsN(b *testing.B) {
+	r := New()
+	for _, tc := range []struct {
+		name string
+		fn   func(FunctionCall) Value
+	}{
+		{"asUintN", r.bigint_asUintN},
+		{"asIntN", r.bigint_asIntN},
+	} {
+		for _, bits := range []int64{8, 67108864} {
+			b.Run(tc.name+"/"+strconv.FormatInt(bits, 10), func(b *testing.B) {
+				x := (*valueBigInt)(big.NewInt(1))
+				call := FunctionCall{Arguments: []Value{intToValue(bits), x}}
+				b.ReportAllocs()
+				b.ResetTimer()
+				var result Value
+				for i := 0; i < b.N; i++ {
+					result = tc.fn(call)
+				}
+				b.StopTimer()
+				if !result.SameAs(x) {
+					b.Fatalf("got %v, want %v", result, x)
+				}
+			})
+		}
+	}
 }
 
 func TestBigIntExportTo(t *testing.T) {

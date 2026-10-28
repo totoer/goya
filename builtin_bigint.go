@@ -258,11 +258,24 @@ func (r *Runtime) bigint_asIntN(call FunctionCall) Value {
 	if bits < 0 {
 		panic(r.NewTypeError("Invalid value: not (convertible to) a safe integer"))
 	}
-	bigint := toBigInt(call.Argument(1))
+	bigint := (*big.Int)(toBigInt(call.Argument(1)))
+	bitLen := bigint.BitLen()
+	// Negative powers of two also fit at the signed lower bound.
+	if bits > bitLen || bigint.Sign() == 0 ||
+		bigint.Sign() < 0 && bits == bitLen && bigint.TrailingZeroBits() == uint(bits-1) {
+		return (*valueBigInt)(bigint)
+	}
+	if bits == 0 {
+		return (*valueBigInt)(new(big.Int))
+	}
+	if bits > maxBigIntBits {
+		panic(rangeError("Maximum BigInt size exceeded"))
+	}
 
+	// The modulus needs one extra bit beyond the bounded result width.
 	twoToBits := new(big.Int).Lsh(big.NewInt(1), uint(bits))
-	mod := new(big.Int).Mod((*big.Int)(bigint), twoToBits)
-	if bits > 0 && mod.Cmp(new(big.Int).Lsh(big.NewInt(1), uint(bits-1))) >= 0 {
+	mod := new(big.Int).Mod(bigint, twoToBits)
+	if mod.Bit(bits-1) != 0 {
 		return (*valueBigInt)(mod.Sub(mod, twoToBits))
 	} else {
 		return (*valueBigInt)(mod)
@@ -278,6 +291,15 @@ func (r *Runtime) bigint_asUintN(call FunctionCall) Value {
 		panic(r.NewTypeError("Invalid value: not (convertible to) a safe integer"))
 	}
 	bigint := (*big.Int)(toBigInt(call.Argument(1)))
+	if bigint.Sign() >= 0 && bits >= bigint.BitLen() {
+		return (*valueBigInt)(bigint)
+	}
+	if bits == 0 {
+		return (*valueBigInt)(new(big.Int))
+	}
+	if bits > maxBigIntBits {
+		panic(rangeError("Maximum BigInt size exceeded"))
+	}
 	ret := new(big.Int).Mod(bigint, new(big.Int).Lsh(big.NewInt(1), uint(bits)))
 	return (*valueBigInt)(ret)
 }

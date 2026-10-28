@@ -18,7 +18,7 @@ import (
 const (
 	maxInt = 1 << 53
 
-	// maxBigIntBits is the largest BigInt size in bits, as in node. Only bigIntShift checks it.
+	// maxBigIntBits limits BigInt sizes created by shifts and fixed-width conversions.
 	maxBigIntBits = 1 << 30
 
 	tryPanicMarker = -2
