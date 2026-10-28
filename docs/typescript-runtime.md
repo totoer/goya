@@ -208,6 +208,12 @@ control returns to VM execution.
 The job drain also checks interruption between native continuations, including
 chains that execute no script bytecode.
 
+Array.prototype.flat and flatMap check interruption during their native traversal,
+including skipped holes. Traversal uses an explicit stack bounded by
+SetMaxCallStackSize (including active VM calls) and a maximum of 10000 nested
+arrays. Exceeding either bound returns an uncatchable StackOverflowError to Go;
+cyclic arrays cannot overflow the Go stack through flattening.
+
 Abrupt exit discards queued jobs and clears the interrupt flag. Unfinished module
 instances record the interruption and cannot later be treated as initialized or
 resumed by a pending host promise. Their canonical cache entries keep the same

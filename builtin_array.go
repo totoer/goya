@@ -1204,13 +1204,36 @@ func (r *Runtime) arrayproto_flat(call FunctionCall) Value {
 	return a
 }
 
+// Bound the explicit traversal stack even when the VM call stack limit is left
+// at its default. In particular, flat(Infinity) must not exhaust memory on a
+// cyclic array. A smaller SetMaxCallStackSize limit also applies to this stack.
+const maxFlattenStackSize = 10000
+
 func (r *Runtime) flattenIntoArray(target, source *Object, sourceLen, start, depth int64, mapperFunction func(FunctionCall) Value, thisArg Value) int64 {
+	type frame struct {
+		source                  *Object
+		sourceLen, index, depth int64
+	}
+	var stack []frame
 	targetIndex, sourceIndex := start, int64(0)
-	for sourceIndex < sourceLen {
+	for {
+		r.vm.checkInterrupt()
+		if sourceIndex >= sourceLen {
+			if len(stack) == 0 {
+				return targetIndex
+			}
+			last := len(stack) - 1
+			parent := stack[last]
+			stack[last] = frame{}
+			stack = stack[:last]
+			source, sourceLen, sourceIndex, depth = parent.source, parent.sourceLen, parent.index, parent.depth
+			continue
+		}
 		p := intToValue(sourceIndex)
+		sourceIndex++
 		if source.hasProperty(p.toString()) {
 			element := nilSafe(source.get(p, source))
-			if mapperFunction != nil {
+			if mapperFunction != nil && len(stack) == 0 {
 				element = mapperFunction(FunctionCall{
 					This:      thisArg,
 					Arguments: []Value{element, p, source},
@@ -1224,7 +1247,13 @@ func (r *Runtime) flattenIntoArray(target, source *Object, sourceLen, start, dep
 			}
 			if elementArray != nil {
 				elementLen := toLength(elementArray.self.getStr("length", nil))
-				targetIndex = r.flattenIntoArray(target, elementArray, elementLen, targetIndex, depth-1, nil, nil)
+				if len(stack) >= maxFlattenStackSize || len(stack)+len(r.vm.callStack) >= r.vm.maxCallStackSize {
+					ex := &StackOverflowError{}
+					ex.stack = r.vm.captureStack(nil, 0)
+					panic(ex)
+				}
+				stack = append(stack, frame{source: source, sourceLen: sourceLen, index: sourceIndex, depth: depth})
+				source, sourceLen, sourceIndex, depth = elementArray, elementLen, 0, depth-1
 			} else {
 				if targetIndex >= maxInt-1 {
 					panic(r.NewTypeError("Invalid array length"))
@@ -1233,9 +1262,7 @@ func (r *Runtime) flattenIntoArray(target, source *Object, sourceLen, start, dep
 				targetIndex++
 			}
 		}
-		sourceIndex++
 	}
-	return targetIndex
 }
 
 func (r *Runtime) arrayproto_flatMap(call FunctionCall) Value {

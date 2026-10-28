@@ -2487,6 +2487,8 @@ func (r *Runtime) SetTimeSource(now Now) {
 // SetMaxCallStackSize sets the maximum function call depth. When exceeded, a *StackOverflowError is thrown and
 // returned by RunProgram or by a Callable call. This is useful to prevent memory exhaustion caused by an
 // infinite recursion. The default value is math.MaxInt32.
+// Array.prototype.flat and flatMap also use this limit for their traversal stack,
+// with an additional maximum of 10000 nested arrays to bound native memory use.
 // This method (as the rest of the Set* methods) is not safe for concurrent use and may only be called
 // from the vm goroutine or when the vm is not running.
 func (r *Runtime) SetMaxCallStackSize(size int) {
