@@ -174,10 +174,29 @@ Struct values, arrays, ordinary slices and maps are copies. Copies preserve cycl
 within one conversion. Pointer-to-struct values are live views with readonly
 fields by default; registered methods can perform their declared Go operations.
 Use `HostBinding{Value: pointer, Mutable: true}` to allow checked writes through a
-view. Views preserve pointer identity for matching contracts and belong to one
-runtime. Plain TS objects are converted and validated when a Go parameter expects
-a struct, collection or pointer. Passing a matching host view back to Go preserves
-its pointer identity.
+view. While a view remains strongly reachable from Go or TypeScript, returning the
+same Go pointer with a matching contract in that runtime returns the same view.
+Views belong to one runtime and keep their original Go source alive, including
+structs without exposed members. Replacing a pointer in a host field does not
+change the source of a previously returned view. Plain TS objects are converted
+and validated when a Go parameter expects a struct, collection or pointer.
+Passing a matching host view back to Go returns its original Go pointer.
+
+The runtime's identity index holds views weakly. Once no strong references remain,
+Go GC can collect a view and its source data that have no other owners, including
+unreachable cycles. If the host still owns the source, returning it after the old
+view has been collected may create a new view. Dead index entries are cleaned up
+automatically, even while the runtime is idle, without new calls or `RunJobs`.
+Collection and cleanup are asynchronous, have no guaranteed deadline, and need
+not finish after a single Go GC. No per-view release call is required. Resource
+disposal remains the host application's responsibility.
+
+Extracted methods and accessors keep their Go receiver alive for as long as they
+are used, even if the view itself is collected. Bridge-created functions and
+callbacks retain the data needed by their callable, but do not retain unrelated
+arguments or sibling results through completed conversions. Data deliberately
+captured by Go functions, TypeScript closures, or custom host adapters remain
+subject to those owners' lifetimes.
 
 `[]T` and `map[string]T` are nullable, so nil and empty collections remain
 different. Arrays use fixed-length tuples. Function arity is checked: missing

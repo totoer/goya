@@ -131,6 +131,68 @@ func TestHostStructMutableViewAndInput(t *testing.T) {
 	}
 }
 
+func TestHostViewWithoutMembersRoundTrip(t *testing.T) {
+	type hidden struct{ private [32]byte }
+	source := &hidden{}
+	registry := goya.NewRegistry()
+	registerHost(t, registry, "hidden", source)
+	registerHost(t, registry, "same", func(v *hidden) bool { return v == source })
+	r := goya.New()
+	if err := freezeHost(t, registry).Bind(r); err != nil {
+		t.Fatal(err)
+	}
+	view := hostObject(t, r.Get("hidden"))
+	if len(view.GetOwnPropertyNames()) != 0 || !hostCall(t, r, r.Get("same"), view).ToBoolean() {
+		t.Fatal("view without members did not preserve its source")
+	}
+}
+
+func TestHostViewSnapshotsPointerField(t *testing.T) {
+	old := &hostNode{Name: "old"}
+	parent := &struct{ Child *hostNode }{Child: old}
+	registry := goya.NewRegistry()
+	registerHost(t, registry, "parent", parent)
+	registerHost(t, registry, "same", func(v *hostNode) bool { return v == old })
+	r := goya.New()
+	if err := freezeHost(t, registry).Bind(r); err != nil {
+		t.Fatal(err)
+	}
+	view := hostObject(t, hostObject(t, r.Get("parent")).Get("Child"))
+	parent.Child = &hostNode{Name: "new"}
+	if !hostCall(t, r, r.Get("same"), view).ToBoolean() || view.Get("Name").String() != "old" || hostCall(t, r, view.Get("Label")).String() != "old" {
+		t.Fatal("replacing the host field changed the saved view's source")
+	}
+}
+
+func TestHostViewOrdinaryObjectBehavior(t *testing.T) {
+	registry := goya.NewRegistry()
+	registry.SetFieldNameMapper(goya.TagFieldNameMapper("ts", false))
+	registerHost(t, registry, "item", &struct {
+		Title string `ts:"title"`
+	}{Title: "original"})
+	r := goya.New()
+	if err := freezeHost(t, registry).Bind(r); err != nil {
+		t.Fatal(err)
+	}
+	view := hostObject(t, r.Get("item"))
+	if view.Prototype() != r.NewObject().Prototype() || !reflect.DeepEqual(view.Export(), map[string]any{"title": "original"}) {
+		t.Fatal("view changed ordinary prototype or export behavior")
+	}
+	result, err := r.RunString(`
+const v = item!;
+const d = Object.getOwnPropertyDescriptor(v, "title")!;
+Object.getPrototypeOf(v) === Object.prototype &&
+Object.keys(v).join(",") === "title" &&
+Object.getOwnPropertyNames(v).join(",") === "title" &&
+Object.getOwnPropertySymbols(v).length === 0 &&
+typeof d.get === "function" && d.set === undefined &&
+d.enumerable && !d.configurable && !("value" in d) &&
+JSON.stringify(v) === '{"title":"original"}';`)
+	if err != nil || !result.ToBoolean() {
+		t.Fatalf("view descriptors: %v, %v", result, err)
+	}
+}
+
 func TestHostCollectionsAndNullability(t *testing.T) {
 	registry := goya.NewRegistry()
 	registerHost(t, registry, "tuple", [2]string{"a", "b"})

@@ -215,8 +215,7 @@ type Runtime struct {
 	hostEnvironment    *Environment
 	hostModules        map[string]map[string]Value
 	hostGlobals        map[string]Value
-	hostViews          map[hostViewKey]*Object
-	hostViewSources    map[*Object]reflect.Value
+	hostViews          *hostViewCache
 	moduleInstances    map[string]*moduleInstance
 	dynamicResolutions map[string]string
 	typeScriptHelpers  map[string]Value

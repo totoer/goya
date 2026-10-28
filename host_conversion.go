@@ -9,10 +9,6 @@ import (
 	"github.com/totoer/goya/unistring"
 )
 
-type hostViewKey struct {
-	pointer any
-	schema  string
-}
 type hostCopyKey struct {
 	typ              reflect.Type
 	pointer          uintptr
@@ -34,6 +30,7 @@ func newHostConversion(r *Runtime, g *hostTypeGraph) *hostConversion {
 }
 
 func (c *hostConversion) function(name string, function reflect.Value, n *hostType) Value {
+	r, g := c.r, c.g
 	fixed := len(n.inputs)
 	if n.variadic {
 		fixed--
@@ -45,11 +42,11 @@ func (c *hostConversion) function(name string, function reflect.Value, n *hostTy
 			break
 		}
 	}
-	return c.r.newNativeFunc(func(call FunctionCall) Value {
+	return r.newNativeFunc(func(call FunctionCall) Value {
 		if len(call.Arguments) < minimum || (!n.variadic && len(call.Arguments) > fixed) {
-			panic(c.r.NewTypeError("%s expects %d arguments (received %d)", name, minimum, len(call.Arguments)))
+			panic(r.NewTypeError("%s expects %d arguments (received %d)", name, minimum, len(call.Arguments)))
 		}
-		conversion := newHostConversion(c.r, c.g)
+		conversion := newHostConversion(r, g)
 		arguments := make([]reflect.Value, len(n.inputs))
 		for i := 0; i < fixed; i++ {
 			arguments[i] = conversion.input(call.Argument(i), n.inputs[i])
@@ -73,7 +70,7 @@ func (c *hostConversion) function(name string, function reflect.Value, n *hostTy
 		if n.throws {
 			last := returned[len(returned)-1]
 			if !last.IsNil() {
-				panic(c.r.newError(c.r.getError(), last.Interface().(error).Error()))
+				panic(r.newError(r.getError(), last.Interface().(error).Error()))
 			}
 			returned = returned[:len(returned)-1]
 		}
@@ -87,7 +84,7 @@ func (c *hostConversion) function(name string, function reflect.Value, n *hostTy
 		for i, v := range returned {
 			values[i] = conversion.output(v, n.outputs[i])
 		}
-		return c.r.NewArray(values...)
+		return r.NewArray(values...)
 	}, unistring.NewFromString(name), minimum)
 }
 
@@ -118,8 +115,8 @@ func (c *hostConversion) input(value Value, n *hostType) reflect.Value {
 		return c.r.hostScalarArgument(value, n.typeOf)
 	case reflect.Ptr:
 		if object, ok := value.(*Object); ok {
-			if view, exists := c.r.hostViewSources[object]; exists && view.Type() == n.typeOf {
-				return view
+			if view, ok := object.self.(*hostViewObject); ok && view.source.Type() == n.typeOf {
+				return view.source
 			}
 			key := hostInputKey{object, n.typeOf}
 			if previous := c.inputs[key]; previous.IsValid() {
@@ -188,12 +185,13 @@ func (c *hostConversion) input(value Value, n *hostType) reflect.Value {
 			return result
 		}
 	case reflect.Func:
+		r, g := c.r, c.g
 		function, ok := AssertFunction(value)
 		if !ok {
-			panic(c.r.NewTypeError("expected callable for %s", n.typeOf))
+			panic(r.NewTypeError("expected callable for %s", n.typeOf))
 		}
 		return reflect.MakeFunc(n.typeOf, func(arguments []reflect.Value) []reflect.Value {
-			conversion := newHostConversion(c.r, c.g)
+			conversion := newHostConversion(r, g)
 			var values []Value
 			for i, v := range arguments {
 				if n.variadic && i == len(arguments)-1 {
@@ -221,7 +219,7 @@ func (c *hostConversion) input(value Value, n *hostType) reflect.Value {
 			} else if len(n.outputs) > 1 {
 				object, ok := result.(*Object)
 				if !ok || !isArray(object) || object.Get("length").ToInteger() != int64(len(n.outputs)) {
-					panic(c.r.NewTypeError("callback must return a tuple of length %d", len(n.outputs)))
+					panic(r.NewTypeError("callback must return a tuple of length %d", len(n.outputs)))
 				}
 				for i, t := range n.outputs {
 					returned = append(returned, conversion.input(object.GetIdx(int64(i)), t))
@@ -259,21 +257,20 @@ func (c *hostConversion) output(value reflect.Value, n *hostType) Value {
 		if value.IsNil() {
 			return _null
 		}
-		key := hostViewKey{value.Interface(), n.viewSchema}
-		if object := c.r.hostViews[key]; object != nil {
-			return object
-		}
 		if n.elem.kind != reflect.Struct || n.elem.optional {
 			return c.output(value.Elem(), n.elem)
 		}
-		object := c.r.NewObject()
-		if c.r.hostViews == nil {
-			c.r.hostViews = make(map[hostViewKey]*Object)
-			c.r.hostViewSources = make(map[*Object]reflect.Value)
+		key := hostViewKey{value.Type(), value.Pointer(), n.viewSchema}
+		if object := c.r.hostViews.get(key); object != nil {
+			return object
 		}
-		c.r.hostViews[key] = object
-		c.r.hostViewSources[object] = value
-		c.objectMembers(object, value.Elem(), n.elem.fields, n.methods, n.elem.readonly, true, value)
+		object := c.r.newHostView(value)
+		source := object.self.(*hostViewObject).source
+		c.objectMembers(object, source.Elem(), n.elem.fields, n.methods, n.elem.readonly, true, source)
+		if c.r.hostViews == nil {
+			c.r.hostViews = &hostViewCache{}
+		}
+		c.r.hostViews.put(key, object)
 		return object
 	case reflect.Struct:
 		object := c.r.NewObject()
@@ -331,18 +328,19 @@ func (c *hostConversion) define(object *Object, name string, value Value, writab
 }
 
 func (c *hostConversion) objectMembers(object *Object, value reflect.Value, fields []hostField, methods []hostMethod, readonly, view bool, receiver reflect.Value) {
+	r, g := c.r, c.g
 	for _, field := range fields {
 		if !view {
 			c.define(object, field.name, c.output(value.FieldByIndex(field.index), field.typ), true)
 			continue
 		}
-		getter := c.r.newNativeFunc(func(FunctionCall) Value {
-			return newHostConversion(c.r, c.g).output(value.FieldByIndex(field.index), field.typ)
+		getter := r.newNativeFunc(func(FunctionCall) Value {
+			return newHostConversion(r, g).output(value.FieldByIndex(field.index), field.typ)
 		}, unistring.NewFromString("get "+field.name), 0)
 		var setter Value = _undefined
 		if !readonly {
-			setter = c.r.newNativeFunc(func(call FunctionCall) Value {
-				converted := newHostConversion(c.r, c.g).input(call.Argument(0), field.typ)
+			setter = r.newNativeFunc(func(call FunctionCall) Value {
+				converted := newHostConversion(r, g).input(call.Argument(0), field.typ)
 				value.FieldByIndex(field.index).Set(converted)
 				return _undefined
 			}, unistring.NewFromString("set "+field.name), 1)
