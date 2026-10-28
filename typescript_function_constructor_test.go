@@ -61,3 +61,39 @@ func TestTypeScriptOrdinaryFunctionsWithoutEval(t *testing.T) {
 		t.Fatalf("async generator %v %v", promise.State(), promise.Result())
 	}
 }
+
+func TestTypeScriptFunctionToStringProxy(t *testing.T) {
+	for name, source := range map[string]string{
+		"revoked callable": `
+			const handle = Proxy.revocable(() => 1, {});
+			handle.revoke();
+			Function.prototype.toString.call(handle.proxy) === "function () { [native code] }";
+		`,
+		"nested callable": `
+			const handle = Proxy.revocable(() => 1, {});
+			const outer = new Proxy(handle.proxy, {});
+			const before = Function.prototype.toString.call(outer);
+			handle.revoke();
+			before === "function () { [native code] }" && Function.prototype.toString.call(outer) === before;
+		`,
+		"revoked non-callable": `
+			const handle = Proxy.revocable({}, {});
+			handle.revoke();
+			let caught = false;
+			try { Function.prototype.toString.call(handle.proxy); }
+			catch (e) { caught = e instanceof TypeError; }
+			caught;
+		`,
+	} {
+		t.Run(name, func(t *testing.T) {
+			p := compileTypeScript(t, source, nil)
+			value, err := goya.New().RunProgram(p)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !value.ToBoolean() {
+				t.Fatalf("unexpected result: %v", value)
+			}
+		})
+	}
+}

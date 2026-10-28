@@ -27,7 +27,7 @@ func (r *Runtime) functionproto_toString(call FunctionCall) Value {
 	case funcObjectImpl:
 		return f.source()
 	case *proxyObject:
-		if _, ok := f.target.self.(funcObjectImpl); ok {
+		if _, ok := f.assertCallable(); ok {
 			return asciiString("function () { [native code] }")
 		}
 	}
