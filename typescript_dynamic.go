@@ -1,10 +1,6 @@
 package goya
 
-import (
-	"encoding/json"
-
-	"github.com/totoer/goya/internal/tsfrontend"
-)
+import "github.com/totoer/goya/internal/tsfrontend"
 
 type loadDynamicImport struct {
 	info     *typeScriptProgram
@@ -100,18 +96,12 @@ func (r *Runtime) dynamicImport(info *typeScriptProgram, from string, c Function
 		}
 		r.enqueuePromiseJob(func() {
 			cap.try(func() {
-				key := ""
-				if info != nil {
-					key = info.analysisKey + "\x00" + from + "\x00" + specifier
-					if deferred {
-						key += "\x00defer"
-					}
-					if len(attributes) > 0 {
-						encoded, _ := json.Marshal(attributes)
-						key += "\x00attributes:" + string(encoded)
-					}
+				phase := moduleResolutionImport
+				if deferred {
+					phase = moduleResolutionDefer
 				}
-				if target := r.dynamicResolutions[key]; target != "" {
+				key := preparedResolutionKey(info, from, specifier, phase, attributes)
+				if target := r.dynamicResolutions.lookup(key); target != "" {
 					m := r.moduleInstances[target]
 					if m != nil {
 						if message := tsfrontend.ValidateImportAttributes(attributes, m.code != nil && m.code.json, false); message != "" {
@@ -127,10 +117,7 @@ func (r *Runtime) dynamicImport(info *typeScriptProgram, from string, c Function
 						panic(r.NewTypeError("%s", message))
 					}
 					ns := r.dynamicHostNamespace(target)
-					if r.dynamicResolutions == nil {
-						r.dynamicResolutions = make(map[string]string)
-					}
-					r.dynamicResolutions[key] = "host:" + target
+					r.retainModuleResolution(key, "host:"+target)
 					if deferred {
 						cap.resolve(r.deferredNamespace(r.moduleInstances["host:"+target]))
 					} else {
@@ -146,10 +133,7 @@ func (r *Runtime) dynamicImport(info *typeScriptProgram, from string, c Function
 				}
 				value, err := r.runModuleGraph(p, true, deferred)
 				if m := r.moduleInstances[target]; m != nil && m.code.fingerprint == p.typescript.units[target].fingerprint {
-					if r.dynamicResolutions == nil {
-						r.dynamicResolutions = make(map[string]string)
-					}
-					r.dynamicResolutions[key] = target
+					r.retainModuleResolution(key, target)
 				}
 				if err != nil {
 					if ex, ok := err.(*Exception); ok {

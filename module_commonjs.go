@@ -41,8 +41,8 @@ func (r *Runtime) requireModule(from *moduleInstance, specifier string) Value {
 	}
 	// A CommonJS-target import() is normalized by the official transformer to
 	// a deferred private require. It selects only already prepared code.
-	key := from.checking.analysisKey + "\x00" + from.code.id + "\x00" + specifier
-	if id := r.dynamicResolutions[key]; id != "" {
+	key := preparedResolutionKey(from.checking, from.code.id, specifier, moduleResolutionRequire, nil)
+	if id := r.dynamicResolutions.lookup(key); id != "" {
 		if m := r.moduleInstances[id]; m != nil {
 			if m.code == nil {
 				return m.namespace
@@ -60,10 +60,7 @@ func (r *Runtime) requireModule(from *moduleInstance, specifier string) Value {
 	p, target, host := r.preparedDynamicModule(from.checking, from.code.id, specifier)
 	if host {
 		ns := r.dynamicHostNamespace(target)
-		if r.dynamicResolutions == nil {
-			r.dynamicResolutions = make(map[string]string)
-		}
-		r.dynamicResolutions[key] = "host:" + target
+		r.retainModuleResolution(key, "host:"+target)
 		return ns
 	}
 	if checkedGraphHasAsync(p, target, map[string]bool{}) {
@@ -74,10 +71,7 @@ func (r *Runtime) requireModule(from *moduleInstance, specifier string) Value {
 	}
 	_, err := r.runModuleGraph(p, true)
 	if m := r.moduleInstances[target]; m != nil && m.code.fingerprint == p.typescript.units[target].fingerprint {
-		if r.dynamicResolutions == nil {
-			r.dynamicResolutions = make(map[string]string)
-		}
-		r.dynamicResolutions[key] = target
+		r.retainModuleResolution(key, target)
 	}
 	if err != nil {
 		if ex, ok := err.(*Exception); ok {

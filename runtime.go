@@ -217,7 +217,7 @@ type Runtime struct {
 	hostGlobals        map[string]Value
 	hostViews          *hostViewCache
 	moduleInstances    map[string]*moduleInstance
-	dynamicResolutions map[string]string
+	dynamicResolutions *moduleResolutionCache
 	typeScriptHelpers  map[string]Value
 
 	vm   *vm
