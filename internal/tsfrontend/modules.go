@@ -141,7 +141,13 @@ func (l *lowerer) importedReference(n *ast.Node) (moduleImport, bool) {
 		}
 		return moduleImport{}, false
 	}
-	symbol := l.checker.GetSymbolAtLocation(original)
+	var symbol *ast.Symbol
+	if original.Parent != nil && original.Parent.Kind == ast.KindShorthandPropertyAssignment && original.Parent.Name() == original {
+		// A shorthand name has a property symbol; resolve its value binding instead.
+		symbol = l.checker.GetShorthandAssignmentValueSymbol(original.Parent)
+	} else {
+		symbol = l.checker.GetSymbolAtLocation(original)
+	}
 	reference, ok := l.imports[symbol]
 	return reference, ok
 }

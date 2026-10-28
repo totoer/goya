@@ -16,6 +16,62 @@ func compileModules(t *testing.T, files map[string]string, environment *goya.Env
 	return program
 }
 
+func TestTypeScriptModuleImportShorthandProperties(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		source   string
+		expected map[string]int64
+	}{
+		{
+			name:     "named import with unused function",
+			source:   `import {value, read} from "./dependency"; export const result = {value};`,
+			expected: map[string]int64{"value": 42},
+		},
+		{
+			name:     "aliased import",
+			source:   `import {value as renamed} from "./dependency"; export const result = {renamed};`,
+			expected: map[string]int64{"renamed": 42},
+		},
+		{
+			name:     "default import",
+			source:   `import value from "./dependency"; export const result = {value};`,
+			expected: map[string]int64{"value": 42},
+		},
+		{
+			name:     "namespace import",
+			source:   `import * as dependency from "./dependency"; export const result = {dependency}.dependency;`,
+			expected: map[string]int64{"value": 42},
+		},
+		{
+			name:     "shadowed import",
+			source:   `import {value} from "./dependency"; function make(value: number) {return {value};} export const result = make(7);`,
+			expected: map[string]int64{"value": 7},
+		},
+		{
+			name:     "live import with snapshot properties",
+			source:   `import {value, increment} from "./dependency"; const before = {value}; increment(); const after = {value}; export const result = {before: before.value, after: after.value};`,
+			expected: map[string]int64{"before": 42, "after": 43},
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			program := compileModules(t, map[string]string{
+				"/main.ts":       tc.source,
+				"/dependency.ts": `export let value = 42; export default 42; export function read() {return value;} export function increment() {value++;}`,
+			}, nil)
+			value, err := goya.New().RunProgram(program)
+			if err != nil {
+				t.Fatal(err)
+			}
+			result := hostObject(t, hostObject(t, value).Get("result"))
+			for name, expected := range tc.expected {
+				if actual := result.Get(name).ToInteger(); actual != expected {
+					t.Fatalf("result.%s = %d, want %d", name, actual, expected)
+				}
+			}
+		})
+	}
+}
+
 func TestTypeScriptModulesExecuteLiveImports(t *testing.T) {
 	program := compileModules(t, map[string]string{
 		"/main.ts":     `import {value, increment, unbound} from "./counter.js"; import * as counter from "./counter.js"; import {renamed} from "./reexport.js"; const initial = value; increment(); export const result = initial === 0 && value === 1 && counter.value === 1 && renamed === 1 && unbound(); export {counter};`,
