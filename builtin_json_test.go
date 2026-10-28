@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"encoding/json"
@@ -56,7 +56,7 @@ func TestJSONStringifyCircularWrappedGo(t *testing.T) {
 	v := CircularType{}
 	v.Self = &v
 	vm.Set("v", &v)
-	_, err := vm.RunString("JSON.stringify(v)")
+	_, err := vm.runVMString("JSON.stringify(v)")
 	if err == nil {
 		t.Fatal("Expected error")
 	}
@@ -100,7 +100,7 @@ func TestQuoteMalformedSurrogatePair(t *testing.T) {
 func TestEOFWrapping(t *testing.T) {
 	vm := New()
 
-	_, err := vm.RunString("JSON.parse('{')")
+	_, err := vm.runVMString("JSON.parse('{')")
 	if err == nil {
 		t.Fatal("Expected error")
 	}
@@ -122,7 +122,7 @@ func TestMarshalJSONError(t *testing.T) {
 	vm := New()
 	v := testMarshalJSONErrorStruct{e: errors.New("test error")}
 	vm.Set("v", &v)
-	_, err := vm.RunString("JSON.stringify(v)")
+	_, err := vm.runVMString("JSON.stringify(v)")
 	if !errors.Is(err, v.e) {
 		t.Fatalf("Unexpected error: %v", err)
 	}

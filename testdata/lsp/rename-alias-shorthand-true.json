@@ -1,0 +1,333 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "import {value, value as current} from \"./value\";\nconst record = {value};\nrecord.value + current;\nexport {value};\n",
+      "/value.ts": "export let value = 1;\nvalue++;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "rename-alias-shorthand-true",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "import {value, value as current} from \"./value\";\nconst record = {value};\nrecord.value + current;\nexport {value};\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/prepareRename",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 10
+        }
+      },
+      "expected": {
+        "start": {
+          "line": 0,
+          "character": 8
+        },
+        "end": {
+          "line": 0,
+          "character": 13
+        }
+      }
+    },
+    {
+      "method": "textDocument/rename",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 10
+        },
+        "newName": "local"
+      },
+      "expected": {
+        "changes": {
+          "{{ROOT_URI}}/main.ts": [
+            {
+              "newText": "value as local",
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 8
+                },
+                "end": {
+                  "line": 0,
+                  "character": 13
+                }
+              }
+            },
+            {
+              "newText": "value: local",
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 16
+                },
+                "end": {
+                  "line": 1,
+                  "character": 21
+                }
+              }
+            },
+            {
+              "newText": "local as value",
+              "range": {
+                "start": {
+                  "line": 3,
+                  "character": 8
+                },
+                "end": {
+                  "line": 3,
+                  "character": 13
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/value.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "export let value = 1;\nvalue++;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/rename",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/value.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 13
+        },
+        "newName": "renamed"
+      },
+      "expected": {
+        "changes": {
+          "{{ROOT_URI}}/value.ts": [
+            {
+              "newText": "renamed",
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 11
+                },
+                "end": {
+                  "line": 0,
+                  "character": 16
+                }
+              }
+            },
+            {
+              "newText": "renamed",
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 0
+                },
+                "end": {
+                  "line": 1,
+                  "character": 5
+                }
+              }
+            }
+          ],
+          "{{ROOT_URI}}/main.ts": [
+            {
+              "newText": "renamed",
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 15
+                },
+                "end": {
+                  "line": 0,
+                  "character": 20
+                }
+              }
+            },
+            {
+              "newText": "renamed",
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 8
+                },
+                "end": {
+                  "line": 0,
+                  "character": 13
+                }
+              }
+            },
+            {
+              "newText": "value: renamed",
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 16
+                },
+                "end": {
+                  "line": 1,
+                  "character": 21
+                }
+              }
+            },
+            {
+              "newText": "renamed as value",
+              "range": {
+                "start": {
+                  "line": 3,
+                  "character": 8
+                },
+                "end": {
+                  "line": 3,
+                  "character": 13
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "textDocument/rename",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 2,
+          "character": 9
+        },
+        "newName": "property"
+      },
+      "expected": {
+        "changes": {
+          "{{ROOT_URI}}/main.ts": [
+            {
+              "newText": "property: value",
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 16
+                },
+                "end": {
+                  "line": 1,
+                  "character": 21
+                }
+              }
+            },
+            {
+              "newText": "property",
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 7
+                },
+                "end": {
+                  "line": 2,
+                  "character": 12
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "textDocument/rename",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 28
+        },
+        "newName": "alias"
+      },
+      "expected": {
+        "changes": {
+          "{{ROOT_URI}}/main.ts": [
+            {
+              "newText": "alias",
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 24
+                },
+                "end": {
+                  "line": 0,
+                  "character": 31
+                }
+              }
+            },
+            {
+              "newText": "alias",
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 15
+                },
+                "end": {
+                  "line": 2,
+                  "character": 22
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "initialization": {
+    "options": {
+      "preferences": {
+        "providePrefixAndSuffixTextForRename": true
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "name": "fix-infer-this-self-reference",
+  "project": {
+    "files": {
+      "/main.ts": "export class Box { value = 1; run() { const inner = function repeat() { return this.value || repeat(); }; return inner(); } }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export class Box { value = 1; run() { const inner = function repeat() { return this.value || repeat(); }; return inner(); } }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 6000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 61
+              },
+              "end": {
+                "line": 0,
+                "character": 67
+              }
+            },
+            "message": "'repeat' implicitly has return type 'any' because it does not have a return type annotation and is referenced directly or indirectly in one of its return expressions.",
+            "severity": 1,
+            "code": 7023,
+            "source": "typescript"
+          },
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 79
+              },
+              "end": {
+                "line": 0,
+                "character": 83
+              }
+            },
+            "message": "'this' implicitly has type 'any' because it does not have a type annotation.",
+            "severity": 1,
+            "code": 2683,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 61
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 67
+                    }
+                  }
+                },
+                "message": "An outer value of 'this' is shadowed by this container."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 79
+                },
+                "end": {
+                  "line": 0,
+                  "character": 83
+                }
+              },
+              "severity": 1,
+              "code": 2683,
+              "message": "'this' implicitly has type 'any' because it does not have a type annotation.",
+              "source": "typescript"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Infer 'this' type of 'repeat' from usage",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "inferFromUsage",
+                  "description": "Infer 'this' type of 'repeat' from usage",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 69
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 69
+                          },
+                          "newText": "this: any"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 79
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 83
+                    }
+                  },
+                  "severity": 1,
+                  "code": 2683,
+                  "message": "'this' implicitly has type 'any' because it does not have a type annotation.",
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 79
+                },
+                "end": {
+                  "line": 0,
+                  "character": 83
+                }
+              },
+              "severity": 1,
+              "code": 2683,
+              "message": "'this' implicitly has type 'any' because it does not have a type annotation.",
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 68
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 68
+                      }
+                    },
+                    "newText": "this: any"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    7023
+  ],
+  "edited_compiler_error_reason": "The reference annotates this without annotating the recursively inferred return type, retaining the existing recursive return-type error. Independently checked with TypeScript 6.0.3."
+}

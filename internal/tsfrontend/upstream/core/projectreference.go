@@ -1,0 +1,22 @@
+// Modified for Goya: internal import paths relocated by cmd/importupstream.
+
+package core
+
+import "github.com/totoer/goya/internal/tsfrontend/upstream/tspath"
+
+type ProjectReference struct {
+	Path         string
+	OriginalPath string
+	Circular     bool
+}
+
+func ResolveProjectReferencePath(ref *ProjectReference) string {
+	return ResolveConfigFileNameOfProjectReference(ref.Path)
+}
+
+func ResolveConfigFileNameOfProjectReference(path string) string {
+	if tspath.FileExtensionIs(path, tspath.ExtensionJson) {
+		return path
+	}
+	return tspath.CombinePaths(path, "tsconfig.json")
+}

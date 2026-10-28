@@ -1,0 +1,445 @@
+{
+  "schema_version": 1,
+  "name": "fix-missing-property-private-underscore",
+  "project": {
+    "files": {
+      "/main.ts": "export class Box { run() { this._missing = \"value\"; } }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export class Box { run() { this._missing = \"value\"; } }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Declare private property '_missing'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixMissingMember",
+                  "description": "Declare private property '_missing'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "newText": "\n    private _missing: string;"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 55
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 55
+                          },
+                          "newText": "\n"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 32
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 40
+                    }
+                  },
+                  "message": "Property '_missing' does not exist on type 'Box'.",
+                  "severity": 1,
+                  "code": 2339,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 32
+                },
+                "end": {
+                  "line": 0,
+                  "character": 40
+                }
+              },
+              "message": "Property '_missing' does not exist on type 'Box'.",
+              "severity": 1,
+              "code": 2339,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 18
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 18
+                      }
+                    },
+                    "newText": "\n    private _missing: string;"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 54
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 54
+                      }
+                    },
+                    "newText": "\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Declare property '_missing'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixMissingMember",
+                  "description": "Declare property '_missing'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "newText": "\n    _missing: string;"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 55
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 55
+                          },
+                          "newText": "\n"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 32
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 40
+                    }
+                  },
+                  "message": "Property '_missing' does not exist on type 'Box'.",
+                  "severity": 1,
+                  "code": 2339,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 32
+                },
+                "end": {
+                  "line": 0,
+                  "character": 40
+                }
+              },
+              "message": "Property '_missing' does not exist on type 'Box'.",
+              "severity": 1,
+              "code": 2339,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 18
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 18
+                      }
+                    },
+                    "newText": "\n    _missing: string;"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 54
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 54
+                      }
+                    },
+                    "newText": "\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add index signature for property '_missing'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixMissingMember",
+                  "description": "Add index signature for property '_missing'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "newText": "\n    [x: string]: string;"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 55
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 55
+                          },
+                          "newText": "\n"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 32
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 40
+                    }
+                  },
+                  "message": "Property '_missing' does not exist on type 'Box'.",
+                  "severity": 1,
+                  "code": 2339,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 32
+                },
+                "end": {
+                  "line": 0,
+                  "character": 40
+                }
+              },
+              "message": "Property '_missing' does not exist on type 'Box'.",
+              "severity": 1,
+              "code": 2339,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 18
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 18
+                      }
+                    },
+                    "newText": "\n    [x: string]: string;"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 54
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 54
+                      }
+                    },
+                    "newText": "\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    2564
+  ],
+  "edited_compiler_error_reason": "The pinned TypeScript 6.0.3 missing-member fix declares typed fields without initializers for assignments outside constructors. Its exact proposal retains strictPropertyInitialization errors; independently checked with the pinned compiler."
+}

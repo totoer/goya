@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"fmt"
@@ -10,8 +10,8 @@ import (
 	"sync/atomic"
 	"unsafe"
 
-	"github.com/dop251/goja/ftoa"
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/ftoa"
+	"github.com/totoer/goya/unistring"
 )
 
 var (
@@ -120,6 +120,7 @@ type valueUndefined struct {
 type Symbol struct {
 	desc        String
 	weakMapRefs atomic.Pointer[weakMapRefs]
+	registered  bool
 }
 
 type valueUnresolved struct {

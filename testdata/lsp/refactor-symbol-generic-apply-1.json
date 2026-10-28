@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "name": "refactor-symbol-generic-apply-1",
+  "project": {
+    "files": {
+      "/main.ts": "function run<T extends { value: number }>(input: T) { return input.value + 1; }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "function run<T extends { value: number }>(input: T) { return input.value + 1; }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 61
+          },
+          "end": {
+            "line": 0,
+            "character": 76
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "refactor.extract.function",
+            "refactor.extract.constant"
+          ],
+          "triggerKind": 1
+        }
+      },
+      "expected": [
+        {
+          "title": "Extract to inner function in function 'run'",
+          "kind": "refactor.extract.function",
+          "command": {
+            "title": "Extract to inner function in function 'run'",
+            "command": "_typescript.applyRefactoring",
+            "arguments": [
+              {
+                "file": "{{ROOT_PATH}}/main.ts",
+                "startLine": 1,
+                "startOffset": 62,
+                "endLine": 1,
+                "endOffset": 77,
+                "refactor": "Extract Symbol",
+                "action": "function_scope_0"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Extract to function in global scope",
+          "kind": "refactor.extract.function",
+          "command": {
+            "title": "Extract to function in global scope",
+            "command": "_typescript.applyRefactoring",
+            "arguments": [
+              {
+                "file": "{{ROOT_PATH}}/main.ts",
+                "startLine": 1,
+                "startOffset": 62,
+                "endLine": 1,
+                "endOffset": 77,
+                "refactor": "Extract Symbol",
+                "action": "function_scope_1"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Extract to constant in enclosing scope",
+          "kind": "refactor.extract.constant",
+          "command": {
+            "title": "Extract to constant in enclosing scope",
+            "command": "_typescript.applyRefactoring",
+            "arguments": [
+              {
+                "file": "{{ROOT_PATH}}/main.ts",
+                "startLine": 1,
+                "startOffset": 62,
+                "endLine": 1,
+                "endOffset": 77,
+                "refactor": "Extract Symbol",
+                "action": "constant_scope_0"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "method": "workspace/executeCommand",
+      "params": {
+        "title": "Extract to function in global scope",
+        "command": "_typescript.applyRefactoring",
+        "arguments": [
+          {
+            "file": "{{ROOT_PATH}}/main.ts",
+            "startLine": 1,
+            "startOffset": 62,
+            "endLine": 1,
+            "endOffset": 77,
+            "refactor": "Extract Symbol",
+            "action": "function_scope_1"
+          }
+        ]
+      },
+      "record_client_requests": [
+        "workspace/applyEdit"
+      ],
+      "expected_client_requests": [
+        {
+          "method": "workspace/applyEdit",
+          "params": {
+            "edit": {
+              "changes": {
+                "{{ROOT_URI}}/main.ts": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 61
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 76
+                      }
+                    },
+                    "newText": "newFunction<T>(input)"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 80
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 80
+                      }
+                    },
+                    "newText": "\nfunction newFunction<T extends { value: number; }>(input: T) {\n    return input.value + 1;\n}\n"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "expected": null,
+      "source_eof": {
+        "client_request_edits": [
+          {
+            "request": 0,
+            "edit": 1,
+            "uri": "{{ROOT_URI}}/main.ts",
+            "start": 80,
+            "length": 0,
+            "source_sha256": "3393712124848780a03400ac163afbf8e45b6eb9097f3eedc4165b7de2fe37d4"
+          }
+        ]
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          },
+          "disabledSupport": true
+        }
+      },
+      "workspace": {
+        "applyEdit": true
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

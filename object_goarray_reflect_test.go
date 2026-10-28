@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 func TestGoReflectArray(t *testing.T) {
 	vm := New()
 	vm.Set("a", [...]int{1, 2, 3})
-	_, err := vm.RunString(`
+	_, err := vm.runVMString(`
 	if (!Array.isArray(a)) {
 		throw new Error("isArray() returned false");
 	}
@@ -30,7 +30,7 @@ func TestGoReflectArray(t *testing.T) {
 func TestGoReflectArraySort(t *testing.T) {
 	vm := New()
 	vm.Set("a", [...]int{3, 1, 2})
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 		a.sort();
 		if (a[0] !== 1 || a[1] !== 2 || a[2] !== 3) {
 			throw new Error(a.toString());
@@ -53,7 +53,7 @@ func TestGoReflectArraySort(t *testing.T) {
 func TestGoReflectArrayCopyOnChange(t *testing.T) {
 	vm := New()
 
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 	a => {
 		let tmp = a[0];
 		if (tmp !== a[0]) {
@@ -172,7 +172,7 @@ func TestGoReflectArrayCopyOnChange(t *testing.T) {
 
 func TestCopyOnChangeReflectSlice(t *testing.T) {
 	vm := New()
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 	s => {
 		s.A.push(1);
 		if (s.A.length !== 1) {
@@ -248,7 +248,7 @@ func TestCopyOnChangeSort(t *testing.T) {
 	vm := New()
 	vm.Set("a", &a)
 
-	_, err := vm.RunString(`
+	_, err := vm.runVMString(`
 		let a0 = a[0];
 		let a1 = a[1];
 		a.sort((a, b) => a.Test.localeCompare(b.Test));
@@ -284,7 +284,7 @@ func TestReflectArrayToString(t *testing.T) {
 	vm := New()
 	var a testStringerArray
 	vm.Set("a", &a)
-	res, err := vm.RunString("`${a}`")
+	res, err := vm.runVMString("`${a}`")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -294,7 +294,7 @@ func TestReflectArrayToString(t *testing.T) {
 
 	var a1 [2]byte
 	vm.Set("a", &a1)
-	res, err = vm.RunString("`${a}`")
+	res, err = vm.runVMString("`${a}`")
 	if err != nil {
 		t.Fatal(err)
 	}

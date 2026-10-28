@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "name": "fix-missing-function-generic",
+  "project": {
+    "files": {
+      "/main.ts": "export function run<T extends string>(input: T) { return missing<T>(input); }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export function run<T extends string>(input: T) { return missing<T>(input); }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Add missing function declaration 'missing'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixMissingFunctionDeclaration",
+                  "description": "Add missing function declaration 'missing'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 79
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 79
+                          },
+                          "newText": "\nfunction missing<T extends string>(input: T) {\n    throw new Error(\"Function not implemented.\");\n}\n"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 57
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 64
+                    }
+                  },
+                  "message": "Cannot find name 'missing'.",
+                  "severity": 1,
+                  "code": 2304,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 57
+                },
+                "end": {
+                  "line": 0,
+                  "character": 64
+                }
+              },
+              "message": "Cannot find name 'missing'.",
+              "severity": 1,
+              "code": 2304,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 78
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 78
+                      }
+                    },
+                    "newText": "\nfunction missing<T extends string>(input: T) {\n    throw new Error(\"Function not implemented.\");\n}\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ],
+      "source_eof": {
+        "code_action_edits": [
+          {
+            "action": 0,
+            "document_change": 0,
+            "edit": 0,
+            "uri": "{{ROOT_URI}}/main.ts",
+            "start": 78,
+            "length": 0,
+            "source_sha256": "447151c85872bc5263e7fb285277a9143a358d6d86dcd3a0ec93d1c4feea2d38",
+            "command_file": 0
+          }
+        ]
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

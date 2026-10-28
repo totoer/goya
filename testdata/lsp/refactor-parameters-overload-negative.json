@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "name": "refactor-parameters-overload-negative",
+  "project": {
+    "files": {
+      "/main.ts": "function run(first: number): number;\nfunction run(first: number, second: string): number;\nfunction run(first: number, second?: string) { return first; }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "function run(first: number): number;\nfunction run(first: number, second: string): number;\nfunction run(first: number, second?: string) { return first; }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 2,
+            "character": 28
+          },
+          "end": {
+            "line": 2,
+            "character": 28
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "refactor.rewrite.parameters.toDestructured"
+          ],
+          "triggerKind": 1
+        }
+      },
+      "expected": [
+        {
+          "title": "Prefix 'second' with an underscore",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "unusedIdentifier",
+                  "description": "Prefix 'second' with an underscore",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 3,
+                            "offset": 29
+                          },
+                          "end": {
+                            "line": 3,
+                            "offset": 35
+                          },
+                          "newText": "_second"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 28
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 34
+                    }
+                  },
+                  "message": "'second' is declared but its value is never read.",
+                  "severity": 4,
+                  "code": 6133,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 28
+                },
+                "end": {
+                  "line": 2,
+                  "character": 34
+                }
+              },
+              "message": "'second' is declared but its value is never read.",
+              "severity": 4,
+              "code": 6133,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 28
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 34
+                      }
+                    },
+                    "newText": "_second"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": true
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          },
+          "disabledSupport": true
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

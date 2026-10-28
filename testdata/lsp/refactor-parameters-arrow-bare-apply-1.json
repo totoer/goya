@@ -1,0 +1,319 @@
+{
+  "schema_version": 1,
+  "name": "refactor-parameters-arrow-bare-apply-1",
+  "project": {
+    "files": {
+      "/main.ts": "const run = first => first;\nrun(1);\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "const run = first => first;\nrun(1);\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 12
+          },
+          "end": {
+            "line": 0,
+            "character": 12
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "refactor.rewrite.parameters.toDestructured"
+          ],
+          "triggerKind": 1
+        }
+      },
+      "expected": [
+        {
+          "title": "Infer parameter types from usage",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "inferFromUsage",
+                  "description": "Infer parameter types from usage",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 13
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 13
+                          },
+                          "newText": "("
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 18
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 18
+                          },
+                          "newText": ": number"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 18
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 18
+                          },
+                          "newText": ")"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 12
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 17
+                    }
+                  },
+                  "message": "Parameter 'first' implicitly has an 'any' type.",
+                  "severity": 1,
+                  "code": 7006,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 12
+                },
+                "end": {
+                  "line": 0,
+                  "character": 17
+                }
+              },
+              "message": "Parameter 'first' implicitly has an 'any' type.",
+              "severity": 1,
+              "code": 7006,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 12
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 12
+                      }
+                    },
+                    "newText": "("
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 17
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 17
+                      }
+                    },
+                    "newText": ": number"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 17
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 17
+                      }
+                    },
+                    "newText": ")"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Convert parameters to destructured object",
+          "kind": "refactor.rewrite.parameters.toDestructured",
+          "command": {
+            "title": "Convert parameters to destructured object",
+            "command": "_typescript.applyRefactoring",
+            "arguments": [
+              {
+                "file": "{{ROOT_PATH}}/main.ts",
+                "startLine": 1,
+                "startOffset": 13,
+                "endLine": 1,
+                "endOffset": 13,
+                "refactor": "Convert parameters to destructured object",
+                "action": "Convert parameters to destructured object"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "method": "workspace/executeCommand",
+      "params": {
+        "title": "Convert parameters to destructured object",
+        "command": "_typescript.applyRefactoring",
+        "arguments": [
+          {
+            "file": "{{ROOT_PATH}}/main.ts",
+            "startLine": 1,
+            "startOffset": 13,
+            "endLine": 1,
+            "endOffset": 13,
+            "refactor": "Convert parameters to destructured object",
+            "action": "Convert parameters to destructured object"
+          }
+        ]
+      },
+      "record_client_requests": [
+        "workspace/applyEdit"
+      ],
+      "expected_client_requests": [
+        {
+          "method": "workspace/applyEdit",
+          "params": {
+            "edit": {
+              "changes": {
+                "{{ROOT_URI}}/main.ts": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 11
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 18
+                      }
+                    },
+                    "newText": "{ first }: { first; }"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 4
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 5
+                      }
+                    },
+                    "newText": "{ first: 1 }"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "expected": null
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          },
+          "disabledSupport": true
+        }
+      },
+      "workspace": {
+        "applyEdit": true
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    1005,
+    1005,
+    1128,
+    1128
+  ],
+  "edited_compiler_error_reason": "The reference replaces the single bare arrow parameter without inserting parentheses, leaving invalid syntax. Independent TypeScript 6.0.3 reports [1005,1005,1128,1128,2349,2448,7031]; ordinary Check stops at its existing parser gate and reports the complete parse error list [1005,1005,1128,1128]. The exact editor proposal is preserved."
+}

@@ -1,6 +1,6 @@
-package goja
+package goya
 
-import "github.com/dop251/goja/unistring"
+import "github.com/totoer/goya/unistring"
 
 type argumentsObject struct {
 	baseObject

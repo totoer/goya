@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "name": "diagnostics-related-tags",
+  "project": {
+    "files": {
+      "/main.ts": "submit({});legacy();function f(unused:number){const local=1;return 2;}export {};\n"
+    },
+    "declarations": {
+      "/api.d.ts": "interface Payload { value:number }\ndeclare function submit(value:Payload):void;\n/** @deprecated use submit instead */\ndeclare function legacy():void;\n"
+    },
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {
+          "relatedInformation": true,
+          "tagSupport": {
+            "valueSet": [
+              1,
+              2
+            ]
+          }
+        },
+        "diagnostic": {
+          "relatedInformation": true,
+          "tagSupport": {
+            "valueSet": [
+              1,
+              2
+            ]
+          }
+        }
+      }
+    }
+  },
+  "final_compiler_error_codes": [
+    2345
+  ],
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "submit({});legacy();function f(unused:number){const local=1;return 2;}export {};\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 5000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 7
+              },
+              "end": {
+                "line": 0,
+                "character": 9
+              }
+            },
+            "message": "Argument of type '{}' is not assignable to parameter of type 'Payload'.\n  Property 'value' is missing in type '{}' but required in type 'Payload'.",
+            "severity": 1,
+            "code": 2345,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/api.d.ts",
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 20
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 25
+                    }
+                  }
+                },
+                "message": "'value' is declared here."
+              }
+            ],
+            "tags": []
+          },
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 11
+              },
+              "end": {
+                "line": 0,
+                "character": 17
+              }
+            },
+            "message": "The signature '(): void' of 'legacy' is deprecated.",
+            "severity": 4,
+            "code": 6387,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/api.d.ts",
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 4
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 35
+                    }
+                  }
+                },
+                "message": "The declaration was marked as deprecated here."
+              }
+            ],
+            "tags": [
+              2
+            ]
+          },
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 29
+              },
+              "end": {
+                "line": 0,
+                "character": 30
+              }
+            },
+            "message": "'f' is declared but its value is never read.",
+            "severity": 4,
+            "code": 6133,
+            "source": "typescript",
+            "tags": [
+              1
+            ]
+          },
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 31
+              },
+              "end": {
+                "line": 0,
+                "character": 37
+              }
+            },
+            "message": "'unused' is declared but its value is never read.",
+            "severity": 4,
+            "code": 6133,
+            "source": "typescript",
+            "tags": [
+              1
+            ]
+          },
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 52
+              },
+              "end": {
+                "line": 0,
+                "character": 57
+              }
+            },
+            "message": "'local' is declared but its value is never read.",
+            "severity": 4,
+            "code": 6133,
+            "source": "typescript",
+            "tags": [
+              1
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "native_baseline": {
+    "typescript_version": "7.0.2",
+    "upstream_commit": "2bd066d87f5bafd315be9f40889d0a60b9e58e0b",
+    "reason": "The native TypeScript 7.0.2 compiler gate reports missing-property error 2741 directly. The editor compatibility layer restores the exact TypeScript 6.0.3 argument error 2345, while goya.Check preserves native diagnostics. Only the final compiler error code differs; the full editor report is compared to the raw oracle unchanged.",
+    "evidence": [
+      "internal/tsfrontend/upstream/checker/relater.go",
+      "internal/tsfrontend/upstream/ls/diagnostics.go",
+      "internal/lspfixture/embedded/embedded_test.go"
+    ]
+  },
+  "native_final_compiler_error_codes": [
+    2741
+  ]
+}

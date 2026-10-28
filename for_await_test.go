@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"testing"
@@ -53,7 +53,7 @@ async function caught(f) {
 func testForAwait(src string, t *testing.T) {
 	t.Helper()
 	r := New()
-	if _, err := r.RunString(forAwaitTestLib); err != nil {
+	if _, err := r.runVMString(forAwaitTestLib); err != nil {
 		t.Fatal(err)
 	}
 	r.testAsyncFuncWithTestLib(src, _undefined, t)
@@ -64,19 +64,19 @@ func testForAwait(src string, t *testing.T) {
 func runForAwaitPending(setup, resume string, t *testing.T) *Runtime {
 	t.Helper()
 	r := New()
-	if _, err := r.RunProgram(testLib()); err != nil {
+	if _, err := r.runVMProgram(testLib()); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := r.RunString(forAwaitTestLib); err != nil {
+	if _, err := r.runVMString(forAwaitTestLib); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := r.RunString(setup); err != nil {
+	if _, err := r.runVMString(setup); err != nil {
 		t.Fatal(err)
 	}
 	if s := r.Get("state").String(); s != "pending" {
 		t.Fatalf("state after setup: %s", s)
 	}
-	if _, err := r.RunString(resume); err != nil {
+	if _, err := r.runVMString(resume); err != nil {
 		t.Fatal(err)
 	}
 	return r
@@ -100,13 +100,8 @@ func TestForAwaitOfBasic(t *testing.T) {
 	var e = await caught(async () => { for await (let x of x) {} });
 	assert(e instanceof ReferenceError, "TDZ");
 
-	var AsyncFunction = (async function() {}).constructor;
-	var af = new AsyncFunction("it", "var r = []; for await (const v of it) r.push(v); return r.join();");
-	assert.sameValue(await af(iterableOf(countingIter([], 2))), "0,1", "AsyncFunction");
-
-	// eval code is not async
-	e = await caught(async () => { eval("for await (const v of []) ;"); });
-	assert(e instanceof SyntaxError, "eval");
+	async function af(it) { var r = []; for await (const v of it) r.push(v); return r.join(); }
+	assert.sameValue(await af(iterableOf(countingIter([], 2))), "0,1", "async function");
 	`, t)
 }
 
@@ -118,7 +113,7 @@ func TestForAwaitOfHostIterator(t *testing.T) {
 		resolvers = append(resolvers, resolve)
 		return r.ToValue(p)
 	})
-	_, err := r.RunString(`
+	_, err := r.runVMString(`
 	var state = "pending", result;
 	var stream = {
 		[Symbol.asyncIterator]() {
@@ -141,7 +136,7 @@ func TestForAwaitOfHostIterator(t *testing.T) {
 		if err := resolvers[i](map[string]interface{}{"value": chunk, "done": false}); err != nil {
 			t.Fatal(err)
 		}
-		if _, err := r.RunString(""); err != nil {
+		if _, err := r.runVMString(""); err != nil {
 			t.Fatal(err)
 		}
 		if s := r.Get("state").String(); s != "pending" {
@@ -151,7 +146,7 @@ func TestForAwaitOfHostIterator(t *testing.T) {
 	if err := resolvers[3](map[string]interface{}{"done": true}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := r.RunString(""); err != nil {
+	if _, err := r.runVMString(""); err != nil {
 		t.Fatal(err)
 	}
 	if s := r.Get("state").String(); s != "fulfilled" {

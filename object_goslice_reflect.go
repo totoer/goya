@@ -1,11 +1,11 @@
-package goja
+package goya
 
 import (
 	"math"
 	"math/bits"
 	"reflect"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 type objectGoSliceReflect struct {

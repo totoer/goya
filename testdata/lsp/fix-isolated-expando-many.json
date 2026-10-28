@@ -1,0 +1,375 @@
+{
+  "schema_version": 1,
+  "name": "fix-isolated-expando-many",
+  "project": {
+    "files": {
+      "/main.ts": "export function run() {}\nrun.first = 1;\nrun.second = \"hello\";\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "isolatedDeclarations": true,
+      "declaration": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export function run() {}\nrun.first = 1;\nrun.second = \"hello\";\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 3,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Add return type 'void'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "add-annotation",
+                  "description": "Add return type 'void'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 22
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 22
+                          },
+                          "newText": ": void"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixMissingTypeAnnotationOnExports",
+                  "fixAllDescription": "Add all missing type annotations"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 16
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 19
+                    }
+                  },
+                  "message": "Function must have an explicit return type annotation with --isolatedDeclarations.",
+                  "severity": 1,
+                  "code": 9007,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 16
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 19
+                          }
+                        }
+                      },
+                      "message": "Add a return type to the function declaration."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 16
+                },
+                "end": {
+                  "line": 0,
+                  "character": 19
+                }
+              },
+              "message": "Function must have an explicit return type annotation with --isolatedDeclarations.",
+              "severity": 1,
+              "code": 9007,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 16
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 19
+                      }
+                    }
+                  },
+                  "message": "Add a return type to the function declaration."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 21
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 21
+                      }
+                    },
+                    "newText": ": void"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Annotate types of properties expando function in a namespace",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "add-annotation",
+                  "description": "Annotate types of properties expando function in a namespace",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 1
+                          },
+                          "newText": "export declare namespace run {\n    export var first: number;\n    export var second: string;\n}\n"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixMissingTypeAnnotationOnExports",
+                  "fixAllDescription": "Add all missing type annotations"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 10
+                    }
+                  },
+                  "message": "Assigning properties to functions without declaring them is not supported with --isolatedDeclarations. Add an explicit declaration for the properties assigned to this function.",
+                  "severity": 1,
+                  "code": 9023,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 0
+                },
+                "end": {
+                  "line": 2,
+                  "character": 10
+                }
+              },
+              "message": "Assigning properties to functions without declaring them is not supported with --isolatedDeclarations. Add an explicit declaration for the properties assigned to this function.",
+              "severity": 1,
+              "code": 9023,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 0
+                      }
+                    },
+                    "newText": "export declare namespace run {\n    export var first: number;\n    export var second: string;\n}\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add all missing type annotations",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "add-annotation"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 16
+                },
+                "end": {
+                  "line": 0,
+                  "character": 19
+                }
+              },
+              "message": "Function must have an explicit return type annotation with --isolatedDeclarations.",
+              "severity": 1,
+              "code": 9007,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 16
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 19
+                      }
+                    }
+                  },
+                  "message": "Add a return type to the function declaration."
+                }
+              ]
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    9023,
+    9023
+  ],
+  "edited_compiler_error_reason": "TypeScript 6.0.3 independently reports [9023, 9023] after applying this exact TLS 6.0.2 proposal: Assigning properties to functions without declaring them is not supported with --isolatedDeclarations. Add an explicit declaration for the properties assigned to this function.; Assigning properties to functions without declaring them is not supported with --isolatedDeclarations. Add an explicit declaration for the properties assigned to this function. The fixture preserves the reference action and verifies the full remaining error list on a detached catalog."
+}

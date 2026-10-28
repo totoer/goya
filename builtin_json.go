@@ -1,172 +1,28 @@
-package goja
+package goya
 
 import (
-	"bytes"
 	"encoding/json"
-	"errors"
-	"fmt"
-	"io"
 	"math"
 	"strconv"
 	"strings"
 	"unicode/utf16"
-	"unicode/utf8"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 const hex = "0123456789abcdef"
 
 func (r *Runtime) builtinJSON_parse(call FunctionCall) Value {
-	d := json.NewDecoder(strings.NewReader(call.Argument(0).toString().String()))
-
-	value, err := r.builtinJSON_decodeValue(d)
-	if errors.Is(err, io.EOF) {
-		panic(r.newErrorf(r.getSyntaxError(), "Unexpected end of JSON input (%v)", err.Error()))
-	}
-	if err != nil {
-		panic(r.newError(r.getSyntaxError(), err.Error()))
-	}
-
-	if tok, err := d.Token(); err != io.EOF {
-		panic(r.newErrorf(r.getSyntaxError(), "Unexpected token at the end: %v", tok))
-	}
-
-	var reviver func(FunctionCall) Value
-
-	if arg1 := call.Argument(1); arg1 != _undefined {
-		reviver, _ = arg1.ToObject(r).self.assertCallable()
-	}
-
-	if reviver != nil {
-		root := r.NewObject()
-		createDataPropertyOrThrow(root, stringEmpty, value)
-		return r.builtinJSON_reviveWalk(reviver, root, stringEmpty)
-	}
-
-	return value
-}
-
-func (r *Runtime) builtinJSON_decodeToken(d *json.Decoder, tok json.Token) (Value, error) {
-	switch tok := tok.(type) {
-	case json.Delim:
-		switch tok {
-		case '{':
-			return r.builtinJSON_decodeObject(d)
-		case '[':
-			return r.builtinJSON_decodeArray(d)
-		}
-	case nil:
-		return _null, nil
-	case string:
-		return newStringValue(tok), nil
-	case float64:
-		return floatToValue(tok), nil
-	case bool:
-		if tok {
-			return valueTrue, nil
-		}
-		return valueFalse, nil
-	}
-	return nil, fmt.Errorf("Unexpected token (%T): %v", tok, tok)
-}
-
-func (r *Runtime) builtinJSON_decodeValue(d *json.Decoder) (Value, error) {
-	tok, err := d.Token()
-	if err != nil {
-		return nil, err
-	}
-	return r.builtinJSON_decodeToken(d, tok)
-}
-
-func (r *Runtime) builtinJSON_decodeObject(d *json.Decoder) (*Object, error) {
-	object := r.NewObject()
-	for {
-		key, end, err := r.builtinJSON_decodeObjectKey(d)
-		if err != nil {
-			return nil, err
-		}
-		if end {
-			break
-		}
-		value, err := r.builtinJSON_decodeValue(d)
-		if err != nil {
-			return nil, err
-		}
-
-		object.self._putProp(unistring.NewFromString(key), value, true, true, true)
-	}
-	return object, nil
-}
-
-func (r *Runtime) builtinJSON_decodeObjectKey(d *json.Decoder) (string, bool, error) {
-	tok, err := d.Token()
-	if err != nil {
-		return "", false, err
-	}
-	switch tok := tok.(type) {
-	case json.Delim:
-		if tok == '}' {
-			return "", true, nil
-		}
-	case string:
-		return tok, false, nil
-	}
-
-	return "", false, fmt.Errorf("Unexpected token (%T): %v", tok, tok)
-}
-
-func (r *Runtime) builtinJSON_decodeArray(d *json.Decoder) (*Object, error) {
-	var arrayValue []Value
-	for {
-		tok, err := d.Token()
-		if err != nil {
-			return nil, err
-		}
-		if delim, ok := tok.(json.Delim); ok {
-			if delim == ']' {
-				break
-			}
-		}
-		value, err := r.builtinJSON_decodeToken(d, tok)
-		if err != nil {
-			return nil, err
-		}
-		arrayValue = append(arrayValue, value)
-	}
-	return r.newArrayValues(arrayValue), nil
-}
-
-func (r *Runtime) builtinJSON_reviveWalk(reviver func(FunctionCall) Value, holder *Object, name Value) Value {
-	value := nilSafe(holder.get(name, nil))
-
-	if object, ok := value.(*Object); ok {
-		if isArray(object) {
-			length := toLength(object.self.getStr("length", nil))
-			for index := int64(0); index < length; index++ {
-				name := asciiString(strconv.FormatInt(index, 10))
-				value := r.builtinJSON_reviveWalk(reviver, object, name)
-				if value == _undefined {
-					object.delete(name, false)
-				} else {
-					createDataProperty(object, name, value)
-				}
-			}
-		} else {
-			for _, name := range object.self.stringKeys(false, nil) {
-				value := r.builtinJSON_reviveWalk(reviver, object, name)
-				if value == _undefined {
-					object.self.deleteStr(name.string(), false)
-				} else {
-					createDataProperty(object, name, value)
-				}
-			}
+	source := call.Argument(0).toString()
+	record := r.parseLanguageJSON(source)
+	if object, ok := call.Argument(1).(*Object); ok {
+		if reviver, ok := object.self.assertCallable(); ok {
+			holder := r.NewObject()
+			createDataPropertyOrThrow(holder, stringEmpty, record.value)
+			return r.reviveLanguageJSON(reviver, holder, stringEmpty, record, source)
 		}
 	}
-	return reviver(FunctionCall{
-		This:      holder,
-		Arguments: []Value{name, value},
-	})
+	return record.value
 }
 
 type _builtinJSON_stringifyContext struct {
@@ -174,45 +30,43 @@ type _builtinJSON_stringifyContext struct {
 	stack            []*Object
 	propertyList     []Value
 	replacerFunction func(FunctionCall) Value
-	gap, indent      string
-	buf              bytes.Buffer
-	allAscii         bool
+	gap, indent      String
+	buf              jsonTextBuffer
 }
 
 func (r *Runtime) builtinJSON_stringify(call FunctionCall) Value {
 	ctx := _builtinJSON_stringifyContext{
-		r:        r,
-		allAscii: true,
+		r: r,
 	}
 
 	replacer, _ := call.Argument(1).(*Object)
 	if replacer != nil {
 		if isArray(replacer) {
 			length := toLength(replacer.self.getStr("length", nil))
-			seen := map[string]bool{}
+			seen := map[unistring.String]bool{}
 			propertyList := make([]Value, length)
 			length = 0
 			for index := range propertyList {
-				var name string
+				var name String
 				value := replacer.self.getIdx(valueInt(int64(index)), nil)
 				switch v := value.(type) {
 				case valueFloat, valueInt, String:
-					name = value.String()
+					name = value.toString()
 				case *Object:
 					switch v.self.className() {
 					case classNumber, classString:
-						name = value.String()
+						name = value.toString()
 					default:
 						continue
 					}
 				default:
 					continue
 				}
-				if seen[name] {
+				if seen[name.string()] {
 					continue
 				}
-				seen[name] = true
-				propertyList[length] = newStringValue(name)
+				seen[name.string()] = true
+				propertyList[length] = name
 				length += 1
 			}
 			ctx.propertyList = propertyList[0:length]
@@ -232,47 +86,31 @@ func (r *Runtime) builtinJSON_stringify(call FunctionCall) Value {
 				spaceValue = o.ToString()
 			}
 		}
-		isNum := false
-		var num int64
-		if i, ok := spaceValue.(valueInt); ok {
-			num = int64(i)
-			isNum = true
-		} else if f, ok := spaceValue.(valueFloat); ok {
-			num = int64(f)
-			isNum = true
-		}
-		if isNum {
-			if num > 0 {
-				if num > 10 {
-					num = 10
+		switch value := spaceValue.(type) {
+		case valueInt, valueFloat:
+			number := value.ToFloat()
+			if number >= 1 {
+				count := 10
+				if number < 10 {
+					count = int(math.Trunc(number))
 				}
-				ctx.gap = strings.Repeat(" ", int(num))
+				ctx.gap = asciiString(strings.Repeat(" ", count))
 			}
-		} else {
-			if s, ok := spaceValue.(String); ok {
-				str := s.String()
-				if len(str) > 10 {
-					ctx.gap = str[:10]
-				} else {
-					ctx.gap = str
-				}
-			}
+		case String:
+			ctx.gap = value.Substring(0, min(10, value.Length()))
 		}
+
 	}
 
 	if ctx.do(call.Argument(0)) {
-		if ctx.allAscii {
-			return asciiString(ctx.buf.String())
-		} else {
-			return &importedString{
-				s: ctx.buf.String(),
-			}
-		}
+		return ctx.buf.Value()
 	}
+
 	return _undefined
 }
 
 func (ctx *_builtinJSON_stringifyContext) do(v Value) bool {
+	ctx.indent = stringEmpty
 	holder := ctx.r.NewObject()
 	createDataPropertyOrThrow(holder, stringEmpty, v)
 	return ctx.str(stringEmpty, holder)
@@ -320,7 +158,6 @@ func (ctx *_builtinJSON_stringifyContext) str(key Value, holder *Object) bool {
 					panic(ctx.r.NewGoError(err))
 				}
 				ctx.buf.Write(b)
-				ctx.allAscii = false
 				return true
 			} else {
 				switch o1.className() {
@@ -364,8 +201,8 @@ func (ctx *_builtinJSON_stringifyContext) str(key Value, holder *Object) bool {
 	case *valueBigInt:
 		ctx.r.typeErrorResult(true, "Do not know how to serialize a BigInt")
 	case *Object:
-		if value1.self.className() == classRawJSON {
-			ctx.buf.WriteString(value1.self.getStr("rawJSON", nil).String())
+		if raw, ok := value1.self.(*rawJSONObject); ok {
+			ctx.buf.WriteValue(raw.source)
 			return true
 		}
 		for _, object := range ctx.stack {
@@ -391,10 +228,10 @@ func (ctx *_builtinJSON_stringifyContext) str(key Value, holder *Object) bool {
 }
 
 func (ctx *_builtinJSON_stringifyContext) ja(array *Object) {
-	var stepback string
-	if ctx.gap != "" {
+	var stepback String
+	if ctx.gap != nil && ctx.gap.Length() != 0 {
 		stepback = ctx.indent
-		ctx.indent += ctx.gap
+		ctx.indent = ctx.indent.Concat(ctx.gap)
 	}
 	length := toLength(array.self.getStr("length", nil))
 	if length == 0 {
@@ -404,13 +241,13 @@ func (ctx *_builtinJSON_stringifyContext) ja(array *Object) {
 	}
 
 	ctx.buf.WriteByte('[')
-	var separator string
-	if ctx.gap != "" {
+	var separator String
+	if ctx.gap != nil && ctx.gap.Length() != 0 {
 		ctx.buf.WriteByte('\n')
-		ctx.buf.WriteString(ctx.indent)
-		separator = ",\n" + ctx.indent
+		ctx.buf.WriteValue(ctx.indent)
+		separator = asciiString(",\n").Concat(ctx.indent)
 	} else {
-		separator = ","
+		separator = asciiString(",")
 	}
 
 	for i := int64(0); i < length; i++ {
@@ -418,33 +255,33 @@ func (ctx *_builtinJSON_stringifyContext) ja(array *Object) {
 			ctx.buf.WriteString("null")
 		}
 		if i < length-1 {
-			ctx.buf.WriteString(separator)
+			ctx.buf.WriteValue(separator)
 		}
 	}
-	if ctx.gap != "" {
+	if ctx.gap != nil && ctx.gap.Length() != 0 {
 		ctx.buf.WriteByte('\n')
-		ctx.buf.WriteString(stepback)
+		ctx.buf.WriteValue(stepback)
 		ctx.indent = stepback
 	}
 	ctx.buf.WriteByte(']')
 }
 
 func (ctx *_builtinJSON_stringifyContext) jo(object *Object) {
-	var stepback string
-	if ctx.gap != "" {
+	var stepback String
+	if ctx.gap != nil && ctx.gap.Length() != 0 {
 		stepback = ctx.indent
-		ctx.indent += ctx.gap
+		ctx.indent = ctx.indent.Concat(ctx.gap)
 	}
 
 	ctx.buf.WriteByte('{')
 	mark := ctx.buf.Len()
-	var separator string
-	if ctx.gap != "" {
+	var separator String
+	if ctx.gap != nil && ctx.gap.Length() != 0 {
 		ctx.buf.WriteByte('\n')
-		ctx.buf.WriteString(ctx.indent)
-		separator = ",\n" + ctx.indent
+		ctx.buf.WriteValue(ctx.indent)
+		separator = asciiString(",\n").Concat(ctx.indent)
 	} else {
-		separator = ","
+		separator = asciiString(",")
 	}
 
 	var props []Value
@@ -458,10 +295,10 @@ func (ctx *_builtinJSON_stringifyContext) jo(object *Object) {
 	for _, name := range props {
 		off := ctx.buf.Len()
 		if !empty {
-			ctx.buf.WriteString(separator)
+			ctx.buf.WriteValue(separator)
 		}
 		ctx.quote(name.toString())
-		if ctx.gap != "" {
+		if ctx.gap != nil && ctx.gap.Length() != 0 {
 			ctx.buf.WriteString(": ")
 		} else {
 			ctx.buf.WriteByte(':')
@@ -479,9 +316,9 @@ func (ctx *_builtinJSON_stringifyContext) jo(object *Object) {
 		ctx.buf.Truncate(mark)
 		ctx.indent = stepback
 	} else {
-		if ctx.gap != "" {
+		if ctx.gap != nil && ctx.gap.Length() != 0 {
 			ctx.buf.WriteByte('\n')
-			ctx.buf.WriteString(stepback)
+			ctx.buf.WriteValue(stepback)
 			ctx.indent = stepback
 		}
 	}
@@ -524,9 +361,6 @@ func (ctx *_builtinJSON_stringifyContext) quote(str String) {
 					ctx.buf.WriteByte(hex[r&0xF])
 				} else {
 					ctx.buf.WriteRune(r)
-					if ctx.allAscii && r >= utf8.RuneSelf {
-						ctx.allAscii = false
-					}
 				}
 			}
 		}
@@ -535,43 +369,28 @@ func (ctx *_builtinJSON_stringifyContext) quote(str String) {
 }
 
 func (r *Runtime) builtinJSON_rawJSON(call FunctionCall) Value {
-	arg := call.Argument(0)
-
-	var jsonString String
-	switch dd := arg.(type) {
-	case String:
-		jsonString = dd
-		if jsonString.Length() == 0 {
-			panic(r.newSyntaxError("\"\" is unacceptable as raw JSON"))
-		}
-		first := jsonString.CharAt(0)
-		last := jsonString.CharAt(jsonString.Length() - 1)
-		if first == '{' || first == '[' ||
-			first == ' ' || first == '\n' || first == '\r' || first == '\t' ||
-			last == ' ' || last == '\n' || last == '\r' || last == '\t' {
-			panic(r.newSyntaxError("\"" + arg.String() + "\" is unacceptable as raw JSON"))
-		}
-		if !json.Valid([]byte(jsonString.String())) {
-			panic(r.newSyntaxError("\"" + arg.String() + "\" is not a valid JSON"))
-		}
-	case valueBool, valueInt, *valueBigInt, valueFloat, valueNull:
-		jsonString = dd.toString()
-	case *Symbol:
-		panic(r.NewTypeError("Cannot convert a Symbol value to a string"))
-	default:
-		panic(r.newSyntaxError(arg.String() + " is not a valid JSON"))
+	source := call.Argument(0).toString()
+	if source.Length() == 0 {
+		panic(r.newSyntaxError("empty raw JSON"))
 	}
-
-	o := r.newBaseObject(nil, classRawJSON)
-	o._putProp("rawJSON", jsonString, false, true, false)
-	o.preventExtensions(true)
-	return o.val
+	record := r.parseLanguageJSON(source)
+	if record.start != 0 || record.end != source.Length() {
+		panic(r.newSyntaxError("raw JSON must not contain surrounding whitespace"))
+	}
+	if _, ok := record.value.(*Object); ok {
+		panic(r.newSyntaxError("raw JSON must be a primitive"))
+	}
+	object := &Object{runtime: r}
+	raw := &rawJSONObject{baseObject: baseObject{val: object, class: classObject, extensible: true}, source: source}
+	object.self = raw
+	raw.init()
+	raw._putProp("rawJSON", source, false, true, false)
+	raw.preventExtensions(true)
+	return object
 }
-
 func (r *Runtime) builtinJSON_isRawJSON(call FunctionCall) Value {
-	arg := call.Argument(0)
-	if o, ok := arg.(*Object); ok {
-		if o.self.className() == classRawJSON {
+	if object, ok := call.Argument(0).(*Object); ok {
+		if _, ok := object.self.(*rawJSONObject); ok {
 			return valueTrue
 		}
 	}

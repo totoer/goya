@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "name": "fix-target-preserve-commonjs",
+  "project": {
+    "files": {
+      "/main.ts": "export const value = await Promise.resolve(1);\n",
+      "/tsconfig.json": "{\"compilerOptions\": {\"strict\": true, \"target\": \"es2016\", \"module\": \"commonjs\", \"moduleResolution\": \"node\", \"lib\": [\"es2025\"], \"types\": []}, \"files\": [\"main.ts\"]}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {},
+    "config_file": "/tsconfig.json"
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export const value = await Promise.resolve(1);\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Set the 'target' option in your configuration file to 'es2017'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixTargetOption",
+                  "description": "Set the 'target' option in your configuration file to 'es2017'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/tsconfig.json",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 48
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 56
+                          },
+                          "newText": "\"es2017\""
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 21
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 26
+                    }
+                  },
+                  "message": "Top-level 'await' expressions are only allowed when the 'module' option is set to 'es2022', 'esnext', 'system', 'node16', 'node18', 'node20', 'nodenext', or 'preserve', and the 'target' option is set to 'es2017' or higher.",
+                  "severity": 1,
+                  "code": 1378,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 21
+                },
+                "end": {
+                  "line": 0,
+                  "character": 26
+                }
+              },
+              "message": "Top-level 'await' expressions are only allowed when the 'module' option is set to 'es2022', 'esnext', 'system', 'node16', 'node18', 'node20', 'nodenext', or 'preserve', and the 'target' option is set to 'es2017' or higher.",
+              "severity": 1,
+              "code": 1378,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/tsconfig.json",
+                  "version": null
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 47
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 55
+                      }
+                    },
+                    "newText": "\"es2017\""
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    5108
+  ],
+  "edited_compiler_error_reason": "The exact reference edit preserves an explicit node10 moduleResolution setting. Native TypeScript 7.0.2 reports its removal before semantic checking; the separate default-resolution fixture exercises CommonJS preservation without that removed option.",
+  "native_baseline": {
+    "typescript_version": "7.0.2",
+    "upstream_commit": "2bd066d87f5bafd315be9f40889d0a60b9e58e0b",
+    "reason": "Compiler gate diagnostics for explicitly removed moduleResolution=node10 are pinned to the native version; protocol actions and raw oracle edits are unchanged.",
+    "evidence": [
+      "internal/tsfrontend/upstream/compiler/program.go"
+    ]
+  }
+}

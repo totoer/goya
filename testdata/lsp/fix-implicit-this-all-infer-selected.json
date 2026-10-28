@@ -1,0 +1,754 @@
+{
+  "schema_version": 1,
+  "name": "fix-implicit-this-all-infer-selected",
+  "project": {
+    "files": {
+      "/main.ts": "export class Box { value = 1; first() { return function(): number { return this.value; }; } second() { function inner(): number { return this.value; } return inner; } }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export class Box { value = 1; first() { return function(): number { return this.value; }; } second() { function inner(): number { return this.value; } return inner; } }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Convert function expression 'anonymous function' to arrow function",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixImplicitThis",
+                  "description": "Convert function expression 'anonymous function' to arrow function",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 48
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 56
+                          },
+                          "newText": ""
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 66
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 66
+                          },
+                          "newText": " =>"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixImplicitThis",
+                  "fixAllDescription": "Fix all implicit-'this' errors"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 75
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 79
+                    }
+                  },
+                  "message": "'this' implicitly has type 'any' because it does not have a type annotation.",
+                  "severity": 1,
+                  "code": 2683,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 47
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 55
+                          }
+                        }
+                      },
+                      "message": "An outer value of 'this' is shadowed by this container."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 75
+                },
+                "end": {
+                  "line": 0,
+                  "character": 79
+                }
+              },
+              "message": "'this' implicitly has type 'any' because it does not have a type annotation.",
+              "severity": 1,
+              "code": 2683,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 47
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 55
+                      }
+                    }
+                  },
+                  "message": "An outer value of 'this' is shadowed by this container."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 47
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 55
+                      }
+                    },
+                    "newText": ""
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 65
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 65
+                      }
+                    },
+                    "newText": " =>"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Convert function declaration 'inner' to arrow function",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixImplicitThis",
+                  "description": "Convert function declaration 'inner' to arrow function",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 104
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 112
+                          },
+                          "newText": "const"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 118
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 118
+                          },
+                          "newText": " = "
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 128
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 128
+                          },
+                          "newText": " =>"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixImplicitThis",
+                  "fixAllDescription": "Fix all implicit-'this' errors"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 137
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 141
+                    }
+                  },
+                  "message": "'this' implicitly has type 'any' because it does not have a type annotation.",
+                  "severity": 1,
+                  "code": 2683,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 112
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 117
+                          }
+                        }
+                      },
+                      "message": "An outer value of 'this' is shadowed by this container."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 137
+                },
+                "end": {
+                  "line": 0,
+                  "character": 141
+                }
+              },
+              "message": "'this' implicitly has type 'any' because it does not have a type annotation.",
+              "severity": 1,
+              "code": 2683,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 112
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 117
+                      }
+                    }
+                  },
+                  "message": "An outer value of 'this' is shadowed by this container."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 103
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 111
+                      }
+                    },
+                    "newText": "const"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 117
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 117
+                      }
+                    },
+                    "newText": " = "
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 127
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 127
+                      }
+                    },
+                    "newText": " =>"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Fix all implicit-'this' errors",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "fixImplicitThis"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 75
+                },
+                "end": {
+                  "line": 0,
+                  "character": 79
+                }
+              },
+              "message": "'this' implicitly has type 'any' because it does not have a type annotation.",
+              "severity": 1,
+              "code": 2683,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 47
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 55
+                      }
+                    }
+                  },
+                  "message": "An outer value of 'this' is shadowed by this container."
+                }
+              ]
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        },
+        {
+          "title": "Infer 'this' type of 'inner' from usage",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "inferFromUsage",
+                  "description": "Infer 'this' type of 'inner' from usage",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 119
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 119
+                          },
+                          "newText": "this: any"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "inferFromUsage",
+                  "fixAllDescription": "Infer all types from usage"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 137
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 141
+                    }
+                  },
+                  "message": "'this' implicitly has type 'any' because it does not have a type annotation.",
+                  "severity": 1,
+                  "code": 2683,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 112
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 117
+                          }
+                        }
+                      },
+                      "message": "An outer value of 'this' is shadowed by this container."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 137
+                },
+                "end": {
+                  "line": 0,
+                  "character": 141
+                }
+              },
+              "message": "'this' implicitly has type 'any' because it does not have a type annotation.",
+              "severity": 1,
+              "code": 2683,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 112
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 117
+                      }
+                    }
+                  },
+                  "message": "An outer value of 'this' is shadowed by this container."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 118
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 118
+                      }
+                    },
+                    "newText": "this: any"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Infer all types from usage",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "inferFromUsage"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 137
+                },
+                "end": {
+                  "line": 0,
+                  "character": 141
+                }
+              },
+              "message": "'this' implicitly has type 'any' because it does not have a type annotation.",
+              "severity": 1,
+              "code": 2683,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 112
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 117
+                      }
+                    }
+                  },
+                  "message": "An outer value of 'this' is shadowed by this container."
+                }
+              ]
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 2,
+            "providerId": 2
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeAction/resolve",
+      "params": {},
+      "params_from_code_action": {
+        "step": 1,
+        "index": 4
+      },
+      "expected": {
+        "title": "Infer all types from usage",
+        "kind": "quickfix",
+        "command": {
+          "command": "_typescript.applyFixAllCodeAction",
+          "arguments": [
+            {
+              "tsActionId": "inferFromUsage"
+            }
+          ],
+          "title": ""
+        },
+        "diagnostics": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 137
+              },
+              "end": {
+                "line": 0,
+                "character": 141
+              }
+            },
+            "message": "'this' implicitly has type 'any' because it does not have a type annotation.",
+            "severity": 1,
+            "code": 2683,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 112
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 117
+                    }
+                  }
+                },
+                "message": "An outer value of 'this' is shadowed by this container."
+              }
+            ]
+          }
+        ],
+        "isPreferred": false,
+        "data": {
+          "globalId": 2,
+          "providerId": 2
+        },
+        "edit": {
+          "documentChanges": [
+            {
+              "textDocument": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "version": 2
+              },
+              "edits": [
+                {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 118
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 118
+                    }
+                  },
+                  "newText": "this: any"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    2683
+  ],
+  "edited_compiler_error_reason": "The reference cannot infer this for the anonymous returned function, so this selected infer-all proposal retains its original implicit-this error. Independently checked with TypeScript 6.0.3."
+}

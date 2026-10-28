@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"os"
@@ -6,7 +6,7 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 const TESTLIB = `
@@ -166,21 +166,22 @@ var (
 
 func testLib() *Program {
 	testLibOnce.Do(func() {
-		_testLib = MustCompile("testlib.js", TESTLIB, false)
+		_testLib = mustCompileVMFixture("testlib.js", TESTLIB, false)
 	})
 	return _testLib
 }
 
 func testLibX() *Program {
 	testLibXOnce.Do(func() {
-		_testLibX = MustCompile("testlibx.js", TESTLIBX, false)
+		_testLibX = mustCompileVMFixture("testlibx.js", TESTLIBX, false)
 	})
 	return _testLibX
 }
 
 func (r *Runtime) testPrg(p *Program, expectedResult Value, t *testing.T) {
+	skipSourceCompilationFixture(t, p.src.Source())
 	p.dumpCode(t.Logf)
-	v, err := r.RunProgram(p)
+	v, err := r.runVMProgram(p)
 	if err != nil {
 		if ex, ok := err.(*Exception); ok {
 			t.Fatalf("Exception: %v", ex.String())
@@ -204,7 +205,7 @@ func (r *Runtime) testPrg(p *Program, expectedResult Value, t *testing.T) {
 }
 
 func (r *Runtime) testScriptWithTestLib(script string, expectedResult Value, t *testing.T) {
-	_, err := r.RunProgram(testLib())
+	_, err := r.runVMProgram(testLib())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -213,12 +214,12 @@ func (r *Runtime) testScriptWithTestLib(script string, expectedResult Value, t *
 }
 
 func (r *Runtime) testScriptWithTestLibX(script string, expectedResult Value, t *testing.T) {
-	_, err := r.RunProgram(testLib())
+	_, err := r.runVMProgram(testLib())
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	_, err = r.RunProgram(testLibX())
+	_, err = r.runVMProgram(testLibX())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -227,7 +228,8 @@ func (r *Runtime) testScriptWithTestLibX(script string, expectedResult Value, t 
 }
 
 func (r *Runtime) testScript(script string, expectedResult Value, t *testing.T) {
-	r.testPrg(MustCompile("test.js", script, false), expectedResult, t)
+	skipSourceCompilationFixture(t, script)
+	r.testPrg(mustCompileVMFixture("test.js", script, false), expectedResult, t)
 }
 
 func testScript(script string, expectedResult Value, t *testing.T) {
@@ -243,7 +245,7 @@ func testScriptWithTestLibX(script string, expectedResult Value, t *testing.T) {
 }
 
 func (r *Runtime) testAsyncFunc(src string, expectedResult Value, t *testing.T) {
-	v, err := r.RunScript("test.js", "(async function test() {"+src+"\n})()")
+	v, err := r.runVMScript("test.js", "(async function test() {"+src+"\n})()")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -267,7 +269,7 @@ func (r *Runtime) testAsyncFunc(src string, expectedResult Value, t *testing.T) 
 }
 
 func (r *Runtime) testAsyncFuncWithTestLib(src string, expectedResult Value, t *testing.T) {
-	_, err := r.RunProgram(testLib())
+	_, err := r.runVMProgram(testLib())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -276,12 +278,12 @@ func (r *Runtime) testAsyncFuncWithTestLib(src string, expectedResult Value, t *
 }
 
 func (r *Runtime) testAsyncFuncWithTestLibX(src string, expectedResult Value, t *testing.T) {
-	_, err := r.RunProgram(testLib())
+	_, err := r.runVMProgram(testLib())
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	_, err = r.RunProgram(testLibX())
+	_, err = r.runVMProgram(testLibX())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -883,7 +885,7 @@ func TestTryIllegalContinueWithFinallyOverride(t *testing.T) {
 		}
 	}
 	`
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -899,7 +901,7 @@ func TestTryIllegalContinueWithFinallyOverrideNoLabel(t *testing.T) {
 		}
 	}
 	`
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -917,7 +919,7 @@ func TestTryIllegalContinueWithFinallyOverrideDummy(t *testing.T) {
 		}
 	}
 	`
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -1933,7 +1935,7 @@ func TestFuncLength(t *testing.T) {
 
 func TestNativeFuncLength(t *testing.T) {
 	const SCRIPT = `
-	eval.length + Object.defineProperty.length + String.length
+	isNaN.length + Object.defineProperty.length + String.length
 	`
 
 	testScript(SCRIPT, intToValue(5), t)
@@ -2360,7 +2362,7 @@ func TestUseUnsuppliedParam(t *testing.T) {
 
 func TestForInLetWithInitializer(t *testing.T) {
 	const SCRIPT = `for (let x = 3 in {}) { }`
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("Expected error")
 	}
@@ -2866,15 +2868,15 @@ func TestStrictDestructuringAssignArguments(t *testing.T) {
 		"({a: arguments} = {})",
 		"for ([arguments] of [[]]) {}",
 	} {
-		_, err := Compile("", "function f() { 'use strict'; "+target+"; }", false)
+		_, err := compileVMFixture("", "function f() { 'use strict'; "+target+"; }", false)
 		if _, ok := err.(*CompilerSyntaxError); !ok {
 			t.Errorf("%s: expected syntax error, got %v", target, err)
 		}
-		if _, err := Compile("", "function f() { "+target+"; }", false); err != nil {
+		if _, err := compileVMFixture("", "function f() { "+target+"; }", false); err != nil {
 			t.Errorf("%s: unexpected error in non-strict mode: %v", target, err)
 		}
 	}
-	_, err := Compile("", "function f() { var eval; return function() { 'use strict'; [eval] = []; }; }", false)
+	_, err := compileVMFixture("", "function f() { var eval; return function() { 'use strict'; [eval] = []; }; }", false)
 	if _, ok := err.(*CompilerSyntaxError); !ok {
 		t.Errorf("eval: expected syntax error, got %v", err)
 	}
@@ -2882,11 +2884,11 @@ func TestStrictDestructuringAssignArguments(t *testing.T) {
 
 func TestStrictStringOctalEscapes(t *testing.T) {
 	for _, lit := range []string{`'\1'`, `'\7'`, `'\00'`, `'\08'`, `'\8'`, `'\9'`, `'a\\\1'`} {
-		_, err := Compile("", "'use strict'; "+lit, false)
+		_, err := compileVMFixture("", "'use strict'; "+lit, false)
 		if _, ok := err.(*CompilerSyntaxError); !ok {
 			t.Errorf("%s: expected syntax error, got %v", lit, err)
 		}
-		if _, err := Compile("", lit, false); err != nil {
+		if _, err := compileVMFixture("", lit, false); err != nil {
 			t.Errorf("%s: unexpected error in non-strict mode: %v", lit, err)
 		}
 	}
@@ -2895,7 +2897,7 @@ func TestStrictStringOctalEscapes(t *testing.T) {
 		`'use strict'; ({'\1': 0})`,
 		`class C { '\1'() {} }`,
 	} {
-		_, err := Compile("", src, false)
+		_, err := compileVMFixture("", src, false)
 		if _, ok := err.(*CompilerSyntaxError); !ok {
 			t.Errorf("%s: expected syntax error, got %v", src, err)
 		}
@@ -2987,7 +2989,7 @@ func TestObjectLiteral__Proto__(t *testing.T) {
 }
 
 func TestEmptyCodeError(t *testing.T) {
-	if _, err := New().RunString(`i`); err == nil {
+	if _, err := New().runVMString(`i`); err == nil {
 		t.Fatal("Expected an error")
 	} else {
 		if e := err.Error(); e != "ReferenceError: i is not defined at <eval>:1:1(0)" {
@@ -3095,7 +3097,7 @@ func TestForOfLetLet(t *testing.T) {
 	for (let let of [23]) {
 	}
 `
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("Expected error")
 	}
@@ -3121,7 +3123,7 @@ func TestLetPostfixASI(t *testing.T) {
 	let
 	++
 	`
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("Expected error")
 	}
@@ -3373,7 +3375,7 @@ func TestFalsyLoopBreak(t *testing.T) {
 	}
 	undefined;
 	`
-	MustCompile("", SCRIPT, false)
+	mustCompileVMFixture("", SCRIPT, false)
 }
 
 func TestFalsyLoopBreakWithResult(t *testing.T) {
@@ -3394,7 +3396,7 @@ func TestDummyCompile(t *testing.T) {
 	}
 	`
 
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -3408,7 +3410,7 @@ func TestDummyCompileForUpdate(t *testing.T) {
 	}
 	`
 
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -3440,7 +3442,7 @@ func TestEscapedObjectPropertyKeys(t *testing.T) {
 	};
 	`
 
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -3448,7 +3450,7 @@ func TestEscapedObjectPropertyKeys(t *testing.T) {
 
 func TestEscapedKeywords(t *testing.T) {
 	const SCRIPT = `r\u0065turn;`
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("Expected error")
 	}
@@ -3465,7 +3467,7 @@ a;
 // this variable declaration will result an early syntax error.
 var a;
 `
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -3649,7 +3651,7 @@ func TestStrictLet(t *testing.T) {
 	var let = 1;
 	`
 
-	_, err := Compile("", SCRIPT, true)
+	_, err := compileVMFixture("", SCRIPT, true)
 	if err == nil {
 		t.Fatal("Expected an error")
 	}
@@ -3660,7 +3662,7 @@ func TestLetLet(t *testing.T) {
 	let let = 1;
 	`
 
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("Expected an error")
 	}
@@ -3672,7 +3674,7 @@ func TestLetASI(t *testing.T) {
 	x = 1;
 	`
 
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -3684,7 +3686,7 @@ func TestLetASI1(t *testing.T) {
 	x = 1;
 	`
 
-	_, err := Compile("", SCRIPT, true)
+	_, err := compileVMFixture("", SCRIPT, true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -3696,7 +3698,7 @@ func TestLetNoASI(t *testing.T) {
 x = 1;
 	`
 
-	_, err := Compile("", SCRIPT, true)
+	_, err := compileVMFixture("", SCRIPT, true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -3708,7 +3710,7 @@ let
 let = 1;
 	`
 
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("Expected error")
 	}
@@ -3720,7 +3722,7 @@ func TestLetArrayWithNewline(t *testing.T) {
     [a] = 0;
 	`
 
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("Expected error")
 	}
@@ -3826,7 +3828,7 @@ func TestVarBlockConflict(t *testing.T) {
 		}
 	}
 	`
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("Expected an error")
 	}
@@ -3945,7 +3947,7 @@ func TestLexicalConstModifyFromEval(t *testing.T) {
 func TestLexicalStrictNames(t *testing.T) {
 	const SCRIPT = `let eval = 1;`
 
-	_, err := Compile("", SCRIPT, true)
+	_, err := compileVMFixture("", SCRIPT, true)
 	if err == nil {
 		t.Fatal("Expected an error")
 	}
@@ -4215,7 +4217,7 @@ func TestObjLiteralShorthandWithInitializer(t *testing.T) {
 	const SCRIPT = `
 	o = {a=1};
 	`
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("Expected an error")
 	}
@@ -4225,7 +4227,7 @@ func TestObjLiteralShorthandLetStringLit(t *testing.T) {
 	const SCRIPT = `
 	o = {"let"};
 	`
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("Expected an error")
 	}
@@ -4364,7 +4366,7 @@ func TestBindingPatternRestTrailingComma(t *testing.T) {
 	const SCRIPT = `
 	const [a, b, ...rest,] = [];
 	`
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("Expected an error")
 	}
@@ -4374,7 +4376,7 @@ func TestAssignPatternRestTrailingComma(t *testing.T) {
 	const SCRIPT = `
 	([a, b, ...rest,] = []);
 	`
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err == nil {
 		t.Fatal("Expected an error")
 	}
@@ -4618,12 +4620,12 @@ func TestCatchParamPattern(t *testing.T) {
 
 func TestArrowUseStrict(t *testing.T) {
 	// simple parameter list -- ok
-	_, err := Compile("", "(a) => {'use strict';}", false)
+	_, err := compileVMFixture("", "(a) => {'use strict';}", false)
 	if err != nil {
 		t.Fatal(err)
 	}
 	// non-simple parameter list -- syntax error
-	_, err = Compile("", "(a=0) => {'use strict';}", false)
+	_, err = compileVMFixture("", "(a=0) => {'use strict';}", false)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -4666,12 +4668,12 @@ func TestEvalInIterScope(t *testing.T) {
 
 func TestTemplateLiterals(t *testing.T) {
 	vm := New()
-	_, err := vm.RunString("const a = 1, b = 'b';")
+	_, err := vm.runVMString("const a = 1, b = 'b';")
 	if err != nil {
 		t.Fatal(err)
 	}
 	f := func(t *testing.T, template, expected string) {
-		res, err := vm.RunString(template)
+		res, err := vm.runVMString(template)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -4813,7 +4815,7 @@ func TestSrcLocations(t *testing.T) {
 
 func TestSrcLocationThrowLiteral(t *testing.T) {
 	vm := New()
-	_, err := vm.RunString(`
+	_, err := vm.runVMString(`
 	const z = 1;
 	throw "";
 	`)
@@ -4828,7 +4830,7 @@ func TestSrcLocationThrowLiteral(t *testing.T) {
 }
 
 func TestSrcLocation(t *testing.T) {
-	prg := MustCompile("test.js", `
+	prg := mustCompileVMFixture("test.js", `
 f();
 var x = 1;
 let y = 1;
@@ -4861,7 +4863,7 @@ var [z3, z4] = [0, 0];
 }
 
 func TestBadObjectKey(t *testing.T) {
-	_, err := Compile("", "({!:0})", false)
+	_, err := compileVMFixture("", "({!:0})", false)
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -4881,12 +4883,12 @@ func TestConstantFolding(t *testing.T) {
 		}
 	}
 	f := func(src string, result Value, t *testing.T) {
-		prg := MustCompile("test.js", src, false)
+		prg := mustCompileVMFixture("test.js", src, false)
 		testValues(prg, result, t)
 		New().testPrg(prg, result, t)
 	}
 	ff := func(src string, result Value, t *testing.T) {
-		prg := MustCompile("test.js", src, false)
+		prg := mustCompileVMFixture("test.js", src, false)
 		fl := prg.code[0].(*newFunc)
 		testValues(fl.prg, result, t)
 		New().testPrg(prg, result, t)
@@ -4930,7 +4932,7 @@ func TestStringInterning(t *testing.T) {
 	[str1, f()];
 	`
 	vm := New()
-	res, err := vm.RunString(SCRIPT)
+	res, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -6113,7 +6115,7 @@ func TestAsyncFunc(t *testing.T) {
 }
 
 func TestObjectLiteralComputedMethodKeys(t *testing.T) {
-	_, err := Compile("", `
+	_, err := compileVMFixture("", `
 		({
 		    ["__proto__"]() {},
 		    ["__proto__"]() {}
@@ -6123,7 +6125,7 @@ func TestObjectLiteralComputedMethodKeys(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = Compile("", `
+	_, err = compileVMFixture("", `
 		({
 		    get ["__proto__"]() {},
 		    get ["__proto__"]() {}
@@ -6194,7 +6196,7 @@ func TestFunctionBodyClassDecl(t *testing.T) {
 		class something { }
 	};
 	`
-	_, err := Compile("", SCRIPT, false)
+	_, err := compileVMFixture("", SCRIPT, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -6381,7 +6383,7 @@ func BenchmarkCompile(b *testing.B) {
 	src := string(data)
 
 	for i := 0; i < b.N; i++ {
-		_, err := Compile("test.js", src, false)
+		_, err := compileVMFixture("test.js", src, false)
 		if err != nil {
 			b.Fatal(err)
 		}

@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "name": "fix-isolated-return-generator-actions",
+  "project": {
+    "files": {
+      "/main.ts": "export function* run() { yield 1; }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "isolatedDeclarations": true,
+      "declaration": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export function* run() { yield 1; }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 6000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 17
+              },
+              "end": {
+                "line": 0,
+                "character": 20
+              }
+            },
+            "message": "Function must have an explicit return type annotation with --isolatedDeclarations.",
+            "severity": 1,
+            "code": 9007,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 17
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 20
+                    }
+                  }
+                },
+                "message": "Add a return type to the function declaration."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 17
+                },
+                "end": {
+                  "line": 0,
+                  "character": 20
+                }
+              },
+              "message": "Function must have an explicit return type annotation with --isolatedDeclarations.",
+              "severity": 1,
+              "code": 9007,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 17
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 20
+                      }
+                    }
+                  },
+                  "message": "Add a return type to the function declaration."
+                }
+              ]
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Add return type 'Generator<number, void, unknown>'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "add-annotation",
+                  "description": "Add return type 'Generator<number, void, unknown>'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 23
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 23
+                          },
+                          "newText": ": Generator<number, void, unknown>"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 17
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 20
+                    }
+                  },
+                  "message": "Function must have an explicit return type annotation with --isolatedDeclarations.",
+                  "severity": 1,
+                  "code": 9007,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 17
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 20
+                          }
+                        }
+                      },
+                      "message": "Add a return type to the function declaration."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 17
+                },
+                "end": {
+                  "line": 0,
+                  "character": 20
+                }
+              },
+              "message": "Function must have an explicit return type annotation with --isolatedDeclarations.",
+              "severity": 1,
+              "code": 9007,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 17
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 20
+                      }
+                    }
+                  },
+                  "message": "Add a return type to the function declaration."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 22
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 22
+                      }
+                    },
+                    "newText": ": Generator<number, void, unknown>"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

@@ -1,0 +1,401 @@
+{
+  "schema_version": 1,
+  "name": "code-lens-fallback-unicode",
+  "project": {
+    "files": {
+      "/main.ts": "export default class {  constructor(public value: number) {} }\nexport const result = [1].map(value => \"abc😀\");\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "codeLens": {}
+      }
+    }
+  },
+  "steps": [
+    {
+      "method": "workspace/didChangeConfiguration",
+      "notification": true,
+      "params": {
+        "settings": {
+          "typescript": {
+            "referencesCodeLens": {
+              "enabled": true,
+              "showOnAllFunctions": true
+            },
+            "implementationsCodeLens": {
+              "enabled": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "version": 1,
+          "languageId": "typescript",
+          "text": "export default class {  constructor(public value: number) {} }\nexport const result = [1].map(value => \"abc😀\");\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeLens",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": [
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 7
+            },
+            "end": {
+              "line": 0,
+              "character": 14
+            }
+          },
+          "data": {
+            "uri": "{{ROOT_URI}}/main.ts",
+            "type": 0
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 0
+            },
+            "end": {
+              "line": 2,
+              "character": 0
+            }
+          },
+          "data": {
+            "uri": "{{ROOT_URI}}/main.ts",
+            "type": 0
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 20
+            },
+            "end": {
+              "line": 2,
+              "character": 25
+            }
+          },
+          "data": {
+            "uri": "{{ROOT_URI}}/main.ts",
+            "type": 0
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 4,
+              "character": 13
+            },
+            "end": {
+              "line": 4,
+              "character": 19
+            }
+          },
+          "data": {
+            "uri": "{{ROOT_URI}}/main.ts",
+            "type": 0
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 0
+            },
+            "end": {
+              "line": 2,
+              "character": 0
+            }
+          },
+          "data": {
+            "uri": "{{ROOT_URI}}/main.ts",
+            "type": 0
+          }
+        }
+      ],
+      "unicode_source_coordinates": {
+        "source_sha256": "18cc789c33fca2b5fea7937fa490287112a8bfeccd2c8fac0ede0c9ed8c528f3",
+        "code_lenses": [
+          {
+            "text": "default",
+            "kind": "class",
+            "kind_modifiers": "export",
+            "span": {
+              "start": 0,
+              "length": 62
+            }
+          },
+          {
+            "text": "constructor",
+            "kind": "constructor",
+            "kind_modifiers": "",
+            "span": {
+              "start": 24,
+              "length": 36
+            }
+          },
+          {
+            "text": "value",
+            "kind": "property",
+            "kind_modifiers": "public",
+            "span": {
+              "start": 36,
+              "length": 20
+            },
+            "name_span": {
+              "start": 43,
+              "length": 5
+            }
+          },
+          {
+            "text": "result",
+            "kind": "const",
+            "kind_modifiers": "export",
+            "span": {
+              "start": 76,
+              "length": 34
+            },
+            "name_span": {
+              "start": 76,
+              "length": 6
+            }
+          },
+          {
+            "text": "map() callback",
+            "kind": "function",
+            "kind_modifiers": "",
+            "span": {
+              "start": 93,
+              "length": 16
+            }
+          }
+        ]
+      }
+    },
+    {
+      "method": "codeLens/resolve",
+      "params": {},
+      "params_from_code_lens": {
+        "step": 2,
+        "index": 0
+      },
+      "expected": {
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 7
+          },
+          "end": {
+            "line": 0,
+            "character": 14
+          }
+        },
+        "data": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "type": 0
+        },
+        "command": {
+          "title": "0 references",
+          "command": "",
+          "arguments": [
+            "{{ROOT_URI}}/main.ts",
+            {
+              "line": 0,
+              "character": 7
+            },
+            []
+          ]
+        }
+      },
+      "unicode_source_coordinates": {}
+    },
+    {
+      "method": "codeLens/resolve",
+      "params": {},
+      "params_from_code_lens": {
+        "step": 2,
+        "index": 1
+      },
+      "expected": {
+        "range": {
+          "start": {
+            "line": 2,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "data": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "type": 0
+        },
+        "command": {
+          "title": "0 references",
+          "command": "",
+          "arguments": [
+            "{{ROOT_URI}}/main.ts",
+            {
+              "line": 2,
+              "character": 0
+            },
+            []
+          ]
+        }
+      },
+      "unicode_source_coordinates": {}
+    },
+    {
+      "method": "codeLens/resolve",
+      "params": {},
+      "params_from_code_lens": {
+        "step": 2,
+        "index": 2
+      },
+      "expected": {
+        "range": {
+          "start": {
+            "line": 2,
+            "character": 20
+          },
+          "end": {
+            "line": 2,
+            "character": 25
+          }
+        },
+        "data": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "type": 0
+        },
+        "command": {
+          "title": "0 references",
+          "command": "",
+          "arguments": [
+            "{{ROOT_URI}}/main.ts",
+            {
+              "line": 2,
+              "character": 20
+            },
+            []
+          ]
+        }
+      },
+      "unicode_source_coordinates": {}
+    },
+    {
+      "method": "codeLens/resolve",
+      "params": {},
+      "params_from_code_lens": {
+        "step": 2,
+        "index": 3
+      },
+      "expected": {
+        "range": {
+          "start": {
+            "line": 4,
+            "character": 13
+          },
+          "end": {
+            "line": 4,
+            "character": 19
+          }
+        },
+        "data": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "type": 0
+        },
+        "command": {
+          "title": "0 references",
+          "command": "",
+          "arguments": [
+            "{{ROOT_URI}}/main.ts",
+            {
+              "line": 4,
+              "character": 13
+            },
+            []
+          ]
+        }
+      },
+      "unicode_source_coordinates": {}
+    },
+    {
+      "method": "codeLens/resolve",
+      "params": {},
+      "params_from_code_lens": {
+        "step": 2,
+        "index": 4
+      },
+      "expected": {
+        "range": {
+          "start": {
+            "line": 2,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "data": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "type": 0
+        },
+        "command": {
+          "title": "0 references",
+          "command": "",
+          "arguments": [
+            "{{ROOT_URI}}/main.ts",
+            {
+              "line": 2,
+              "character": 0
+            },
+            []
+          ]
+        }
+      },
+      "unicode_source_coordinates": {}
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

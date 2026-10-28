@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "name": "fix-require-import",
+  "project": {
+    "files": {
+      "/main.ts": "const helper = require(\"./helper\");\nexport const value = helper.value;\n",
+      "/require.d.ts": "declare function require(name: string): any;\n",
+      "/helper.ts": "export const value = 42;\nexport const label = \"value\";\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "const helper = require(\"./helper\");\nexport const value = helper.value;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Convert 'require' to 'import'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "requireInTs",
+                  "description": "Convert 'require' to 'import'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 36
+                          },
+                          "newText": "import helper from \"./helper\";"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 15
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 34
+                    }
+                  },
+                  "message": "'require' call may be converted to an import.",
+                  "severity": 4,
+                  "code": 80005,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 15
+                },
+                "end": {
+                  "line": 0,
+                  "character": 34
+                }
+              },
+              "message": "'require' call may be converted to an import.",
+              "severity": 4,
+              "code": 80005,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 35
+                      }
+                    },
+                    "newText": "import helper from \"./helper\";"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    1192
+  ],
+  "edited_compiler_error_reason": "The pinned TypeScript 6.0.3 require-to-import proposal chooses a default import without checking whether the target ES module has a default export. The exact proposal retains error 1192, independently confirmed with the pinned compiler."
+}

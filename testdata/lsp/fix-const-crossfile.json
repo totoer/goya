@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "name": "fix-const-crossfile",
+  "project": {
+    "files": {
+      "/main.ts": "first = 2;\nsecond = 3;\n",
+      "/first.d.ts": "declare const first: number;\n",
+      "/second.d.ts": "declare const second: number;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts",
+      "/first.d.ts",
+      "/second.d.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "first = 2;\nsecond = 3;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 6000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 0
+              },
+              "end": {
+                "line": 0,
+                "character": 5
+              }
+            },
+            "message": "Cannot assign to 'first' because it is a constant.",
+            "severity": 1,
+            "code": 2588,
+            "source": "typescript"
+          },
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 0
+              },
+              "end": {
+                "line": 1,
+                "character": 6
+              }
+            },
+            "message": "Cannot assign to 'second' because it is a constant.",
+            "severity": 1,
+            "code": 2588,
+            "source": "typescript"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 0
+                },
+                "end": {
+                  "line": 0,
+                  "character": 5
+                }
+              },
+              "severity": 1,
+              "code": 2588,
+              "message": "Cannot assign to 'first' because it is a constant.",
+              "source": "typescript"
+            },
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 0
+                },
+                "end": {
+                  "line": 1,
+                  "character": 6
+                }
+              },
+              "severity": 1,
+              "code": 2588,
+              "message": "Cannot assign to 'second' because it is a constant.",
+              "source": "typescript"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": []
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

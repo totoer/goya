@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "name": "fix-spelling-nonidentifier-optional",
+  "project": {
+    "files": {
+      "/main.ts": "declare const value: { \"long-name\": number } | undefined;\nexport const result = value?.longname;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "declare const value: { \"long-name\": number } | undefined;\nexport const result = value?.longname;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Change spelling to 'long-name'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "spelling",
+                  "description": "Change spelling to 'long-name'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 23
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 38
+                          },
+                          "newText": "value[\"long-name\"]"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 29
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 37
+                    }
+                  },
+                  "message": "Property 'longname' does not exist on type '{ \"long-name\": number; }'. Did you mean 'long-name'?",
+                  "severity": 1,
+                  "code": 2551,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 23
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 34
+                          }
+                        }
+                      },
+                      "message": "'long-name' is declared here."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 29
+                },
+                "end": {
+                  "line": 1,
+                  "character": 37
+                }
+              },
+              "message": "Property 'longname' does not exist on type '{ \"long-name\": number; }'. Did you mean 'long-name'?",
+              "severity": 1,
+              "code": 2551,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 23
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 34
+                      }
+                    }
+                  },
+                  "message": "'long-name' is declared here."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 22
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 37
+                      }
+                    },
+                    "newText": "value[\"long-name\"]"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": true
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    18048
+  ],
+  "edited_compiler_error_reason": "The pinned provider replaces optional property access with a plain element access for this nonidentifier suggestion, leaving a possibly-undefined error. The reference text is retained; ordinary optional property suggestions separately require clean Check results."
+}

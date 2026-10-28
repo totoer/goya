@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"testing"
@@ -522,9 +522,9 @@ func TestRegexpConsecutiveMatchCache(t *testing.T) {
 	});
 	`
 	vm := New()
-	_, _ = vm.RunProgram(testLib())
-	_, _ = vm.RunProgram(testLibX())
-	v, err := vm.RunString(SCRIPT)
+	_, _ = vm.runVMProgram(testLib())
+	_, _ = vm.runVMProgram(testLibX())
+	v, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -635,9 +635,9 @@ func TestRegexpMatchAll(t *testing.T) {
 	});
 	`
 	vm := New()
-	_, _ = vm.RunProgram(testLib())
-	_, _ = vm.RunProgram(testLibX())
-	v, err := vm.RunString(SCRIPT)
+	_, _ = vm.runVMProgram(testLib())
+	_, _ = vm.runVMProgram(testLibX())
+	v, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -773,16 +773,16 @@ func TestRegexpInvalidUTF8(t *testing.T) {
 
 // this should not cause data races when run with -race
 func TestRegexpConcurrentLiterals(t *testing.T) {
-	prg := MustCompile("test.js", `var r = /(?<!-)\d+/; r.test("");`, false)
+	prg := mustCompileVMFixture("test.js", `var r = /(?<!-)\d+/; r.test("");`, false)
 	go func() {
 		vm := New()
-		_, err := vm.RunProgram(prg)
+		_, err := vm.runVMProgram(prg)
 		if err != nil {
 			panic(err)
 		}
 	}()
 	vm := New()
-	_, _ = vm.RunProgram(prg)
+	_, _ = vm.runVMProgram(prg)
 }
 
 func TestRegexpDotAll(t *testing.T) {
@@ -1022,14 +1022,14 @@ func BenchmarkRegexpSplitWithBackRef(b *testing.B) {
 	"aaaaaaaaaaaaaaaaaaaaaaaaa++bbbbbbbbbbbbbbbbbbbbbb+-ccccccccccccccccccccccc".split(/([+-])\1/)
 	`
 	b.StopTimer()
-	prg, err := Compile("test.js", SCRIPT, false)
+	prg, err := compileVMFixture("test.js", SCRIPT, false)
 	if err != nil {
 		b.Fatal(err)
 	}
 	vm := New()
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		vm.RunProgram(prg)
+		vm.runVMProgram(prg)
 	}
 }
 
@@ -1048,14 +1048,14 @@ func BenchmarkRegexpMatch(b *testing.B) {
         ".match(/[^\r\n]+/g)
         `
 	b.StopTimer()
-	prg, err := Compile("test.js", SCRIPT, false)
+	prg, err := compileVMFixture("test.js", SCRIPT, false)
 	if err != nil {
 		b.Fatal(err)
 	}
 	vm := New()
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		vm.RunProgram(prg)
+		vm.runVMProgram(prg)
 	}
 }
 
@@ -1105,7 +1105,7 @@ func BenchmarkRegexpMatchCache(b *testing.B) {
 	});
 	`
 	vm := New()
-	v, err := vm.RunString(SCRIPT)
+	v, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		b.Fatal(err)
 	}
@@ -1166,7 +1166,7 @@ func BenchmarkRegexpMatchAll(b *testing.B) {
 	});
 	`
 	vm := New()
-	v, err := vm.RunString(SCRIPT)
+	v, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		b.Fatal(err)
 	}

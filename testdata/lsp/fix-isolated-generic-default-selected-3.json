@@ -1,0 +1,833 @@
+{
+  "schema_version": 1,
+  "name": "fix-isolated-generic-default-selected-3",
+  "project": {
+    "files": {
+      "/main.ts": "interface Box<T = string> { value: T; }\ndeclare const source: Box;\nexport const value = source;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "isolatedDeclarations": true,
+      "declaration": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "interface Box<T = string> { value: T; }\ndeclare const source: Box;\nexport const value = source;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 6000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 13
+              },
+              "end": {
+                "line": 2,
+                "character": 18
+              }
+            },
+            "message": "Variable must have an explicit type annotation with --isolatedDeclarations.",
+            "severity": 1,
+            "code": 9010,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 13
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 18
+                    }
+                  }
+                },
+                "message": "Add a type annotation to the variable value."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 3,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 13
+                },
+                "end": {
+                  "line": 2,
+                  "character": 18
+                }
+              },
+              "message": "Variable must have an explicit type annotation with --isolatedDeclarations.",
+              "severity": 1,
+              "code": 9010,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 13
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 18
+                      }
+                    }
+                  },
+                  "message": "Add a type annotation to the variable value."
+                }
+              ]
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Add annotation of type 'Box'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "add-annotation",
+                  "description": "Add annotation of type 'Box'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 3,
+                            "offset": 19
+                          },
+                          "end": {
+                            "line": 3,
+                            "offset": 19
+                          },
+                          "newText": ": Box"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 13
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 18
+                    }
+                  },
+                  "message": "Variable must have an explicit type annotation with --isolatedDeclarations.",
+                  "severity": 1,
+                  "code": 9010,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 2,
+                            "character": 13
+                          },
+                          "end": {
+                            "line": 2,
+                            "character": 18
+                          }
+                        }
+                      },
+                      "message": "Add a type annotation to the variable value."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 13
+                },
+                "end": {
+                  "line": 2,
+                  "character": 18
+                }
+              },
+              "message": "Variable must have an explicit type annotation with --isolatedDeclarations.",
+              "severity": 1,
+              "code": 9010,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 13
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 18
+                      }
+                    }
+                  },
+                  "message": "Add a type annotation to the variable value."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 18
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 18
+                      }
+                    },
+                    "newText": ": Box"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add annotation of type 'typeof source'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "add-annotation",
+                  "description": "Add annotation of type 'typeof source'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 3,
+                            "offset": 19
+                          },
+                          "end": {
+                            "line": 3,
+                            "offset": 19
+                          },
+                          "newText": ": typeof source"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 13
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 18
+                    }
+                  },
+                  "message": "Variable must have an explicit type annotation with --isolatedDeclarations.",
+                  "severity": 1,
+                  "code": 9010,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 2,
+                            "character": 13
+                          },
+                          "end": {
+                            "line": 2,
+                            "character": 18
+                          }
+                        }
+                      },
+                      "message": "Add a type annotation to the variable value."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 13
+                },
+                "end": {
+                  "line": 2,
+                  "character": 18
+                }
+              },
+              "message": "Variable must have an explicit type annotation with --isolatedDeclarations.",
+              "severity": 1,
+              "code": 9010,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 13
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 18
+                      }
+                    }
+                  },
+                  "message": "Add a type annotation to the variable value."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 18
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 18
+                      }
+                    },
+                    "newText": ": typeof source"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add satisfies and an inline type assertion with 'Box'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "add-type-assertion",
+                  "description": "Add satisfies and an inline type assertion with 'Box'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 3,
+                            "offset": 22
+                          },
+                          "end": {
+                            "line": 3,
+                            "offset": 28
+                          },
+                          "newText": "source satisfies Box as Box"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 13
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 18
+                    }
+                  },
+                  "message": "Variable must have an explicit type annotation with --isolatedDeclarations.",
+                  "severity": 1,
+                  "code": 9010,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 2,
+                            "character": 13
+                          },
+                          "end": {
+                            "line": 2,
+                            "character": 18
+                          }
+                        }
+                      },
+                      "message": "Add a type annotation to the variable value."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 13
+                },
+                "end": {
+                  "line": 2,
+                  "character": 18
+                }
+              },
+              "message": "Variable must have an explicit type annotation with --isolatedDeclarations.",
+              "severity": 1,
+              "code": 9010,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 13
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 18
+                      }
+                    }
+                  },
+                  "message": "Add a type annotation to the variable value."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 21
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 27
+                      }
+                    },
+                    "newText": "source satisfies Box as Box"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add satisfies and an inline type assertion with 'typeof source'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "add-type-assertion",
+                  "description": "Add satisfies and an inline type assertion with 'typeof source'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 3,
+                            "offset": 22
+                          },
+                          "end": {
+                            "line": 3,
+                            "offset": 28
+                          },
+                          "newText": "source satisfies typeof source as typeof source"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 13
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 18
+                    }
+                  },
+                  "message": "Variable must have an explicit type annotation with --isolatedDeclarations.",
+                  "severity": 1,
+                  "code": 9010,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 2,
+                            "character": 13
+                          },
+                          "end": {
+                            "line": 2,
+                            "character": 18
+                          }
+                        }
+                      },
+                      "message": "Add a type annotation to the variable value."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 13
+                },
+                "end": {
+                  "line": 2,
+                  "character": 18
+                }
+              },
+              "message": "Variable must have an explicit type annotation with --isolatedDeclarations.",
+              "severity": 1,
+              "code": 9010,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 13
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 18
+                      }
+                    }
+                  },
+                  "message": "Add a type annotation to the variable value."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 21
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 27
+                      }
+                    },
+                    "newText": "source satisfies typeof source as typeof source"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    },
+    {
+      "method": "codeAction/resolve",
+      "params": {},
+      "params_from_code_action": {
+        "step": 2,
+        "index": 3
+      },
+      "expected": {
+        "title": "Add satisfies and an inline type assertion with 'typeof source'",
+        "kind": "quickfix",
+        "command": {
+          "command": "_typescript.applyCodeActionCommand",
+          "arguments": [
+            {
+              "action": {
+                "fixName": "add-type-assertion",
+                "description": "Add satisfies and an inline type assertion with 'typeof source'",
+                "changes": [
+                  {
+                    "fileName": "{{ROOT_PATH}}/main.ts",
+                    "textChanges": [
+                      {
+                        "start": {
+                          "line": 3,
+                          "offset": 22
+                        },
+                        "end": {
+                          "line": 3,
+                          "offset": 28
+                        },
+                        "newText": "source satisfies typeof source as typeof source"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "diagnostic": {
+                "range": {
+                  "start": {
+                    "line": 2,
+                    "character": 13
+                  },
+                  "end": {
+                    "line": 2,
+                    "character": 18
+                  }
+                },
+                "message": "Variable must have an explicit type annotation with --isolatedDeclarations.",
+                "severity": 1,
+                "code": 9010,
+                "source": "typescript",
+                "relatedInformation": [
+                  {
+                    "location": {
+                      "uri": "{{ROOT_URI}}/main.ts",
+                      "range": {
+                        "start": {
+                          "line": 2,
+                          "character": 13
+                        },
+                        "end": {
+                          "line": 2,
+                          "character": 18
+                        }
+                      }
+                    },
+                    "message": "Add a type annotation to the variable value."
+                  }
+                ]
+              },
+              "documentUri": "{{ROOT_URI}}/main.ts"
+            }
+          ],
+          "title": ""
+        },
+        "diagnostics": [
+          {
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 13
+              },
+              "end": {
+                "line": 2,
+                "character": 18
+              }
+            },
+            "message": "Variable must have an explicit type annotation with --isolatedDeclarations.",
+            "severity": 1,
+            "code": 9010,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 13
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 18
+                    }
+                  }
+                },
+                "message": "Add a type annotation to the variable value."
+              }
+            ]
+          }
+        ],
+        "edit": {
+          "documentChanges": [
+            {
+              "textDocument": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "version": 2
+              },
+              "edits": [
+                {
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 21
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 27
+                    }
+                  },
+                  "newText": "source satisfies typeof source as typeof source"
+                }
+              ]
+            }
+          ]
+        },
+        "isPreferred": false
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

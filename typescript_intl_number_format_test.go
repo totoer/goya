@@ -1,0 +1,44 @@
+package goya
+
+import "testing"
+
+func TestCheckedIntlNumberFormat(t *testing.T) {
+	for name, source := range map[string]string{
+		"decimal locales":                  `new Intl.NumberFormat("en-US").format(12345.67)==="12,345.67"&&new Intl.NumberFormat("de").format(12345.67)==="12.345,67"&&new Intl.NumberFormat("hi").format(1234567)==="12,34,567";`,
+		"currency":                         `new Intl.NumberFormat("en",{style:"currency",currency:"USD"}).format(42)==="$42.00"&&new Intl.NumberFormat("de",{style:"currency",currency:"EUR"}).format(42)==="42,00\u00a0€"&&new Intl.NumberFormat("ja",{style:"currency",currency:"JPY"}).format(42.5)==="￥43";`,
+		"currency code and accounting":     `new Intl.NumberFormat("en",{style:"currency",currency:"usd",currencyDisplay:"code",currencySign:"accounting"}).format(-42)==="(USD\u00a042.00)";`,
+		"currency name":                    `new Intl.NumberFormat("en",{style:"currency",currency:"USD",currencyDisplay:"name",maximumFractionDigits:0}).format(1)==="1 US dollar";`,
+		"currency minor units":             `new Intl.NumberFormat("en",{style:"currency",currency:"KWD"}).resolvedOptions().maximumFractionDigits===3&&new Intl.NumberFormat("en",{style:"currency",currency:"JPY"}).resolvedOptions().maximumFractionDigits===0;`,
+		"percent":                          `new Intl.NumberFormat("en",{style:"percent"}).format(0.125)==="13%"&&new Intl.NumberFormat("de",{style:"percent",maximumFractionDigits:1}).format(0.125)==="12,5\u00a0%";`,
+		"exact decimals":                   `const f=new Intl.NumberFormat("en",{minimumFractionDigits:2,maximumFractionDigits:2,useGrouping:false});f.format(1.005)==="1.01"&&f.format("9007199254740993.125")==="9007199254740993.13"&&f.format(9007199254740993n)==="9007199254740993.00";`,
+		"rounding modes":                   `const modes:[Intl.NumberFormatOptions["roundingMode"],string][]=[["ceil","-1.02"],["floor","-1.03"],["expand","-1.03"],["trunc","-1.02"],["halfCeil","-1.02"],["halfFloor","-1.03"],["halfExpand","-1.03"],["halfTrunc","-1.02"],["halfEven","-1.02"]];modes.every(([roundingMode,want])=>new Intl.NumberFormat("en",{maximumFractionDigits:2,roundingMode}).format("-1.025")===want);`,
+		"increment and trailing zeros":     `new Intl.NumberFormat("en",{minimumFractionDigits:2,maximumFractionDigits:2,roundingIncrement:5,roundingMode:"halfEven"}).format("1.075")==="1.10"&&new Intl.NumberFormat("en",{minimumFractionDigits:2,trailingZeroDisplay:"stripIfInteger"}).format(42)==="42";`,
+		"significant and priority":         `new Intl.NumberFormat("en",{minimumSignificantDigits:3,maximumSignificantDigits:3}).format(0.0012)==="0.00120"&&new Intl.NumberFormat("en",{minimumSignificantDigits:4,maximumSignificantDigits:4,maximumFractionDigits:3,roundingPriority:"morePrecision"}).format(1.23)==="1.230";`,
+		"sign display":                     `const f=(signDisplay:Intl.NumberFormatOptions["signDisplay"],n:number)=>new Intl.NumberFormat("en",{signDisplay,maximumFractionDigits:0}).format(n);f("auto",-0)==="-0"&&f("negative",-0)==="0"&&f("always",0)==="+0"&&f("exceptZero",-0.1)==="0"&&f("exceptZero",1)==="+1"&&f("never",-1)==="1";`,
+		"non finite":                       `const f=new Intl.NumberFormat("en");f.format(Infinity)==="∞"&&f.format(-Infinity)==="-∞"&&f.format(NaN)==="NaN"&&f.format("1e99999" as any)==="∞"&&f.format("-1e-99999" as any)==="-0";`,
+		"numbering systems":                `const f=new Intl.NumberFormat("en-u-nu-arab",{useGrouping:false});f.format(1234.5)==="١٢٣٤٫٥"&&f.resolvedOptions().numberingSystem==="arab"&&new Intl.NumberFormat("en-u-nu-arab",{numberingSystem:"latn"}).resolvedOptions().locale==="en";`,
+		"grouping":                         `new Intl.NumberFormat("en",{useGrouping:false}).format(12345)==="12345"&&new Intl.NumberFormat("en",{useGrouping:"min2"}).format(1234)==="1234"&&new Intl.NumberFormat("en",{minimumIntegerDigits:6}).format(42)==="000,042";`,
+		"scientific engineering":           `new Intl.NumberFormat("en",{notation:"scientific"}).format(12345)==="1.235E4"&&new Intl.NumberFormat("en",{notation:"engineering"}).format(12345)==="12.345E3"&&new Intl.NumberFormat("en",{notation:"scientific",maximumFractionDigits:2}).format(9.999)==="1E1"&&new Intl.NumberFormat("en",{notation:"scientific"}).format(0.001)==="1E-3";`,
+		"compact":                          `new Intl.NumberFormat("en",{notation:"compact"}).format(1234)==="1.2K"&&new Intl.NumberFormat("en",{notation:"compact",compactDisplay:"long"}).format(2000000)==="2 million"&&new Intl.NumberFormat("ja",{notation:"compact"}).format(12345)==="1.2万";`,
+		"unit plurals":                     `new Intl.NumberFormat("en",{style:"unit",unit:"meter",unitDisplay:"long"}).format(1)==="1 meter"&&new Intl.NumberFormat("en",{style:"unit",unit:"meter",unitDisplay:"long"}).format(2)==="2 meters"&&new Intl.NumberFormat("ru",{style:"unit",unit:"meter",unitDisplay:"long"}).format(2)==="2 метра";`,
+		"spelled quantities retain signs":  `const f=new Intl.NumberFormat("ar",{style:"unit",unit:"hour",unitDisplay:"long"});const p=f.formatToParts(-2);f.format(2)==="ساعتان"&&p.some(x=>x.type==="minusSign")&&!p.some(x=>x.type==="integer")&&p.map(x=>x.value).join("")===f.format(-2)&&new Intl.NumberFormat("he",{style:"unit",unit:"hour",unitDisplay:"long"}).format(2)==="שעתיים";`,
+		"compound units":                   `new Intl.NumberFormat("en",{style:"unit",unit:"kilometer-per-hour",unitDisplay:"long"}).format(2)==="2 kilometers per hour"&&new Intl.NumberFormat("en",{style:"unit",unit:"meter-per-day",unitDisplay:"long"}).format(2)==="2 meters per day";`,
+		"parts":                            `const f=new Intl.NumberFormat("en",{style:"currency",currency:"USD"});const p=f.formatToParts(-1234.5);p.map(x=>x.value).join("")===f.format(-1234.5)&&p.map(x=>x.type).join(",")==="minusSign,currency,integer,group,integer,decimal,fraction";`,
+		"ranges":                           `const f=new Intl.NumberFormat("en");const parts=f.formatRangeToParts(1,2);f.formatRange(1,2)==="1–2"&&f.formatRange(2,1)==="2–1"&&f.formatRange(1,1)==="~1"&&parts.map(p=>p.value).join("")==="1–2"&&parts.map(p=>p.source).join(",")==="startRange,shared,endRange";`,
+		"range errors":                     `const f=new Intl.NumberFormat("en");let errors=0;for(const call of [()=>f.formatRange(NaN,1),()=>f.formatRange(1,NaN),()=>(f.formatRange as any)(undefined,1)]){try{call()}catch(e){if(e instanceof TypeError||e instanceof RangeError)errors++}}errors===3;`,
+		"bound format and subclass":        `class F extends Intl.NumberFormat{}const f=new F("en");const format=f.format;f instanceof F&&format===f.format&&format.call(null,42)==="42"&&format.length===1&&format.name===""&&Object.prototype.toString.call(f)==="[object Intl.NumberFormat]";`,
+		"brands":                           `const f=new Intl.NumberFormat("en");let errors=0;for(const value of [{},new Proxy(f,{})]){try{Intl.NumberFormat.prototype.formatToParts.call(value,42)}catch(e){if(e instanceof TypeError)errors++}}errors===2;`,
+		"numeric conversion":               `const seen:string[]=[];const f=new Intl.NumberFormat("en",{useGrouping:false});const result=f.format({[Symbol.toPrimitive](hint:string){seen.push(hint);return "9007199254740993"}} as any);result==="9007199254740993"&&seen.join(",")==="number";`,
+		"invalid options":                  `let errors=0;for(const o of [{style:"currency"},{style:"unit"},{currency:""},{currency:"US"},{unit:""},{unit:"meter-per-bad"},{numberingSystem:""},{maximumFractionDigits:101},{minimumFractionDigits:3,maximumFractionDigits:2},{roundingIncrement:3},{roundingIncrement:5,maximumFractionDigits:2},{roundingIncrement:5,maximumSignificantDigits:2}]){try{new Intl.NumberFormat("en",o as any)}catch(e){if(e instanceof TypeError||e instanceof RangeError)errors++}}errors===12;`,
+		"number and bigint locale methods": `(1234.5).toLocaleString("de")==="1.234,5"&&(9007199254740993n).toLocaleString("en")==="9,007,199,254,740,993"&&new Number(1234).toLocaleString("en")==="1,234";`,
+		"array locale integration":         `[1234.5,2].toLocaleString("de",{minimumFractionDigits:1})==="1.234,5,2,0"&&new Float64Array([1234.5,2]).toLocaleString("de",{minimumFractionDigits:1})==="1.234,5,2,0";`,
+		"digit getters before conversion":  `const seen:string[]=[];new Intl.NumberFormat("en",{get minimumFractionDigits(){seen.push("minimumFractionDigits");return {valueOf(){throw Error("ignored")}} as any},get maximumFractionDigits(){seen.push("maximumFractionDigits");return undefined},minimumSignificantDigits:2,get maximumSignificantDigits(){seen.push("maximumSignificantDigits");return 3}});seen.join(",")==="minimumFractionDigits,maximumFractionDigits,maximumSignificantDigits";`,
+	} {
+		t.Run(name, func(t *testing.T) {
+			value, err := New().RunString(source)
+			if err != nil || !value.ToBoolean() {
+				t.Fatalf("NumberFormat: %v %v", value, err)
+			}
+		})
+	}
+}

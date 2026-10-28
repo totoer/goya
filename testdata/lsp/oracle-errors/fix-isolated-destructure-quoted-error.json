@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "name": "fix-isolated-destructure-quoted-error",
+  "project": {
+    "files": {
+      "/main.ts": "export const { \"a-b\": value } = { \"a-b\": Math.random() };\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "isolatedDeclarations": true,
+      "declaration": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export const { \"a-b\": value } = { \"a-b\": Math.random() };\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 6000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 22
+              },
+              "end": {
+                "line": 0,
+                "character": 27
+              }
+            },
+            "message": "Binding elements can't be exported directly with --isolatedDeclarations.",
+            "severity": 1,
+            "code": 9019,
+            "source": "typescript"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 22
+                },
+                "end": {
+                  "line": 0,
+                  "character": 27
+                }
+              },
+              "severity": 1,
+              "code": 9019,
+              "message": "Binding elements can't be exported directly with --isolatedDeclarations.",
+              "source": "typescript"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected_error": {
+        "code": 1,
+        "message": "<main> TypeScript Server Error (6.0.3)\nDebug Failure. False expression: Token end is child end\nError: Debug Failure. False expression: Token end is child end\n    at processChildNode (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182787:17)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182718:9\n    at visitNode2 (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:32551:18)\n    at forEachChildInPropertyAccessExpression (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:32711:96)\n    at forEachChild (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:33072:35)\n    at processNode (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182715:5)\n    at processChildNode (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182794:7)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182718:9\n    at visitNode2 (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:32551:18)\n    at forEachChildInVariableDeclaration (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:32613:123)\n    at forEachChild (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:33072:35)\n    at processNode (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182715:5)\n    at processChildNode (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182794:7)\n    at processChildNodes (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182837:32)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182731:9\n    at visitNodes (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:32556:14)\n    at forEachChildInVariableDeclarationList (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:32778:12)\n    at forEachChild (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:33072:35)\n    at processNode (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182715:5)\n    at processChildNode (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182794:7)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182718:9\n    at visitNode2 (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:32551:18)\n    at forEachChildInVariableStatement (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:32775:59)\n    at forEachChild (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:33072:35)\n    at processNode (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182715:5)\n    at formatSpanWorker (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182512:5)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182452:105\n    at getFormattingScanner (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:181224:15)\n    at Object.formatNodeGivenIndentation (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:182452:10)\n    at getFormattedTextOfNode (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180626:43)\n    at format (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180607:27)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180608:106\n    at Array.map (<anonymous>)\n    at computeNewText (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180608:82)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180569:25\n    at mapDefined (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:2610:22)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180566:28\n    at mapDefined (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:2610:22)\n    at Object.getTextChangesFromChanges (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180560:12)\n    at _ChangeTracker.getChanges (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180457:35)\n    at withContext (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:163585:32)\n    at addCodeAction (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:163557:19)\n    at Object.getCodeActions (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:163538:5)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:155902:46\n    at flatMap (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:2540:17)\n    at Object.getFixes (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:155902:10)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:154165:33\n    at flatMap (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:2540:17)\n    at Object.getCodeFixesAtPosition (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:154163:12)\n    at IpcIOSession.getCodeFixes (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197272:50)\n    at getCodeFixes (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:195277:43)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197591:15\n    at IpcIOSession.executeWithRequestId (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197580:14)\n    at IpcIOSession.executeCommand (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197589:29)\n    at IpcIOSession.onMessage (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197637:68)\n    at process.<anonymous> (/private/tmp/goya-lsp-reference/ts-package/package/lib/_tsserver.js:519:14)\n    at process.emit (node:events:514:20)\n    at emit (node:internal/child_process:1004:14)\n    at process.processTicksAndRejections (node:internal/process/task_queues:91:21)"
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

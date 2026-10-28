@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"unicode/utf16"
 
 	"github.com/dlclark/regexp2/v2"
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 type regexp2MatchCache struct {
@@ -63,6 +63,7 @@ type regexpPattern struct {
 	src string
 
 	global, ignoreCase, multiline, dotAll, sticky, unicode bool
+	hasIndices, unicodeSets                                bool
 
 	regexpWrapper  *regexpWrapper
 	regexp2Wrapper *regexp2Wrapper
@@ -196,13 +197,15 @@ func (p *regexpPattern) findAllSubmatchIndex(s String, start int, limit int, sti
 // clone creates a copy of the regexpPattern which can be used concurrently.
 func (p *regexpPattern) clone() *regexpPattern {
 	ret := &regexpPattern{
-		src:        p.src,
-		global:     p.global,
-		ignoreCase: p.ignoreCase,
-		multiline:  p.multiline,
-		dotAll:     p.dotAll,
-		sticky:     p.sticky,
-		unicode:    p.unicode,
+		src:         p.src,
+		global:      p.global,
+		ignoreCase:  p.ignoreCase,
+		multiline:   p.multiline,
+		dotAll:      p.dotAll,
+		sticky:      p.sticky,
+		unicode:     p.unicode,
+		hasIndices:  p.hasIndices,
+		unicodeSets: p.unicodeSets,
 	}
 	if p.regexpWrapper != nil {
 		ret.regexpWrapper = p.regexpWrapper.clone()
@@ -218,7 +221,8 @@ type regexpObject struct {
 	pattern *regexpPattern
 	source  String
 
-	standard bool
+	standard       bool
+	legacyFeatures bool
 }
 
 func (r *regexp2Wrapper) findSubmatchIndex(s String, start int, fullUnicode, doCache bool) regexpResult {
@@ -531,7 +535,7 @@ func (r *regexpWrapper) findSubmatchIndexUnicode(s unicodeString, fullUnicode bo
 	wrapped := (*regexp.Regexp)(r)
 	if fullUnicode {
 		posMap, runes, _, _ := buildPosMap(&lenientUtf16Decoder{utf16Reader: s.utf16Reader()}, s.Length(), 0)
-		result := regexpResult{indexes: wrapped.FindReaderSubmatchIndex(&arrayRuneReader{runes: runes})}
+		result := regexpResult{indexes: wrapped.FindReaderSubmatchIndex(&arrayRuneReader{runes: runes}), groups: wrapped.SubexpNames()}
 		for i, item := range result.indexes {
 			if item >= 0 {
 				result.indexes[i] = posMap[item]
@@ -556,7 +560,10 @@ func (r *Runtime) createRegexpGroupsObj(valueArray []Value, groupNames []string)
 			} else if groups == nil {
 				groups = r.newBaseObject(nil, classObject)
 			}
-			groups.setOwnStr(unistring.NewFromString(name), valueArray[index], false)
+			key := unistring.NewFromString(name)
+			if !IsUndefined(valueArray[index]) || !groups.hasOwnPropertyStr(key) {
+				groups.setOwnStr(key, valueArray[index], false)
+			}
 		}
 	}
 	if groups != nil {
@@ -572,7 +579,10 @@ func createRegexpGroupsMap(result regexpResult) (groups map[unistring.String]int
 			if group := result.groups[i]; group != "" {
 				idx := i * 2
 				if idx < len(result.indexes)-1 {
-					groups[unistring.NewFromString(group)] = idx
+					key := unistring.NewFromString(group)
+					if _, exists := groups[key]; !exists || result.indexes[idx] >= 0 {
+						groups[key] = idx
+					}
 				}
 			}
 		}
@@ -585,12 +595,10 @@ func (r *regexpObject) execResultToArray(target String, result regexpResult) Val
 	valueArray := make([]Value, captureCount)
 	matchIndex := result.indexes[0]
 	valueArray[0] = target.Substring(result.indexes[0], result.indexes[1])
-	lowerBound := 0
 	for index := 1; index < captureCount; index++ {
 		offset := index << 1
-		if result.indexes[offset] >= 0 && result.indexes[offset+1] >= lowerBound {
+		if result.indexes[offset] >= 0 {
 			valueArray[index] = target.Substring(result.indexes[offset], result.indexes[offset+1])
-			lowerBound = result.indexes[offset]
 		} else {
 			valueArray[index] = _undefined
 		}
@@ -613,6 +621,25 @@ func (r *regexpObject) execResultToArray(target String, result regexpResult) Val
 		Configurable: FLAG_TRUE,
 		Enumerable:   FLAG_TRUE,
 	}, false)
+
+	if r.pattern.hasIndices {
+		indices := make([]Value, captureCount)
+		for index := range indices {
+			if IsUndefined(valueArray[index]) {
+				indices[index] = _undefined
+			} else {
+				offset := index * 2
+				indices[index] = r.val.runtime.newArrayValues([]Value{intToValue(int64(result.indexes[offset])), intToValue(int64(result.indexes[offset+1]))})
+			}
+		}
+		array := r.val.runtime.newArrayValues(indices)
+		var groupValue Value = _undefined
+		if groups := r.val.runtime.createRegexpGroupsObj(indices, result.groups); groups != nil {
+			groupValue = groups
+		}
+		array.self._putProp("groups", groupValue, true, true, true)
+		match.self._putProp("indices", array, true, true, true)
+	}
 
 	return match
 }
@@ -638,6 +665,9 @@ func (r *regexpObject) execRegexp(target String) (match bool, result regexpResul
 			newLastIndex = int64(result.indexes[1])
 		}
 		r.setOwnStr("lastIndex", intToValue(newLastIndex), true)
+	}
+	if match {
+		r.updateStatics(target, result)
 	}
 
 	return
@@ -667,6 +697,7 @@ func (r *regexpObject) clone() *regexpObject {
 func (r *regexpObject) init() {
 	r.baseObject.init()
 	r.standard = true
+	r.legacyFeatures = true
 	r._putProp("lastIndex", intToValue(0), true, false, false)
 }
 

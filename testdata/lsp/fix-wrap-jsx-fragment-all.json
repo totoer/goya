@@ -1,0 +1,398 @@
+{
+  "schema_version": 1,
+  "name": "fix-wrap-jsx-fragment-all",
+  "project": {
+    "files": {
+      "/jsx.d.ts": "declare namespace JSX { interface Element {} interface IntrinsicElements { a: {}; b: {}; c: {}; } }\n",
+      "/main.tsx": "export const value = <a /><b />;\nexport const other = <b /><c />;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.tsx"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "jsx": "preserve"
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx",
+          "languageId": "typescriptreact",
+          "version": 2,
+          "text": "export const value = <a /><b />;\nexport const other = <b /><c />;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Wrap in JSX fragment",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "wrapJsxInFragment",
+                  "description": "Wrap in JSX fragment",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.tsx",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 22
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 32
+                          },
+                          "newText": "<><a /><b /></>"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "wrapJsxInFragment",
+                  "fixAllDescription": "Wrap all unparented JSX in JSX fragment"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 21
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 31
+                    }
+                  },
+                  "message": "JSX expressions must have one parent element.",
+                  "severity": 1,
+                  "code": 2657,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.tsx"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 21
+                },
+                "end": {
+                  "line": 0,
+                  "character": 31
+                }
+              },
+              "message": "JSX expressions must have one parent element.",
+              "severity": 1,
+              "code": 2657,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.tsx",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 21
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 31
+                      }
+                    },
+                    "newText": "<><a /><b /></>"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Wrap in JSX fragment",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "wrapJsxInFragment",
+                  "description": "Wrap in JSX fragment",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.tsx",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 22
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 32
+                          },
+                          "newText": "<><b /><c /></>"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "wrapJsxInFragment",
+                  "fixAllDescription": "Wrap all unparented JSX in JSX fragment"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 21
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 31
+                    }
+                  },
+                  "message": "JSX expressions must have one parent element.",
+                  "severity": 1,
+                  "code": 2657,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.tsx"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 21
+                },
+                "end": {
+                  "line": 1,
+                  "character": 31
+                }
+              },
+              "message": "JSX expressions must have one parent element.",
+              "severity": 1,
+              "code": 2657,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.tsx",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 21
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 31
+                      }
+                    },
+                    "newText": "<><b /><c /></>"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Wrap all unparented JSX in JSX fragment",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "wrapJsxInFragment"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 21
+                },
+                "end": {
+                  "line": 0,
+                  "character": 31
+                }
+              },
+              "message": "JSX expressions must have one parent element.",
+              "severity": 1,
+              "code": 2657,
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeAction/resolve",
+      "params": {},
+      "params_from_code_action": {
+        "step": 1,
+        "index": 2
+      },
+      "expected": {
+        "title": "Wrap all unparented JSX in JSX fragment",
+        "kind": "quickfix",
+        "command": {
+          "command": "_typescript.applyFixAllCodeAction",
+          "arguments": [
+            {
+              "tsActionId": "wrapJsxInFragment"
+            }
+          ],
+          "title": ""
+        },
+        "diagnostics": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 21
+              },
+              "end": {
+                "line": 0,
+                "character": 31
+              }
+            },
+            "message": "JSX expressions must have one parent element.",
+            "severity": 1,
+            "code": 2657,
+            "source": "typescript"
+          }
+        ],
+        "isPreferred": false,
+        "data": {
+          "globalId": 1,
+          "providerId": 2
+        },
+        "edit": {
+          "documentChanges": [
+            {
+              "textDocument": {
+                "uri": "{{ROOT_URI}}/main.tsx",
+                "version": 2
+              },
+              "edits": [
+                {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 21
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 31
+                    }
+                  },
+                  "newText": "<><a /><b /></>"
+                },
+                {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 21
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 31
+                    }
+                  },
+                  "newText": "<><b /><c /></>"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "name": "fix-accessor-readonly-constructor",
+  "project": {
+    "files": {
+      "/main.ts": "class Base { get value() { return 1; } }\nexport class Box extends Base { readonly value: number; constructor() { super(); this.value = 2; } }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "class Base { get value() { return 1; } }\nexport class Box extends Base { readonly value: number; constructor() { super(); this.value = 2; } }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Generate 'get' and 'set' accessors",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixPropertyOverrideAccessor",
+                  "description": "Generate 'get' and 'set' accessors",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 33
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 56
+                          },
+                          "newText": "private readonly _value: number;"
+                        },
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 56
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 56
+                          },
+                          "newText": "public get value(): number {\n    return this._value;\n}\n"
+                        },
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 87
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 92
+                          },
+                          "newText": "_value"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 41
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 46
+                    }
+                  },
+                  "message": "'value' is defined as an accessor in class 'Base', but is overridden here in 'Box' as an instance property.",
+                  "severity": 1,
+                  "code": 2610,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 41
+                },
+                "end": {
+                  "line": 1,
+                  "character": 46
+                }
+              },
+              "message": "'value' is defined as an accessor in class 'Base', but is overridden here in 'Box' as an instance property.",
+              "severity": 1,
+              "code": 2610,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 32
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 55
+                      }
+                    },
+                    "newText": "private readonly _value: number;"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 55
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 55
+                      }
+                    },
+                    "newText": "public get value(): number {\n    return this._value;\n}\n"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 86
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 91
+                      }
+                    },
+                    "newText": "_value"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

@@ -1,0 +1,442 @@
+{
+  "schema_version": 1,
+  "name": "fix-invalid-import-callable-namespace",
+  "project": {
+    "files": {
+      "/main.ts": "import * as parse from \"./helper\";\nexport const value = parse(\"value\");\n",
+      "/helper.d.ts": "declare function parse(input: string): number;\ndeclare namespace parse { const version: string; }\nexport = parse;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "import * as parse from \"./helper\";\nexport const value = parse(\"value\");\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Replace import with 'import parse from \"./helper\";'.",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "invalidImportSyntax",
+                  "description": "Replace import with 'import parse from \"./helper\";'.",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 35
+                          },
+                          "newText": "import parse from \"./helper\";"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 21
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 26
+                    }
+                  },
+                  "message": "This expression is not callable.\n  Type 'typeof parse' has no call signatures.",
+                  "severity": 1,
+                  "code": 2349,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 0
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 34
+                          }
+                        }
+                      },
+                      "message": "Type originates at this import. A namespace-style import cannot be called or constructed, and will cause a failure at runtime. Consider using a default import or import require here instead."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 21
+                },
+                "end": {
+                  "line": 1,
+                  "character": 26
+                }
+              },
+              "message": "This expression is not callable.\n  Type 'typeof parse' has no call signatures.",
+              "severity": 1,
+              "code": 2349,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 34
+                      }
+                    }
+                  },
+                  "message": "Type originates at this import. A namespace-style import cannot be called or constructed, and will cause a failure at runtime. Consider using a default import or import require here instead."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 34
+                      }
+                    },
+                    "newText": "import parse from \"./helper\";"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Use synthetic 'default' member.",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "invalidImportSyntax",
+                  "description": "Use synthetic 'default' member.",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 22
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 27
+                          },
+                          "newText": "parse.default"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 21
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 26
+                    }
+                  },
+                  "message": "This expression is not callable.\n  Type 'typeof parse' has no call signatures.",
+                  "severity": 1,
+                  "code": 2349,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 0
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 34
+                          }
+                        }
+                      },
+                      "message": "Type originates at this import. A namespace-style import cannot be called or constructed, and will cause a failure at runtime. Consider using a default import or import require here instead."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 21
+                },
+                "end": {
+                  "line": 1,
+                  "character": 26
+                }
+              },
+              "message": "This expression is not callable.\n  Type 'typeof parse' has no call signatures.",
+              "severity": 1,
+              "code": 2349,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 34
+                      }
+                    }
+                  },
+                  "message": "Type originates at this import. A namespace-style import cannot be called or constructed, and will cause a failure at runtime. Consider using a default import or import require here instead."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 21
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 26
+                      }
+                    },
+                    "newText": "parse.default"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Convert to default import",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "useDefaultImport",
+                  "description": "Convert to default import",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 35
+                          },
+                          "newText": "import parse from \"./helper\";"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 12
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 17
+                    }
+                  },
+                  "message": "Import may be converted to a default import.",
+                  "severity": 4,
+                  "code": 80003,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 12
+                },
+                "end": {
+                  "line": 0,
+                  "character": 17
+                }
+              },
+              "message": "Import may be converted to a default import.",
+              "severity": 4,
+              "code": 80003,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 34
+                      }
+                    },
+                    "newText": "import parse from \"./helper\";"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

@@ -1,0 +1,355 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/app/main.ts": "import {Contract} from \"../base/src/index\";\nimport {Impl} from \"../impl/src/index\";\nconst thing: Contract = new Impl();\nthing.run();\n",
+      "/base/src/index.ts": "export interface Contract { run(): number; }\n",
+      "/impl/src/index.ts": "import type {Contract} from \"../../base/src/index\";\nexport class Impl implements Contract { run(): number { return 42; } }\n",
+      "/base/tsconfig.json": "{\"compilerOptions\": {\"strict\": true, \"target\": \"es2025\", \"module\": \"esnext\", \"moduleResolution\": \"bundler\", \"lib\": [\"es2025\"], \"types\": [], \"noEmit\": true, \"composite\": true, \"rootDir\": \"src\", \"outDir\": \"dist\"}, \"files\": [\"src/index.ts\"], \"references\": []}",
+      "/impl/tsconfig.json": "{\"compilerOptions\": {\"strict\": true, \"target\": \"es2025\", \"module\": \"esnext\", \"moduleResolution\": \"bundler\", \"lib\": [\"es2025\"], \"types\": [], \"noEmit\": true, \"composite\": true, \"rootDir\": \"src\", \"outDir\": \"dist\"}, \"files\": [\"src/index.ts\"], \"references\": [{\"path\": \"../base\"}]}",
+      "/app/tsconfig.json": "{\"compilerOptions\": {\"strict\": true, \"target\": \"es2025\", \"module\": \"esnext\", \"moduleResolution\": \"bundler\", \"lib\": [\"es2025\"], \"types\": [], \"noEmit\": true, \"composite\": true, \"rootDir\": \".\", \"outDir\": \"dist\"}, \"files\": [\"main.ts\"], \"references\": [{\"path\": \"../base\"}, {\"path\": \"../impl\"}]}",
+      "/tsconfig.json": "{\"files\": [], \"references\": [{\"path\": \"./base\"}, {\"path\": \"./impl\"}, {\"path\": \"./app\"}]}"
+    },
+    "declarations": {},
+    "entry_points": [],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    },
+    "config_file": "/app/tsconfig.json"
+  },
+  "name": "preference-lazy-configured-false",
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "definition": {
+          "linkSupport": true
+        },
+        "typeDefinition": {
+          "linkSupport": true
+        },
+        "implementation": {
+          "linkSupport": true
+        }
+      }
+    },
+    "options": {
+      "preferences": {
+        "lazyConfiguredProjectsFromExternalProject": false
+      }
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/app/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "import {Contract} from \"../base/src/index\";\nimport {Impl} from \"../impl/src/index\";\nconst thing: Contract = new Impl();\nthing.run();\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/definition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/app/main.ts"
+        },
+        "position": {
+          "line": 2,
+          "character": 28
+        }
+      },
+      "expected": [
+        {
+          "originSelectionRange": {
+            "start": {
+              "line": 2,
+              "character": 28
+            },
+            "end": {
+              "line": 2,
+              "character": 32
+            }
+          },
+          "targetRange": {
+            "start": {
+              "line": 1,
+              "character": 0
+            },
+            "end": {
+              "line": 1,
+              "character": 70
+            }
+          },
+          "targetUri": "{{ROOT_URI}}/impl/src/index.ts",
+          "targetSelectionRange": {
+            "start": {
+              "line": 1,
+              "character": 13
+            },
+            "end": {
+              "line": 1,
+              "character": 17
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/typeDefinition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/app/main.ts"
+        },
+        "position": {
+          "line": 3,
+          "character": 2
+        }
+      },
+      "expected": [
+        {
+          "uri": "{{ROOT_URI}}/base/src/index.ts",
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 17
+            },
+            "end": {
+              "line": 0,
+              "character": 25
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/implementation",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/app/main.ts"
+        },
+        "position": {
+          "line": 3,
+          "character": 8
+        }
+      },
+      "expected": [
+        {
+          "uri": "{{ROOT_URI}}/impl/src/index.ts",
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 40
+            },
+            "end": {
+              "line": 1,
+              "character": 43
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/implementation",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/app/main.ts"
+        },
+        "position": {
+          "line": 2,
+          "character": 17
+        }
+      },
+      "expected": [
+        {
+          "uri": "{{ROOT_URI}}/impl/src/index.ts",
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 13
+            },
+            "end": {
+              "line": 1,
+              "character": 17
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/base/src/index.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "export interface Contract { run(): number; }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/implementation",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/base/src/index.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 20
+        }
+      },
+      "expected": []
+    },
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/impl/src/index.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "import type {Contract} from \"../../base/src/index\";\nexport class Impl implements Contract { run(): number { return 42; } }\nexport class Second implements Contract { run(): number { return 7; } }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/implementation",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/base/src/index.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 20
+        }
+      },
+      "expected": []
+    },
+    {
+      "method": "workspace/executeCommand",
+      "params": {
+        "command": "_typescript.goToSourceDefinition",
+        "arguments": [
+          "{{ROOT_URI}}/app/main.ts",
+          {
+            "line": 3,
+            "character": 8
+          }
+        ]
+      },
+      "expected": [
+        {
+          "uri": "{{ROOT_URI}}/base/src/index.ts",
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 28
+            },
+            "end": {
+              "line": 0,
+              "character": 31
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/implementation",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/app/main.ts"
+        },
+        "position": {
+          "line": 3,
+          "character": 8
+        }
+      },
+      "expected": [
+        {
+          "uri": "{{ROOT_URI}}/impl/src/index.ts",
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 40
+            },
+            "end": {
+              "line": 1,
+              "character": 43
+            }
+          }
+        },
+        {
+          "uri": "{{ROOT_URI}}/impl/src/index.ts",
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 42
+            },
+            "end": {
+              "line": 2,
+              "character": 45
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/implementation",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/app/main.ts"
+        },
+        "position": {
+          "line": 2,
+          "character": 17
+        }
+      },
+      "expected": [
+        {
+          "uri": "{{ROOT_URI}}/impl/src/index.ts",
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 13
+            },
+            "end": {
+              "line": 1,
+              "character": 17
+            }
+          }
+        },
+        {
+          "uri": "{{ROOT_URI}}/impl/src/index.ts",
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 13
+            },
+            "end": {
+              "line": 2,
+              "character": 19
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

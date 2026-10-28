@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"bytes"
@@ -14,8 +14,8 @@ import (
 	"unicode/utf8"
 	"unsafe"
 
-	"github.com/dop251/goja/parser"
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/parser"
+	"github.com/totoer/goya/unistring"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 	"golang.org/x/text/transform"

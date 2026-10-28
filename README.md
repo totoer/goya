@@ -1,305 +1,159 @@
-goja
-====
+# goya — Native TypeScript interpreter in Go
 
-ECMAScript 5.1(+) implementation in Go.
+goya is a TypeScript-only interpreter in Go, derived from [Goja](https://github.com/dop251/goja).
+Its Go module is `github.com/totoer/goya`.
+Parsing, type checking, compilation and execution run inside the Go process with
+`CGO_ENABLED=0`. Runtime operation requires no Node.js, external `tsc`, child
+process, network connection or compiler download. Go 1.27 or newer is required.
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/dop251/goja.svg)](https://pkg.go.dev/github.com/dop251/goja)
+The pinned language version is TypeScript **7.0.2**, with an **ES2025** standard
+environment. The checked compiler, runtime and embedding compatibility gates
+have passed. Optional proposal libraries have separate availability; Temporal
+from `esnext` is checked but cannot execute. See the
+[compatibility inventory](docs/typescript-compatibility.md) and
+[verification record](docs/typescript-release.md). This is a breaking replacement
+of the former JavaScript API.
 
-Goja is an implementation of ECMAScript 5.1 in pure Go with emphasis on standard compliance and
-performance.
+JavaScript input and the former JavaScript compilation API are not retained.
+The execution profile has no built-in `eval` or function construction from
+strings. Only the Go application compiles sources. `import()` selects prepared
+modules; it never loads or compiles a new source during execution.
 
-This project was largely inspired by [otto](https://github.com/robertkrimen/otto).
+## Embed a typed Go API
 
-The minimum required Go version is 1.26.
-
-Features
---------
-
- * Full ECMAScript 5.1 support (including regex and strict mode).
- * Passes nearly all [tc39 tests](https://github.com/tc39/test262) for the features implemented so far. The goal is to
-   pass all of them. See .tc39_test262_checkout.sh for the latest working commit id.
- * Capable of running Babel, Typescript compiler and pretty much anything written in ES5.
- * Sourcemaps.
- * Most of ES6 functionality, still work in progress, see https://github.com/dop251/goja/milestone/1?closed=1
-
-Known incompatibilities and caveats
------------------------------------
-
-### JSON
-`JSON.parse()` uses the standard Go library which operates in UTF-8. Therefore, it cannot correctly parse broken UTF-16
-surrogate pairs, for example:
-
-```javascript
-JSON.parse(`"\\uD800"`).charCodeAt(0).toString(16) // returns "fffd" instead of "d800"
-```
-
-### Date
-Conversion from calendar date to epoch timestamp uses the standard Go library which uses `int`, rather than `float` as per
-ECMAScript specification. This means if you pass arguments that overflow int to the `Date()` constructor or  if there is
-an integer overflow, the result will be incorrect, for example:
-
-```javascript
-Date.UTC(1970, 0, 1, 80063993375, 29, 1, -288230376151711740) // returns 29256 instead of 29312
-```
-
-FAQ
----
-
-### How fast is it?
-
-Although it's faster than many scripting language implementations in Go I have seen
-(for example it's 6-7 times faster than otto on average) it is not a
-replacement for V8 or SpiderMonkey or any other general-purpose JavaScript engine.
-You can find some benchmarks [here](https://github.com/dop251/goja/issues/2).
-
-### Why would I want to use it over a V8 wrapper?
-
-It greatly depends on your usage scenario. If most of the work is done in javascript
-(for example crypto or any other heavy calculations) you are definitely better off with V8.
-
-If you need a scripting language that drives an engine written in Go so that
-you need to make frequent calls between Go and javascript passing complex data structures
-then the cgo overhead may outweigh the benefits of having a faster javascript engine.
-
-Because it's written in pure Go there are no cgo dependencies, it's very easy to build and it
-should run on any platform supported by Go.
-
-It gives you a much better control over execution environment so can be useful for research.
-
-### Is it goroutine-safe?
-
-No. An instance of goja.Runtime can only be used by a single goroutine
-at a time. You can create as many instances of Runtime as you like but
-it's not possible to pass object values between runtimes.
-
-### Where is setTimeout()/setInterval()?
-
-setTimeout() and setInterval() are common functions to provide concurrent execution in ECMAScript environments, but the two functions are not part of the ECMAScript standard.
-Browsers and NodeJS just happen to provide similar, but not identical, functions. The hosting application need to control the environment for concurrent execution, e.g. an event loop, and supply the functionality to script code.
-
-There is a [separate project](https://github.com/dop251/goja_nodejs) aimed at providing some NodeJS functionality,
-and it includes an event loop.
-
-### Can you implement (feature X from ES6 or higher)?
-
-I will be adding features in their dependency order and as quickly as time permits. Please do not ask
-for ETAs. Features that are open in the [milestone](https://github.com/dop251/goja/milestone/1) are either in progress
-or will be worked on next.
-
-The ongoing work is done in separate feature branches which are merged into master when appropriate.
-Every commit in these branches represents a relatively stable state (i.e. it compiles and passes all enabled tc39 tests),
-however because the version of tc39 tests I use is quite old, it may be not as well tested as the ES5.1 functionality. Because there are (usually) no major breaking changes between ECMAScript revisions
-it should not break your existing code. You are encouraged to give it a try and report any bugs found. Please do not submit fixes though without discussing it first, as the code could be changed in the meantime.
-
-### How do I contribute?
-
-Before submitting a pull request please make sure that:
-
-- You followed ECMA standard as close as possible. If adding a new feature make sure you've read the specification,
-do not just base it on a couple of examples that work fine.
-- Your change does not have a significant negative impact on performance (unless it's a bugfix and it's unavoidable)
-- It passes all relevant tc39 tests.
-
-Current Status
---------------
-
- * There should be no breaking changes in the API, however it may be extended.
- * Some of the AnnexB functionality is missing.
-
-Basic Example
--------------
-
-Run JavaScript and get the result value.
+Register an API once to provide both its TypeScript contract and implementation:
 
 ```go
-vm := goja.New()
-v, err := vm.RunString("2 + 2")
-if err != nil {
-    panic(err)
+import (
+    "context"
+
+    "github.com/totoer/goya"
+)
+
+ctx := context.Background()
+registry := goya.NewRegistry()
+if err := registry.Register("add", func(a, b float64) float64 {
+    return a + b
+}); err != nil {
+    return err
 }
-if num := v.Export().(int64); num != 4 {
-    panic(num)
-}
+environment, err := registry.Freeze(ctx)
+if err != nil { return err }
+
+project := goya.Project{Files: map[string]string{
+    "/main.ts": `const answer: number = add(20, 22); answer;`,
+}}
+program, diagnostics, err := goya.Compile(ctx, project, environment, nil)
+if err != nil { return err }
+if program == nil { return &goya.CompilationError{Diagnostics: diagnostics} }
+
+runtime := goya.New()
+if err := environment.Bind(runtime); err != nil { return err }
+value, err := runtime.RunProgram(program)
+// value.ToInteger() == 42
 ```
 
-Passing Values to JS
---------------------
-Any Go value can be passed to JS using Runtime.ToValue() method. See the method's [documentation](https://pkg.go.dev/github.com/dop251/goja#Runtime.ToValue) for more details.
+`Check(ctx, project, environment, options)` exposes the same type analysis without
+creating a VM or calling Go implementations. Compile always checks. Syntax,
+type, declaration, configuration or backend errors produce diagnostics and no
+Program. Before execution, RunProgram verifies the required host schemas; missing
+or incompatible bindings reject startup before user initializers run.
 
-Exporting Values from JS
-------------------------
-A JS value can be exported into its default Go representation using Value.Export() method.
+`RunString` and `RunScript` also check TypeScript, using the bound Environment.
+`MustCompile` takes the same arguments as Compile. The old Compile signature,
+Parse, CompileAST and SetParserOptions APIs have been removed. See the
+[embedding and migration guide](docs/typescript-embedding.md) for reflection,
+explicit adapters, numeric conversion policies and diagnostics.
 
-Alternatively it can be exported into a specific Go variable using [Runtime.ExportTo()](https://pkg.go.dev/github.com/dop251/goja#Runtime.ExportTo) method.
+## Embedded language service
 
-Within a single export operation the same Object will be represented by the same Go value (either the same map, slice or
-a pointer to the same struct). This includes circular objects and makes it possible to export them.
+`lsp.NewSession` provides editor operations directly over a virtual `Project` and
+frozen `Environment`. `lsp.Serve` exposes the same core through LSP on streams
+supplied by the application, for VS Code, Neovim and other clients. The pure-Go
+service handles incomplete TS/TSX without running the VM or an external tsserver;
+the host owns applying edits and reporting subsequent document changes.
 
-Calling JS functions from Go
-----------------------------
-There are 2 approaches:
+Editor compatibility is verified against typescript-language-server 6.0.2 for the
+supported TypeScript/TSX profile. See the [SDK and LSP guide](docs/typescript-lsp.md),
+[direct session example](examples/typescript-lsp-session/main.go),
+[stream example](examples/typescript-lsp-serve/main.go), and
+[validation record](docs/typescript-lsp-validation.md).
 
-- Using [AssertFunction()](https://pkg.go.dev/github.com/dop251/goja#AssertFunction):
-```go
-const SCRIPT = `
-function sum(a, b) {
-    return +a + b;
-}
-`
+## Projects and external capabilities
 
-vm := goja.New()
-_, err := vm.RunString(SCRIPT)
-if err != nil {
-    panic(err)
-}
-sum, ok := goja.AssertFunction(vm.Get("sum"))
-if !ok {
-    panic("Not a function")
-}
+Project paths are virtual identifiers. Supply TS/TSX files, declarations and
+package metadata through Project.Files or an application SourceResolver. The
+engine never searches the operating system filesystem for a module. Checked AST
+lowers directly to VM operations, without generated JavaScript text or a second
+JavaScript parser.
 
-res, err := sum(goja.Undefined(), vm.ToValue(40), vm.ToValue(2))
-if err != nil {
-    panic(err)
-}
-fmt.Println(res)
-// Output: 42
-```
-- Using [Runtime.ExportTo()](https://pkg.go.dev/github.com/dop251/goja#Runtime.ExportTo):
-```go
-const SCRIPT = `
-function sum(a, b) {
-    return +a + b;
-}
-`
+Static and dynamic imports, live bindings, module cycles, top-level await,
+CommonJS interop, deferred imports and explicit JSON modules use the internal
+linker. Supply extra computed-import targets through `Project.ModuleRoots`;
+static and literal dynamic dependencies are included automatically. Registered
+host modules share the typed binding contract. A Program can
+be reused across compatible runtimes; each runtime owns its module state.
 
-vm := goja.New()
-_, err := vm.RunString(SCRIPT)
-if err != nil {
-    panic(err)
-}
+The default environment provides language intrinsics and no DOM, Node, console,
+process, global require, filesystem, networking, load/readFile or timers. External
+capabilities come from the Go application's registry. A JSX factory/runtime or
+metadata hook is also supplied explicitly. See [language options](docs/typescript-language.md).
+The [runtime guide](docs/typescript-runtime.md) covers ownership, promise jobs,
+interruption and source-level exceptions.
 
-var sum func(int, int) int
-err = vm.ExportTo(vm.Get("sum"), &sum)
-if err != nil {
-    panic(err)
-}
+## CLI
 
-fmt.Println(sum(40, 2)) // note, _this_ value in the function will be undefined.
-// Output: 42
+```sh
+CGO_ENABLED=0 go build -o /tmp/goya-ts ./goya
+printf 'const answer: number = 42; answer;\n' | /tmp/goya-ts -check -
+printf 'const answer: number = 42; answer;\n' | /tmp/goya-ts -
+/tmp/goya-ts -check -project-root ./project ./project/main.ts
+/tmp/goya-ts -project-root ./project ./project/main.ts
 ```
 
-The first one is more low level and allows specifying _this_ value, whereas the second one makes the function look like
-a normal Go function.
+For a file entry point, the Go CLI snapshots its containing directory, or the
+explicit `-project-root`, into a virtual source catalog. It reads TypeScript and
+JSON files, skips hidden subdirectories and symlinks, and exposes no file API to
+scripts. Imports cannot leave the supplied catalog. Stdin is a single virtual
+`/stdin.ts`. Checking errors print structured source locations and exit nonzero.
+The CLI runs without implicit external registrations. A pending module promise
+requires an application event loop and is reported as an error by this CLI.
 
-Mapping struct field and method names
--------------------------------------
-By default, the names are passed through as is which means they are capitalised. This does not match
-the standard JavaScript naming convention, so if you need to make your JS code look more natural or if you are
-dealing with a 3rd party library, you can use a [FieldNameMapper](https://pkg.go.dev/github.com/dop251/goja#FieldNameMapper):
+Runnable embedding examples:
 
-```go
-vm := goja.New()
-vm.SetFieldNameMapper(TagFieldNameMapper("json", true))
-type S struct {
-    Field int `json:"field"`
-}
-vm.Set("s", S{Field: 42})
-res, _ := vm.RunString(`s.field`) // without the mapper it would have been s.Field
-fmt.Println(res.Export())
-// Output: 42
+```sh
+CGO_ENABLED=0 go run ./examples/typescript-check
+CGO_ENABLED=0 go run ./examples/typescript-host
+CGO_ENABLED=0 go run ./examples/typescript-language
+CGO_ENABLED=0 go run ./examples/typescript-modules
+CGO_ENABLED=0 go run ./examples/typescript-lifecycle
 ```
 
-There are two standard mappers: [TagFieldNameMapper](https://pkg.go.dev/github.com/dop251/goja#TagFieldNameMapper) and
-[UncapFieldNameMapper](https://pkg.go.dev/github.com/dop251/goja#UncapFieldNameMapper), or you can use your own implementation.
+## Development and provenance
 
-Native Constructors
--------------------
-
-In order to implement a constructor function in Go use `func (goja.ConstructorCall) *goja.Object`.
-See [Runtime.ToValue()](https://pkg.go.dev/github.com/dop251/goja#Runtime.ToValue) documentation for more details.
-
-Regular Expressions
--------------------
-
-Goja uses the embedded Go regexp library where possible, otherwise it falls back to [regexp2](https://github.com/dlclark/regexp2).
-
-Exceptions
-----------
-
-Any exception thrown in JavaScript is returned as an error of type *Exception. It is possible to extract the value thrown
-by using the Value() method:
-
-```go
-vm := goja.New()
-_, err := vm.RunString(`
-
-throw("Test");
-
-`)
-
-if jserr, ok := err.(*Exception); ok {
-    if jserr.Value().Export() != "Test" {
-        panic("wrong value")
-    }
-} else {
-    panic("wrong type")
-}
+```sh
+CGO_ENABLED=0 go test ./...
+CGO_ENABLED=0 go run ./internal/tsfrontend/cmd/inventory -check
 ```
 
-If a native Go function panics with a Value, it is thrown as a Javascript exception (and therefore can be caught):
+The [backend guide](docs/typescript-backend.md) describes the checked-analysis
+boundary, IR, module runtime and conformance fixtures. Historical VM tests retain
+test-only helpers for original operation regressions; those helpers are absent
+from production builds.
 
-```go
-var vm *Runtime
+The official TypeScript Go sources, declarations and generated assets are pinned
+with release provenance and checksums in
+[manifest.json](internal/tsfrontend/manifest.json). Import/update instructions and
+license notices are in [the frontend guide](internal/tsfrontend/README.md).
+The Goja base is [MIT licensed](LICENSE); vendored TypeScript code retains its
+[Apache 2.0 license](internal/tsfrontend/LICENSE.typescript) and upstream notices.
+Intl data retains its [Unicode V3 license](internal/cldrdata/LICENSE), with
+[CLDR provenance and generation instructions](docs/typescript-intl.md).
+Embedded [IANA timezone data](internal/tzdata/manifest.json) retains the
+[distribution notice](internal/tzdata/LICENSE) and [Apache license](internal/tzdata/LICENSE_APACHE).
+Unicode 17 segmentation/category data retains its [Unicode V3 license](internal/unicode17/LICENSE);
+pure-Go uax29 retains its [MIT license](internal/unicode17/LICENSE.uax29).
+Other Go dependencies and their versions are recorded in go.mod and go.sum.
 
-func Test() {
-    panic(vm.ToValue("Error"))
-}
-
-vm = goja.New()
-vm.Set("Test", Test)
-_, err := vm.RunString(`
-
-try {
-    Test();
-} catch(e) {
-    if (e !== "Error") {
-        throw e;
-    }
-}
-
-`)
-
-if err != nil {
-    panic(err)
-}
-```
-
-Interrupting
-------------
-
-```go
-func TestInterrupt(t *testing.T) {
-    const SCRIPT = `
-    var i = 0;
-    for (;;) {
-        i++;
-    }
-    `
-
-    vm := goja.New()
-    time.AfterFunc(200 * time.Millisecond, func() {
-        vm.Interrupt("halt")
-    })
-
-    _, err := vm.RunString(SCRIPT)
-    if err == nil {
-        t.Fatal("Err is nil")
-    }
-    // err is of type *InterruptError and its Value() method returns whatever has been passed to vm.Interrupt()
-}
-```
-
-NodeJS Compatibility
---------------------
-
-There is a [separate project](https://github.com/dop251/goja_nodejs) aimed at providing some of the NodeJS functionality.
+Dependency license texts and their checksums are retained in the
+[third-party notices](docs/typescript-third-party-notices.md).

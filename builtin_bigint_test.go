@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"math/big"
@@ -16,7 +16,7 @@ func TestBigIntExportTo(t *testing.T) {
 	vm := New()
 
 	t.Run("bigint exportType", func(t *testing.T) {
-		v, err := vm.RunString(`BigInt(Number.MAX_SAFE_INTEGER + 10);`)
+		v, err := vm.runVMString(`BigInt(Number.MAX_SAFE_INTEGER + 10);`)
 		if err != nil {
 			t.Fatal(err)
 		}

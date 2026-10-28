@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.tsx": "declare namespace JSX { interface IntrinsicElements { box: {value: number} } }\nfunction Item(props: {value: number}) { return <box value={props.value}/>; }\nconst node = <Item value={Math.max(1, 2)}></Item>;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.tsx"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "semantic-tsx-expressions",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx",
+          "languageId": "typescriptreact",
+          "version": 1,
+          "text": "declare namespace JSX { interface IntrinsicElements { box: {value: number} } }\nfunction Item(props: {value: number}) { return <box value={props.value}/>; }\nconst node = <Item value={Math.max(1, 2)}></Item>;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/semanticTokens/full",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        }
+      },
+      "expected": {
+        "data": [
+          0,
+          18,
+          3,
+          3,
+          1,
+          0,
+          16,
+          17,
+          2,
+          1,
+          0,
+          20,
+          3,
+          9,
+          1,
+          0,
+          6,
+          5,
+          9,
+          1,
+          1,
+          9,
+          4,
+          10,
+          1,
+          0,
+          5,
+          5,
+          6,
+          1,
+          0,
+          8,
+          5,
+          9,
+          1,
+          0,
+          37,
+          5,
+          6,
+          0,
+          0,
+          6,
+          5,
+          9,
+          0,
+          1,
+          6,
+          4,
+          7,
+          9,
+          0,
+          20,
+          4,
+          7,
+          16,
+          0,
+          5,
+          3,
+          11,
+          16
+        ]
+      }
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

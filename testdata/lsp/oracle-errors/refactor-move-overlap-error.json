@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "name": "refactor-move-overlap-error",
+  "project": {
+    "files": {
+      "/main.ts": "const first = 1;\nimport { imported } from \"./dep\";\nconst second = 2;\nexport const result = first + second + imported;\n",
+      "/dep.ts": "export const imported = 3;\n",
+      "/tsconfig.json": "{\n  \"compilerOptions\": {\n    \"strict\": true,\n    \"target\": \"es2025\",\n    \"module\": \"esnext\",\n    \"moduleResolution\": \"bundler\",\n    \"lib\": [\n      \"es2025\"\n    ],\n    \"types\": [],\n    \"noEmit\": true\n  },\n  \"files\": [\n    \"main.ts\",\n    \"dep.ts\"\n  ]\n}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts",
+      "/dep.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    },
+    "config_file": "/tsconfig.json"
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "const first = 1;\nimport { imported } from \"./dep\";\nconst second = 2;\nexport const result = first + second + imported;\n"
+        }
+      }
+    },
+    {
+      "method": "workspace/executeCommand",
+      "params": {
+        "command": "_typescript.applyRefactoring",
+        "arguments": [
+          {
+            "file": "{{ROOT_PATH}}/main.ts",
+            "startLine": 1,
+            "startOffset": 1,
+            "endLine": 3,
+            "endOffset": 18,
+            "refactor": "Move to a new file",
+            "action": "Move to a new file"
+          }
+        ]
+      },
+      "expected_error": {
+        "code": 1,
+        "message": "<main> TypeScript Server Error (6.0.3)\nDebug Failure. False expression: Changes overlap\r\nVerbose Debug Information: {\"pos\":0,\"end\":69} and {\"pos\":51,\"end\":51}\nError: Debug Failure. False expression: Changes overlap\r\nVerbose Debug Information: {\"pos\":0,\"end\":69} and {\"pos\":51,\"end\":51}\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180564:15\n    at mapDefined (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:2610:22)\n    at Object.getTextChangesFromChanges (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180560:12)\n    at _ChangeTracker.getChanges (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180457:35)\n    at _ChangeTracker.with (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:179936:20)\n    at Object.getRefactorEditsToMoveToNewFile [as getEditsForAction] (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:148967:60)\n    at Object.getEditsForRefactor (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:147072:31)\n    at Object.getEditsForRefactor2 [as getEditsForRefactor] (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:154595:32)\n    at IpcIOSession.getEditsForRefactor (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197170:49)\n    at getEditsForRefactor (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:195314:43)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197591:15\n    at IpcIOSession.executeWithRequestId (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197580:14)\n    at IpcIOSession.executeCommand (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197589:29)\n    at IpcIOSession.onMessage (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197637:68)\n    at process.<anonymous> (/private/tmp/goya-lsp-reference/ts-package/package/lib/_tsserver.js:519:14)\n    at process.emit (node:events:514:20)\n    at emit (node:internal/child_process:1004:14)\n    at process.processTicksAndRejections (node:internal/process/task_queues:91:21)"
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          },
+          "disabledSupport": true
+        }
+      },
+      "workspace": {
+        "applyEdit": true,
+        "workspaceEdit": {
+          "documentChanges": true,
+          "resourceOperations": [
+            "create",
+            "rename",
+            "delete"
+          ]
+        }
+      }
+    },
+    "options": {
+      "supportsMoveToFileCodeAction": true
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

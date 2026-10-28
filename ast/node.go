@@ -9,9 +9,9 @@ node types are concerned) and may change in the future.
 package ast
 
 import (
-	"github.com/dop251/goja/file"
-	"github.com/dop251/goja/token"
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/file"
+	"github.com/totoer/goya/token"
+	"github.com/totoer/goya/unistring"
 )
 
 type PropertyKind string
@@ -151,6 +151,13 @@ type (
 		DeclarationList []*VariableDeclaration
 
 		Async, Generator bool
+		// NormalizedAsyncGenerator identifies a checked async generator whose
+		// body has been normalized to private promise/iterator operations.
+		NormalizedAsyncGenerator bool
+		NormalizedAsync          bool
+		// Module marks the internal module factory, which has no arguments binding.
+		Module   bool
+		NameHint unistring.String
 	}
 
 	ClassLiteral struct {
@@ -160,6 +167,7 @@ type (
 		SuperClass Expression
 		Body       []ClassElement
 		Source     string
+		NameHint   unistring.String
 	}
 
 	ConciseBody interface {
@@ -179,6 +187,8 @@ type (
 		DeclarationList []*VariableDeclaration
 		End             file.Idx
 		Async           bool
+		NormalizedAsync bool
+		NameHint        unistring.String
 	}
 
 	Identifier struct {

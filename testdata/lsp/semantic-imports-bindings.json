@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "import {value as imported, Box} from \"./helper\";\nconst object = {method: () => imported, value: imported};\nconst {value: local} = object;\nobject.method(); new Box();\n",
+      "/helper.ts": "export const value = 1;\nexport class Box {}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "semantic-imports-bindings",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "import {value as imported, Box} from \"./helper\";\nconst object = {method: () => imported, value: imported};\nconst {value: local} = object;\nobject.method(); new Box();\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/semanticTokens/full",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "data": [
+          1,
+          6,
+          6,
+          7,
+          9,
+          0,
+          10,
+          6,
+          11,
+          1,
+          0,
+          14,
+          8,
+          7,
+          8,
+          0,
+          10,
+          5,
+          9,
+          1,
+          0,
+          7,
+          8,
+          7,
+          8,
+          1,
+          7,
+          5,
+          9,
+          0,
+          0,
+          7,
+          5,
+          7,
+          9,
+          0,
+          9,
+          6,
+          7,
+          8,
+          1,
+          0,
+          6,
+          7,
+          8,
+          0,
+          7,
+          6,
+          11,
+          0,
+          0,
+          14,
+          3,
+          0,
+          0
+        ]
+      }
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

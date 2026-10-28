@@ -1,11 +1,11 @@
-package goja
+package goya
 
 import (
 	"testing"
 
-	"github.com/dop251/goja/file"
-	"github.com/dop251/goja/parser"
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/file"
+	"github.com/totoer/goya/parser"
+	"github.com/totoer/goya/unistring"
 )
 
 func TestTaggedTemplateArgExport(t *testing.T) {
@@ -13,7 +13,7 @@ func TestTaggedTemplateArgExport(t *testing.T) {
 	vm.Set("f", func(v Value) {
 		v.Export()
 	})
-	vm.RunString("f`test`")
+	vm.runVMString("f`test`")
 }
 
 func TestVM1(t *testing.T) {
@@ -194,7 +194,7 @@ fib(35);
 	}
 
 	c := newCompiler()
-	c.compile(prg, false, true, nil)
+	c.compile(prg, false, true)
 	c.p.dumpCode(b.Logf)
 
 	r := &Runtime{}
@@ -229,11 +229,11 @@ func BenchmarkEmptyLoop(b *testing.B) {
 	`
 	b.StopTimer()
 	vm := New()
-	prg := MustCompile("test.js", SCRIPT, false)
+	prg := mustCompileVMFixture("test.js", SCRIPT, false)
 	// prg.dumpCode(log.Printf)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		vm.RunProgram(prg)
+		vm.runVMProgram(prg)
 	}
 }
 
@@ -262,9 +262,9 @@ func BenchmarkFuncCall(b *testing.B) {
 	b.StopTimer()
 
 	vm := New()
-	prg := MustCompile("test.js", SCRIPT, false)
+	prg := mustCompileVMFixture("test.js", SCRIPT, false)
 
-	vm.RunProgram(prg)
+	vm.runVMProgram(prg)
 	if f, ok := AssertFunction(vm.Get("f")); ok {
 		b.StartTimer()
 		for i := 0; i < b.N; i++ {

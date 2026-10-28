@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "name": "imports-ordinal-insensitive",
+  "project": {
+    "files": {
+      "/main.ts": "import { 𐐀, 切, İtem, item, ΟΣ, Οσ } from \"./lib\";\nexport const result = item;\n",
+      "/lib.ts": "export const 𐐀=1, 切=2, İtem=3, item=4, ΟΣ=5, Οσ=6;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "import { 𐐀, 切, İtem, item, ΟΣ, Οσ } from \"./lib\";\nexport const result = item;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 9
+              },
+              "end": {
+                "line": 0,
+                "character": 11
+              }
+            },
+            "message": "'𐐀' is declared but its value is never read.",
+            "severity": 4,
+            "code": 6133,
+            "source": "typescript"
+          },
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 13
+              },
+              "end": {
+                "line": 0,
+                "character": 14
+              }
+            },
+            "message": "'切' is declared but its value is never read.",
+            "severity": 4,
+            "code": 6133,
+            "source": "typescript"
+          },
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 16
+              },
+              "end": {
+                "line": 0,
+                "character": 20
+              }
+            },
+            "message": "'İtem' is declared but its value is never read.",
+            "severity": 4,
+            "code": 6133,
+            "source": "typescript"
+          },
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 28
+              },
+              "end": {
+                "line": 0,
+                "character": 30
+              }
+            },
+            "message": "'ΟΣ' is declared but its value is never read.",
+            "severity": 4,
+            "code": 6133,
+            "source": "typescript"
+          },
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 32
+              },
+              "end": {
+                "line": 0,
+                "character": 34
+              }
+            },
+            "message": "'Οσ' is declared but its value is never read.",
+            "severity": 4,
+            "code": 6133,
+            "source": "typescript"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "source.sortImports.ts"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Sort Imports",
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 0
+                      }
+                    },
+                    "newText": "import { item, İtem, ΟΣ, Οσ, 𐐀, 切 } from \"./lib\";\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "kind": "source.sortImports.ts"
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    },
+    "options": {
+      "preferences": {
+        "organizeImportsCollation": "ordinal",
+        "organizeImportsIgnoreCase": true
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

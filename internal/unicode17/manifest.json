@@ -1,0 +1,13 @@
+{
+  "UnicodeVersion": "17.0.0",
+  "ArchiveURL": "https://www.unicode.org/Public/17.0.0/ucd/UCD.zip",
+  "ArchiveSHA256": "2066d1909b2ea93916ce092da1c0ee4808ea3ef8407c94b4f14f5b7eb263d28e",
+  "CategoriesSHA256": "1d295258a71612907a2a3f267726bd88c0f88939ef23492be5412c497f831213",
+  "Sources": {
+    "ReadMe.txt": "9fe1a90bd32659d7953616283dc2bffaa165518aae9ace026040c42c559ba606",
+    "UnicodeData.txt": "2e1efc1dcb59c575eedf5ccae60f95229f706ee6d031835247d843c11d96470c",
+    "auxiliary/GraphemeBreakTest.txt": "e2d134d2c52919bace503ebb6a551c1855fe1a1faec18478c78fff254a1793ec",
+    "auxiliary/SentenceBreakTest.txt": "12cb47d028ded0c1cb8a28558f95479cbcd24559c46977015c82f3b50a1cc6e4",
+    "auxiliary/WordBreakTest.txt": "1de23a75f37904abc7d206239ee8d34f8fdf0fb4ab32a7174dfbabbde25419b2"
+  }
+}

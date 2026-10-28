@@ -1,7 +1,7 @@
-package goja
+package goya
 
 import (
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 type nativeProxyHandler struct {
@@ -310,7 +310,7 @@ type ProxyTrapConfig struct {
 	// A combined has+get trap equivalent to calling the Has and Get traps separately (e.g. for
 	// resolving bindings in a 'with' statement). It allows implementing the two steps in a single
 	// Go call. Returning nil means the property does not exist; a property with the value
-	// undefined must be returned as goja.Undefined() rather than nil. The same invariant checks
+	// undefined must be returned as goya.Undefined() rather than nil. The same invariant checks
 	// are applied to the result as to the separate Has and Get traps. If not set, the Has and Get
 	// traps are used separately.
 	HasAndGet func(target *Object, property string, receiver Value) (value Value)

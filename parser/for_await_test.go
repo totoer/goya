@@ -3,7 +3,7 @@ package parser
 import (
 	"testing"
 
-	"github.com/dop251/goja/ast"
+	"github.com/totoer/goya/ast"
 )
 
 func TestForAwaitOfSyntax(t *testing.T) {

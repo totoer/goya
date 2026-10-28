@@ -1,10 +1,10 @@
-package goja
+package goya
 
 import (
 	"fmt"
 	"reflect"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 // Proxy is a Go wrapper around ECMAScript Proxy. Calling Runtime.ToValue() on it

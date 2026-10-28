@@ -1,10 +1,10 @@
-package goja
+package goya
 
 import (
 	"fmt"
 	"reflect"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 type resultType uint8

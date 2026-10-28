@@ -1,0 +1,153 @@
+{
+  "typescript_version": "7.0.2",
+  "status": "19 diagnostic fixtures matched checksum-verified pinned upstream; final integration task 10.1 passed",
+  "cases": [
+    {
+      "id": "assignment-error",
+      "files": {
+        "main.ts": "const count: number = \"hello\";"
+      },
+      "codes": [
+        2322
+      ]
+    },
+    {
+      "id": "inference-error",
+      "files": {
+        "main.ts": "let value = 42; value = \"hello\";"
+      },
+      "codes": [
+        2322
+      ]
+    },
+    {
+      "id": "recursive-types",
+      "files": {
+        "main.ts": "interface Link { value: number; next: Link | null; } const value: Link = {value:42,next:null};"
+      },
+      "codes": []
+    },
+    {
+      "id": "generics",
+      "files": {
+        "main.ts": "function identity<T>(value:T):T { return value; } const value: number = identity(\"hello\");"
+      },
+      "codes": [
+        2322
+      ]
+    },
+    {
+      "id": "conditional-infer",
+      "files": {
+        "main.ts": "type Inner<T> = T extends {value: infer V} ? V : never; const value: Inner<{value:number}> = 42;"
+      },
+      "codes": []
+    },
+    {
+      "id": "mapped-types",
+      "files": {
+        "main.ts": "type Read<T> = {readonly [K in keyof T]: T[K]}; const value: Read<{a:number}> = {a:42};"
+      },
+      "codes": []
+    },
+    {
+      "id": "template-literal-types",
+      "files": {
+        "main.ts": "type EventName = `on${\"Open\" | \"Close\"}`; const event: EventName = \"onOther\";"
+      },
+      "codes": [
+        2322
+      ]
+    },
+    {
+      "id": "narrowing",
+      "files": {
+        "main.ts": "type V = {kind:\"number\",value:number} | {kind:\"text\",value:string}; function read(value:V):number { return value.kind === \"number\" ? value.value : value.value.length; }"
+      },
+      "codes": []
+    },
+    {
+      "id": "overloads",
+      "files": {
+        "main.ts": "function echo(value:number):number; function echo(value:string):string; function echo(value:number|string) { return value; } const value:string = echo(\"hello\");"
+      },
+      "codes": []
+    },
+    {
+      "id": "structural-typing",
+      "files": {
+        "main.ts": "interface Named {name:string}; const value = {name:\"a\",extra:42}; const named:Named = value;"
+      },
+      "codes": []
+    },
+    {
+      "id": "strict-nullability",
+      "files": {
+        "main.ts": "const value: number = null;"
+      },
+      "codes": [
+        2322
+      ]
+    },
+    {
+      "id": "strict-implicit-any",
+      "files": {
+        "main.ts": "function double(value) { return value * 2; }"
+      },
+      "codes": [
+        7006
+      ]
+    },
+    {
+      "id": "explicit-any",
+      "files": {
+        "main.ts": "const value:any = \"hello\"; const count:number = value;"
+      },
+      "codes": []
+    },
+    {
+      "id": "assertion",
+      "files": {
+        "main.ts": "const value:unknown = \"hello\"; const count = value as number;"
+      },
+      "codes": []
+    },
+    {
+      "id": "satisfies",
+      "files": {
+        "main.ts": "const value = {answer:42} satisfies {answer:number};"
+      },
+      "codes": []
+    },
+    {
+      "id": "tuple-types",
+      "files": {
+        "main.ts": "const value: [string,number] = [\"answer\",42];"
+      },
+      "codes": []
+    },
+    {
+      "id": "indexed-access",
+      "files": {
+        "main.ts": "type Item = {value:number}; const value: Item[\"value\"] = \"bad\";"
+      },
+      "codes": [
+        2322
+      ]
+    },
+    {
+      "id": "type-query",
+      "files": {
+        "main.ts": "const source = {value:42}; const target: typeof source = {value:42};"
+      },
+      "codes": []
+    },
+    {
+      "id": "declaration-merging",
+      "files": {
+        "main.ts": "interface Value {a:number}; interface Value {b:string}; const value:Value = {a:42,b:\"ok\"};"
+      },
+      "codes": []
+    }
+  ]
+}

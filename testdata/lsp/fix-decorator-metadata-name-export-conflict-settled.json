@@ -1,0 +1,412 @@
+{
+  "schema_version": 1,
+  "name": "fix-decorator-metadata-name-export-conflict-settled",
+  "project": {
+    "files": {
+      "/main.ts": "import { Shape as helper } from \"./helper\";\ndeclare function decorate(target: Function): void;\nexport { helper };\n@decorate\nexport class Box { constructor(public value: helper) {} }\n",
+      "/helper.ts": "export interface Shape { value: number; }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "isolatedModules": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "import { Shape as helper } from \"./helper\";\ndeclare function decorate(target: Function): void;\nexport { helper };\n@decorate\nexport class Box { constructor(public value: helper) {} }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 5000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 9
+              },
+              "end": {
+                "line": 2,
+                "character": 15
+              }
+            },
+            "message": "Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.",
+            "severity": 1,
+            "code": 1205,
+            "source": "typescript"
+          },
+          {
+            "range": {
+              "start": {
+                "line": 4,
+                "character": 45
+              },
+              "end": {
+                "line": 4,
+                "character": 51
+              }
+            },
+            "message": "A type referenced in a decorated signature must be imported with 'import type' or a namespace import when 'isolatedModules' and 'emitDecoratorMetadata' are enabled.",
+            "severity": 1,
+            "code": 1272,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 9
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 24
+                    }
+                  }
+                },
+                "message": "'helper' was imported here."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 5,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 4,
+                  "character": 45
+                },
+                "end": {
+                  "line": 4,
+                  "character": 51
+                }
+              },
+              "message": "A type referenced in a decorated signature must be imported with 'import type' or a namespace import when 'isolatedModules' and 'emitDecoratorMetadata' are enabled.",
+              "severity": 1,
+              "code": 1272,
+              "source": "typescript"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Convert named imports to namespace import",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixUnreferenceableDecoratorMetadata",
+                  "description": "Convert named imports to namespace import",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 8
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 27
+                          },
+                          "newText": "* as helper_1"
+                        },
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 1
+                          },
+                          "newText": "import { Shape as helper } from \"./helper\";\n"
+                        },
+                        {
+                          "start": {
+                            "line": 5,
+                            "offset": 46
+                          },
+                          "end": {
+                            "line": 5,
+                            "offset": 52
+                          },
+                          "newText": "helper_1.Shape"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 4,
+                      "character": 45
+                    },
+                    "end": {
+                      "line": 4,
+                      "character": 51
+                    }
+                  },
+                  "message": "A type referenced in a decorated signature must be imported with 'import type' or a namespace import when 'isolatedModules' and 'emitDecoratorMetadata' are enabled.",
+                  "severity": 1,
+                  "code": 1272,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 4,
+                  "character": 45
+                },
+                "end": {
+                  "line": 4,
+                  "character": 51
+                }
+              },
+              "message": "A type referenced in a decorated signature must be imported with 'import type' or a namespace import when 'isolatedModules' and 'emitDecoratorMetadata' are enabled.",
+              "severity": 1,
+              "code": 1272,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 7
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 26
+                      }
+                    },
+                    "newText": "* as helper_1"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 0
+                      }
+                    },
+                    "newText": "import { Shape as helper } from \"./helper\";\n"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 4,
+                        "character": 45
+                      },
+                      "end": {
+                        "line": 4,
+                        "character": 51
+                      }
+                    },
+                    "newText": "helper_1.Shape"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Use 'import type'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixUnreferenceableDecoratorMetadata",
+                  "description": "Use 'import type'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 8
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 8
+                          },
+                          "newText": "type "
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 4,
+                      "character": 45
+                    },
+                    "end": {
+                      "line": 4,
+                      "character": 51
+                    }
+                  },
+                  "message": "A type referenced in a decorated signature must be imported with 'import type' or a namespace import when 'isolatedModules' and 'emitDecoratorMetadata' are enabled.",
+                  "severity": 1,
+                  "code": 1272,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 4,
+                  "character": 45
+                },
+                "end": {
+                  "line": 4,
+                  "character": 51
+                }
+              },
+              "message": "A type referenced in a decorated signature must be imported with 'import type' or a namespace import when 'isolatedModules' and 'emitDecoratorMetadata' are enabled.",
+              "severity": 1,
+              "code": 1272,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 7
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 7
+                      }
+                    },
+                    "newText": "type "
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    1205
+  ],
+  "edited_compiler_error_reason": "The pinned conversion retains the original non-type-only re-export error 1205. Independently verified with TypeScript 6.0.3."
+}

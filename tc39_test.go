@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"errors"
@@ -71,7 +71,7 @@ var (
 		"test/built-ins/RegExp/unicode_restricted_character_class_escape.js":         true,
 		"test/annexB/built-ins/RegExp/prototype/compile/pattern-string-invalid-u.js": true,
 
-		// Because goja parser works in UTF-8 it is not possible to pass strings containing invalid UTF-16 code points.
+		// Because goya parser works in UTF-8 it is not possible to pass strings containing invalid UTF-16 code points.
 		// This is mitigated by escaping them as \uXXXX, however because of this the RegExp source becomes
 		// `\uXXXX` instead of `<the actual UTF-16 code point of XXXX>`.
 		// The resulting RegExp will work exactly the same, but it causes these two tests to fail.
@@ -434,7 +434,7 @@ func (ctx *tc39TestCtx) runTC39Test(name, src string, meta *tc39Meta, t testing.
 	_262.Set("createRealm", ctx.throwIgnorableTestError)
 	_262.Set("evalScript", func(call FunctionCall) Value {
 		script := call.Argument(0).String()
-		result, err := vm.RunString(script)
+		result, err := vm.runVMString(script)
 		if err != nil {
 			panic(err)
 		}
@@ -442,7 +442,7 @@ func (ctx *tc39TestCtx) runTC39Test(name, src string, meta *tc39Meta, t testing.
 	})
 	vm.Set("$262", _262)
 	vm.Set("IgnorableTestError", ignorableTestError)
-	vm.RunProgram(ctx.sabStub)
+	vm.runVMProgram(ctx.sabStub)
 	var out []string
 	async := meta.hasFlag("async")
 	if async {
@@ -550,6 +550,7 @@ func (ctx *tc39TestCtx) runTC39File(name string, t testing.TB) {
 	if meta.hasFlag("module") {
 		t.Skip("module")
 	}
+	skipSourceCompilationFixture(t, src)
 	if meta.Es5id == "" {
 		for _, feature := range meta.Features {
 			if isFeatureBlackListException(feature, name) {
@@ -595,7 +596,7 @@ func (ctx *tc39TestCtx) runTC39File(name string, t testing.TB) {
 
 func (ctx *tc39TestCtx) init() {
 	ctx.prgCache = make(map[string]*Program)
-	ctx.sabStub = MustCompile("sabStub.js", `
+	ctx.sabStub = mustCompileVMFixture("sabStub.js", `
 		Object.defineProperty(this, "SharedArrayBuffer", {
 			get: function() {
 				throw IgnorableTestError;
@@ -623,7 +624,7 @@ func (ctx *tc39TestCtx) compile(base, name string) (*Program, error) {
 		}
 
 		str := string(b)
-		prg, err = Compile(name, str, false)
+		prg, err = compileVMFixture(name, str, false)
 		if err != nil {
 			return nil, err
 		}
@@ -638,7 +639,7 @@ func (ctx *tc39TestCtx) runFile(base, name string, vm *Runtime) error {
 	if err != nil {
 		return err
 	}
-	_, err = vm.RunProgram(prg)
+	_, err = vm.runVMProgram(prg)
 	return err
 }
 
@@ -662,14 +663,14 @@ func (ctx *tc39TestCtx) runTC39Script(name, src string, includes []string, vm *R
 	}
 
 	var p *Program
-	p, err = Compile(name, src, false)
+	p, err = compileVMFixture(name, src, false)
 
 	if err != nil {
 		return
 	}
 
 	early = false
-	_, err = vm.RunProgram(p)
+	_, err = vm.runVMProgram(p)
 
 	return
 }

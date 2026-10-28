@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.tsx": "declare namespace JSX { interface Element {} }\nfunction View(props:{title?:string}):JSX.Element { return {}; }\nconst one=<View title=\"a\"></View>;\nconst two=<View />;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.tsx"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "jsx": "preserve"
+    }
+  },
+  "name": "highlights-tsx-tags",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx",
+          "languageId": "typescriptreact",
+          "version": 1,
+          "text": "declare namespace JSX { interface Element {} }\nfunction View(props:{title?:string}):JSX.Element { return {}; }\nconst one=<View title=\"a\"></View>;\nconst two=<View />;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/documentHighlight",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        },
+        "position": {
+          "line": 2,
+          "character": 12
+        }
+      },
+      "expected": [
+        {
+          "kind": 1,
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 11
+            },
+            "end": {
+              "line": 2,
+              "character": 15
+            }
+          }
+        },
+        {
+          "kind": 1,
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 28
+            },
+            "end": {
+              "line": 2,
+              "character": 32
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/documentHighlight",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        },
+        "position": {
+          "line": 2,
+          "character": 28
+        }
+      },
+      "expected": [
+        {
+          "kind": 1,
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 11
+            },
+            "end": {
+              "line": 2,
+              "character": 15
+            }
+          }
+        },
+        {
+          "kind": 1,
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 28
+            },
+            "end": {
+              "line": 2,
+              "character": 32
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/documentHighlight",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        },
+        "position": {
+          "line": 3,
+          "character": 12
+        }
+      },
+      "expected": [
+        {
+          "kind": 2,
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 9
+            },
+            "end": {
+              "line": 1,
+              "character": 13
+            }
+          }
+        },
+        {
+          "kind": 2,
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 11
+            },
+            "end": {
+              "line": 2,
+              "character": 15
+            }
+          }
+        },
+        {
+          "kind": 2,
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 28
+            },
+            "end": {
+              "line": 2,
+              "character": 32
+            }
+          }
+        },
+        {
+          "kind": 2,
+          "range": {
+            "start": {
+              "line": 3,
+              "character": 11
+            },
+            "end": {
+              "line": 3,
+              "character": 15
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

@@ -1,0 +1,328 @@
+{
+  "schema_version": 1,
+  "name": "fix-type-only-import-comments-settled",
+  "project": {
+    "files": {
+      "/main.ts": "// keep this comment\nimport { /* inside */ Shape as Renamed } from './helper';\nexport const value: Renamed = { value: 1 };\n",
+      "/helper.ts": "export interface Shape { value: number; }\nexport interface Other { label: string; }\nexport default class Box {}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "verbatimModuleSyntax": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "// keep this comment\nimport { /* inside */ Shape as Renamed } from './helper';\nexport const value: Renamed = { value: 1 };\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 22
+              },
+              "end": {
+                "line": 1,
+                "character": 38
+              }
+            },
+            "message": "'Shape' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.",
+            "severity": 1,
+            "code": 1484,
+            "source": "typescript"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 3,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 22
+                },
+                "end": {
+                  "line": 1,
+                  "character": 38
+                }
+              },
+              "severity": 1,
+              "code": 1484,
+              "source": "typescript",
+              "message": "'Shape' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled."
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Use 'import type'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "convertToTypeOnlyImport",
+                  "description": "Use 'import type'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 58
+                          },
+                          "newText": "// keep this comment\nimport type { /* inside */ Shape as Renamed } from './helper';"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 22
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 38
+                    }
+                  },
+                  "severity": 1,
+                  "code": 1484,
+                  "source": "typescript",
+                  "message": "'Shape' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled."
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 22
+                },
+                "end": {
+                  "line": 1,
+                  "character": 38
+                }
+              },
+              "severity": 1,
+              "code": 1484,
+              "source": "typescript",
+              "message": "'Shape' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled."
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 57
+                      }
+                    },
+                    "newText": "// keep this comment\nimport type { /* inside */ Shape as Renamed } from './helper';"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Use 'type Shape'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "convertToTypeOnlyImport",
+                  "description": "Use 'type Shape'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 23
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 39
+                          },
+                          "newText": "type Shape as Renamed"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 22
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 38
+                    }
+                  },
+                  "severity": 1,
+                  "code": 1484,
+                  "source": "typescript",
+                  "message": "'Shape' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled."
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 22
+                },
+                "end": {
+                  "line": 1,
+                  "character": 38
+                }
+              },
+              "severity": 1,
+              "code": 1484,
+              "source": "typescript",
+              "message": "'Shape' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled."
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 22
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 38
+                      }
+                    },
+                    "newText": "type Shape as Renamed"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    },
+    "options": {
+      "preferences": {
+        "quotePreference": "single"
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

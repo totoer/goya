@@ -1,9 +1,9 @@
-package goja
+package goya
 
 import (
 	"reflect"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 type objectGoMapSimple struct {

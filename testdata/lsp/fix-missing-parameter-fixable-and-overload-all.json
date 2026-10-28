@@ -1,0 +1,423 @@
+{
+  "schema_version": 1,
+  "name": "fix-missing-parameter-fixable-and-overload-all",
+  "project": {
+    "files": {
+      "/main.ts": "export function run(): number;\nexport function run(_input?: any) { return 1; }\nexport function extra() { return 2; }\nexport const first = run(42);\nexport const second = extra(1);\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export function run(): number;\nexport function run(_input?: any) { return 1; }\nexport function extra() { return 2; }\nexport const first = run(42);\nexport const second = extra(1);\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 5,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Add missing parameter to 'extra'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "addMissingParam",
+                  "description": "Add missing parameter to 'extra'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 3,
+                            "offset": 23
+                          },
+                          "end": {
+                            "line": 3,
+                            "offset": 23
+                          },
+                          "newText": "p0: number"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "addMissingParam",
+                  "fixAllDescription": "Add all missing parameters"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 4,
+                      "character": 28
+                    },
+                    "end": {
+                      "line": 4,
+                      "character": 29
+                    }
+                  },
+                  "message": "Expected 0 arguments, but got 1.",
+                  "severity": 1,
+                  "code": 2554,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 4,
+                  "character": 28
+                },
+                "end": {
+                  "line": 4,
+                  "character": 29
+                }
+              },
+              "message": "Expected 0 arguments, but got 1.",
+              "severity": 1,
+              "code": 2554,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 22
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 22
+                      }
+                    },
+                    "newText": "p0: number"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add all missing parameters",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "addMissingParam"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 4,
+                  "character": 28
+                },
+                "end": {
+                  "line": 4,
+                  "character": 29
+                }
+              },
+              "message": "Expected 0 arguments, but got 1.",
+              "severity": 1,
+              "code": 2554,
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        },
+        {
+          "title": "Add optional parameter to 'extra'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "addOptionalParam",
+                  "description": "Add optional parameter to 'extra'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 3,
+                            "offset": 23
+                          },
+                          "end": {
+                            "line": 3,
+                            "offset": 23
+                          },
+                          "newText": "p0?: number"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "addOptionalParam",
+                  "fixAllDescription": "Add all optional parameters"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 4,
+                      "character": 28
+                    },
+                    "end": {
+                      "line": 4,
+                      "character": 29
+                    }
+                  },
+                  "message": "Expected 0 arguments, but got 1.",
+                  "severity": 1,
+                  "code": 2554,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 4,
+                  "character": 28
+                },
+                "end": {
+                  "line": 4,
+                  "character": 29
+                }
+              },
+              "message": "Expected 0 arguments, but got 1.",
+              "severity": 1,
+              "code": 2554,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 22
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 22
+                      }
+                    },
+                    "newText": "p0?: number"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add all optional parameters",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "addOptionalParam"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 4,
+                  "character": 28
+                },
+                "end": {
+                  "line": 4,
+                  "character": 29
+                }
+              },
+              "message": "Expected 0 arguments, but got 1.",
+              "severity": 1,
+              "code": 2554,
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 2,
+            "providerId": 2
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeAction/resolve",
+      "params": {},
+      "params_from_code_action": {
+        "step": 1,
+        "index": 1
+      },
+      "expected": {
+        "title": "Add all missing parameters",
+        "kind": "quickfix",
+        "command": {
+          "command": "_typescript.applyFixAllCodeAction",
+          "arguments": [
+            {
+              "tsActionId": "addMissingParam"
+            }
+          ],
+          "title": ""
+        },
+        "diagnostics": [
+          {
+            "range": {
+              "start": {
+                "line": 4,
+                "character": 28
+              },
+              "end": {
+                "line": 4,
+                "character": 29
+              }
+            },
+            "message": "Expected 0 arguments, but got 1.",
+            "severity": 1,
+            "code": 2554,
+            "source": "typescript"
+          }
+        ],
+        "isPreferred": false,
+        "data": {
+          "globalId": 1,
+          "providerId": 2
+        },
+        "edit": {
+          "documentChanges": [
+            {
+              "textDocument": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "version": 2
+              },
+              "edits": [
+                {
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 22
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 22
+                    }
+                  },
+                  "newText": "p0: number"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    2554
+  ],
+  "edited_compiler_error_reason": "The pinned combined fix edits the fixable function and omits an identical replacement for the unrelated overload implementation. The overload call remains an argument-count error (2554), independently checked with TypeScript 6.0.3. Separate multiple-function combined fixtures require a clean Check."
+}

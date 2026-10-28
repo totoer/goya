@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"math"
@@ -250,12 +250,12 @@ func (r *Runtime) arrayproto_toString(call FunctionCall) Value {
 	})
 }
 
-func (r *Runtime) writeItemLocaleString(item Value, buf *StringBuilder) {
+func (r *Runtime) writeItemLocaleString(item Value, buf *StringBuilder, args []Value) {
 	if item != nil && item != _undefined && item != _null {
 		if f, ok := r.getVStr(item, "toLocaleString").(*Object); ok {
 			if c, ok := f.self.assertCallable(); ok {
 				strVal := c(FunctionCall{
-					This: item,
+					This: item, Arguments: args,
 				})
 				buf.WriteString(strVal.toString())
 				return
@@ -275,22 +275,14 @@ func (r *Runtime) arrayproto_toLocaleString(call FunctionCall) Value {
 	defer r.popFromStringStack()
 
 	var buf StringBuilder
-	if a := r.checkStdArrayObj(array); a != nil {
-		for i, item := range a.values {
-			if i > 0 {
-				buf.WriteRune(',')
-			}
-			r.writeItemLocaleString(item, &buf)
+	length := toLength(array.self.getStr("length", nil))
+	args := []Value{call.Argument(0), call.Argument(1)}
+	for i := int64(0); i < length; i++ {
+		if i > 0 {
+			buf.WriteRune(',')
 		}
-	} else {
-		length := toLength(array.self.getStr("length", nil))
-		for i := int64(0); i < length; i++ {
-			if i > 0 {
-				buf.WriteRune(',')
-			}
-			item := array.self.getIdx(valueInt(i), nil)
-			r.writeItemLocaleString(item, &buf)
-		}
+		item := array.self.getIdx(valueInt(i), nil)
+		r.writeItemLocaleString(item, &buf, args)
 	}
 
 	return buf.String()
@@ -1705,6 +1697,7 @@ func (r *Runtime) getArray() *Object {
 func (r *Runtime) createArray(val *Object) objectImpl {
 	o := r.newNativeFuncConstructObj(val, r.builtin_newArray, "Array", r.getArrayPrototype(), 1)
 	o._putProp("from", r.newNativeFunc(r.array_from, "from", 1), true, false, true)
+	o._putProp("fromAsync", r.newNativeFunc(r.array_fromAsync, "fromAsync", 1), true, false, true)
 	o._putProp("isArray", r.newNativeFunc(r.array_isArray, "isArray", 1), true, false, true)
 	o._putProp("of", r.newNativeFunc(r.array_of, "of", 0), true, false, true)
 	r.putSpeciesReturnThis(o)
@@ -1800,9 +1793,6 @@ func (a *arraySortCtx) sortCompare(x, y Value) int {
 			return 1
 		}
 		if f < 0 {
-			return -1
-		}
-		if math.Signbit(f) {
 			return -1
 		}
 		return 0

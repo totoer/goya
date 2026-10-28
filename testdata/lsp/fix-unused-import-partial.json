@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "name": "fix-unused-import-partial",
+  "project": {
+    "files": {
+      "/main.ts": "import { Item, Other } from \"./lib\";\nexport type Shape = Item;\n",
+      "/lib.ts": "export interface Item {}\nexport interface Other {}\nexport const value = 1;\nexport default interface Default {}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "import { Item, Other } from \"./lib\";\nexport type Shape = Item;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Remove unused declaration for: 'Other'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "unusedIdentifier",
+                  "description": "Remove unused declaration for: 'Other'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 14
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 16
+                          },
+                          "newText": ""
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 16
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 21
+                          },
+                          "newText": ""
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 15
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 20
+                    }
+                  },
+                  "message": "'Other' is declared but its value is never read.",
+                  "severity": 1,
+                  "code": 6133,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 15
+                },
+                "end": {
+                  "line": 0,
+                  "character": 20
+                }
+              },
+              "message": "'Other' is declared but its value is never read.",
+              "severity": 1,
+              "code": 6133,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 13
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 15
+                      }
+                    },
+                    "newText": ""
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 15
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 20
+                      }
+                    },
+                    "newText": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": true
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

@@ -1,7 +1,7 @@
-package goja
+package goya
 
 import (
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 const propNameStack = "stack"

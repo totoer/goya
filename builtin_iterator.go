@@ -1,9 +1,9 @@
-package goja
+package goya
 
 import (
 	"math"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 type iteratorHelperState uint8

@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "name": "fix-qualified-indexed-type-all",
+  "project": {
+    "files": {
+      "/main.ts": "interface Shape { first: number; second: string; }\ntype First = Shape.first;\ntype Second = Shape.second;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "interface Shape { first: number; second: string; }\ntype First = Shape.first;\ntype Second = Shape.second;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 3,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Rewrite as the indexed access type 'Shape[\"first\"]'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "correctQualifiedNameToIndexedAccessType",
+                  "description": "Rewrite as the indexed access type 'Shape[\"first\"]'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 14
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 25
+                          },
+                          "newText": "Shape[\"first\"]"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "correctQualifiedNameToIndexedAccessType",
+                  "fixAllDescription": "Rewrite all as indexed access types"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 13
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 24
+                    }
+                  },
+                  "message": "Cannot access 'Shape.first' because 'Shape' is a type, but not a namespace. Did you mean to retrieve the type of the property 'first' in 'Shape' with 'Shape[\"first\"]'?",
+                  "severity": 1,
+                  "code": 2713,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 13
+                },
+                "end": {
+                  "line": 1,
+                  "character": 24
+                }
+              },
+              "message": "Cannot access 'Shape.first' because 'Shape' is a type, but not a namespace. Did you mean to retrieve the type of the property 'first' in 'Shape' with 'Shape[\"first\"]'?",
+              "severity": 1,
+              "code": 2713,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 13
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 24
+                      }
+                    },
+                    "newText": "Shape[\"first\"]"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Rewrite as the indexed access type 'Shape[\"second\"]'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "correctQualifiedNameToIndexedAccessType",
+                  "description": "Rewrite as the indexed access type 'Shape[\"second\"]'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 3,
+                            "offset": 15
+                          },
+                          "end": {
+                            "line": 3,
+                            "offset": 27
+                          },
+                          "newText": "Shape[\"second\"]"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "correctQualifiedNameToIndexedAccessType",
+                  "fixAllDescription": "Rewrite all as indexed access types"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 14
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 26
+                    }
+                  },
+                  "message": "Cannot access 'Shape.second' because 'Shape' is a type, but not a namespace. Did you mean to retrieve the type of the property 'second' in 'Shape' with 'Shape[\"second\"]'?",
+                  "severity": 1,
+                  "code": 2713,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 14
+                },
+                "end": {
+                  "line": 2,
+                  "character": 26
+                }
+              },
+              "message": "Cannot access 'Shape.second' because 'Shape' is a type, but not a namespace. Did you mean to retrieve the type of the property 'second' in 'Shape' with 'Shape[\"second\"]'?",
+              "severity": 1,
+              "code": 2713,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 14
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 26
+                      }
+                    },
+                    "newText": "Shape[\"second\"]"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Rewrite all as indexed access types",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "correctQualifiedNameToIndexedAccessType"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 13
+                },
+                "end": {
+                  "line": 1,
+                  "character": 24
+                }
+              },
+              "message": "Cannot access 'Shape.first' because 'Shape' is a type, but not a namespace. Did you mean to retrieve the type of the property 'first' in 'Shape' with 'Shape[\"first\"]'?",
+              "severity": 1,
+              "code": 2713,
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeAction/resolve",
+      "params": {},
+      "params_from_code_action": {
+        "step": 1,
+        "index": 2
+      },
+      "expected": {
+        "title": "Rewrite all as indexed access types",
+        "kind": "quickfix",
+        "command": {
+          "command": "_typescript.applyFixAllCodeAction",
+          "arguments": [
+            {
+              "tsActionId": "correctQualifiedNameToIndexedAccessType"
+            }
+          ],
+          "title": ""
+        },
+        "diagnostics": [
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 13
+              },
+              "end": {
+                "line": 1,
+                "character": 24
+              }
+            },
+            "message": "Cannot access 'Shape.first' because 'Shape' is a type, but not a namespace. Did you mean to retrieve the type of the property 'first' in 'Shape' with 'Shape[\"first\"]'?",
+            "severity": 1,
+            "code": 2713,
+            "source": "typescript"
+          }
+        ],
+        "isPreferred": false,
+        "data": {
+          "globalId": 1,
+          "providerId": 2
+        },
+        "edit": {
+          "documentChanges": [
+            {
+              "textDocument": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "version": 2
+              },
+              "edits": [
+                {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 13
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 24
+                    }
+                  },
+                  "newText": "Shape[\"first\"]"
+                },
+                {
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 14
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 26
+                    }
+                  },
+                  "newText": "Shape[\"second\"]"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

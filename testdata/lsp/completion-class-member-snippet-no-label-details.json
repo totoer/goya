@@ -1,0 +1,581 @@
+{
+  "schema_version": 1,
+  "name": "completion-class-member-snippet-no-label-details",
+  "project": {
+    "files": {
+      "/main.ts": "class Base { run(value:number):string {return \"\";} }\nclass Child extends Base { r }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "class Base { run(value:number):string {return \"\";} }\nclass Child extends Base { r }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/completion",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 1,
+          "character": 28
+        }
+      },
+      "expected": {
+        "items": [
+          {
+            "label": "run",
+            "kind": 2,
+            "sortText": "11",
+            "data": {
+              "cacheId": 1
+            },
+            "commitCharacters": [],
+            "insertTextFormat": 2,
+            "filterText": "run(value: number): string {\n    $0\n}",
+            "textEdit": {
+              "newText": "run(value: number): string {\n    $0\n}",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          },
+          {
+            "label": "abstract",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 2
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "abstract",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          },
+          {
+            "label": "accessor",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 3
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "accessor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          },
+          {
+            "label": "async",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 4
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "async",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          },
+          {
+            "label": "constructor",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 5
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "constructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          },
+          {
+            "label": "declare",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 6
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "declare",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          },
+          {
+            "label": "get",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 7
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "get",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          },
+          {
+            "label": "override",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 8
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "override",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          },
+          {
+            "label": "private",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 9
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "private",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          },
+          {
+            "label": "protected",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 10
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "protected",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          },
+          {
+            "label": "public",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 11
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "public",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          },
+          {
+            "label": "readonly",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 12
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "readonly",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          },
+          {
+            "label": "set",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 13
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "set",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          },
+          {
+            "label": "static",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 14
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "static",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 27
+                },
+                "end": {
+                  "line": 1,
+                  "character": 28
+                }
+              }
+            }
+          }
+        ],
+        "isIncomplete": false
+      }
+    },
+    {
+      "method": "completionItem/resolve",
+      "params": {},
+      "params_from_completion": {
+        "step": 1,
+        "index": 0
+      },
+      "expected": {
+        "label": "run",
+        "kind": 2,
+        "sortText": "11",
+        "data": {
+          "file": "/var/folders/n8/86dwcb052_14n9t7r0g7fc_h0000gn/T/goya-lsp-oracle-44vo9jd6/main.ts",
+          "line": 2,
+          "offset": 29,
+          "entryNames": [
+            "run"
+          ]
+        },
+        "commitCharacters": [],
+        "insertTextFormat": 2,
+        "filterText": "run(value: number): string {\n    $0\n}",
+        "textEdit": {
+          "newText": "run(value: number): string {\n    $0\n}",
+          "insert": {
+            "start": {
+              "line": 1,
+              "character": 27
+            },
+            "end": {
+              "line": 1,
+              "character": 28
+            }
+          },
+          "replace": {
+            "start": {
+              "line": 1,
+              "character": 27
+            },
+            "end": {
+              "line": 1,
+              "character": 28
+            }
+          }
+        },
+        "detail": "(method) Base.run(value: number): string"
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "completion": {
+          "completionItem": {
+            "snippetSupport": true,
+            "commitCharactersSupport": true,
+            "labelDetailsSupport": true,
+            "insertReplaceSupport": true,
+            "documentationFormat": [
+              "markdown"
+            ]
+          }
+        }
+      }
+    },
+    "options": {
+      "preferences": {
+        "useLabelDetailsInCompletionEntries": false
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

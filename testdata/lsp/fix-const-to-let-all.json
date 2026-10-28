@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "name": "fix-const-to-let-all",
+  "project": {
+    "files": {
+      "/main.ts": "const first = 1;\nconst second = 2;\nfirst = 2;\nfirst = 3;\nsecond = 4;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "const first = 1;\nconst second = 2;\nfirst = 2;\nfirst = 3;\nsecond = 4;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 5,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Convert 'const' to 'let'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixConvertConstToLet",
+                  "description": "Convert 'const' to 'let'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 6
+                          },
+                          "newText": "let"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixConvertConstToLet",
+                  "fixAllDescription": "Convert all 'const' to 'let'"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 3,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 3,
+                      "character": 5
+                    }
+                  },
+                  "message": "Cannot assign to 'first' because it is a constant.",
+                  "severity": 1,
+                  "code": 2588,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 3,
+                  "character": 0
+                },
+                "end": {
+                  "line": 3,
+                  "character": 5
+                }
+              },
+              "message": "Cannot assign to 'first' because it is a constant.",
+              "severity": 1,
+              "code": 2588,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 5
+                      }
+                    },
+                    "newText": "let"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Convert 'const' to 'let'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixConvertConstToLet",
+                  "description": "Convert 'const' to 'let'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 6
+                          },
+                          "newText": "let"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixConvertConstToLet",
+                  "fixAllDescription": "Convert all 'const' to 'let'"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 4,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 4,
+                      "character": 6
+                    }
+                  },
+                  "message": "Cannot assign to 'second' because it is a constant.",
+                  "severity": 1,
+                  "code": 2588,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 4,
+                  "character": 0
+                },
+                "end": {
+                  "line": 4,
+                  "character": 6
+                }
+              },
+              "message": "Cannot assign to 'second' because it is a constant.",
+              "severity": 1,
+              "code": 2588,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 5
+                      }
+                    },
+                    "newText": "let"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Convert all 'const' to 'let'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "fixConvertConstToLet"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 0
+                },
+                "end": {
+                  "line": 2,
+                  "character": 5
+                }
+              },
+              "message": "Cannot assign to 'first' because it is a constant.",
+              "severity": 1,
+              "code": 2588,
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeAction/resolve",
+      "params": {},
+      "params_from_code_action": {
+        "step": 1,
+        "index": 2
+      },
+      "expected": {
+        "title": "Convert all 'const' to 'let'",
+        "kind": "quickfix",
+        "command": {
+          "command": "_typescript.applyFixAllCodeAction",
+          "arguments": [
+            {
+              "tsActionId": "fixConvertConstToLet"
+            }
+          ],
+          "title": ""
+        },
+        "diagnostics": [
+          {
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 0
+              },
+              "end": {
+                "line": 2,
+                "character": 5
+              }
+            },
+            "message": "Cannot assign to 'first' because it is a constant.",
+            "severity": 1,
+            "code": 2588,
+            "source": "typescript"
+          }
+        ],
+        "isPreferred": false,
+        "data": {
+          "globalId": 1,
+          "providerId": 2
+        },
+        "edit": {
+          "documentChanges": [
+            {
+              "textDocument": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "version": 2
+              },
+              "edits": [
+                {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 5
+                    }
+                  },
+                  "newText": "let"
+                },
+                {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 5
+                    }
+                  },
+                  "newText": "let"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

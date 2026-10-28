@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "name": "completion-auto-import-partial-import-plain-text",
+  "project": {
+    "files": {
+      "/main.ts": "import appe\n",
+      "/helper.ts": "/** Appends values. */\nexport function append(value:number):number{return value;}\nexport const first=1;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts",
+      "/helper.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "import appe\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/completion",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 11
+        }
+      },
+      "expected": {
+        "items": [
+          {
+            "label": "append",
+            "kind": 3,
+            "sortText": "11",
+            "data": {
+              "cacheId": 1
+            },
+            "commitCharacters": [],
+            "detail": "./helper",
+            "filterText": "import { append } from \"./helper\";",
+            "textEdit": {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 0
+                },
+                "end": {
+                  "line": 0,
+                  "character": 11
+                }
+              },
+              "newText": "import { append } from \"./helper\";"
+            }
+          },
+          {
+            "label": "type",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 2
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "type",
+              "insert": {
+                "start": {
+                  "line": 0,
+                  "character": 7
+                },
+                "end": {
+                  "line": 0,
+                  "character": 11
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 0,
+                  "character": 7
+                },
+                "end": {
+                  "line": 0,
+                  "character": 11
+                }
+              }
+            }
+          }
+        ],
+        "isIncomplete": false
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "completion": {
+          "completionItem": {
+            "snippetSupport": true,
+            "commitCharactersSupport": true,
+            "labelDetailsSupport": true,
+            "insertReplaceSupport": true,
+            "documentationFormat": [
+              "markdown"
+            ]
+          }
+        }
+      }
+    },
+    "options": {
+      "preferences": {
+        "includeCompletionsWithSnippetText": false
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

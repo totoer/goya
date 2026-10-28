@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "name": "fix-missing-await-for-of",
+  "project": {
+    "files": {
+      "/main.ts": "export async function run() { const values = Promise.resolve([1, 2]); let total = 0; for (const value of values) { total += value; } return total; }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export async function run() { const values = Promise.resolve([1, 2]); let total = 0; for (const value of values) { total += value; } return total; }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Add 'await' to initializer for 'values'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "addMissingAwaitToInitializer",
+                  "description": "Add 'await' to initializer for 'values'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 46
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 69
+                          },
+                          "newText": "await Promise.resolve([1, 2])"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 105
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 111
+                    }
+                  },
+                  "message": "Type 'Promise<number[]>' must have a '[Symbol.iterator]()' method that returns an iterator.",
+                  "severity": 1,
+                  "code": 2488,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 105
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 111
+                          }
+                        }
+                      },
+                      "message": "Did you forget to use 'await'?"
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 105
+                },
+                "end": {
+                  "line": 0,
+                  "character": 111
+                }
+              },
+              "message": "Type 'Promise<number[]>' must have a '[Symbol.iterator]()' method that returns an iterator.",
+              "severity": 1,
+              "code": 2488,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 105
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 111
+                      }
+                    }
+                  },
+                  "message": "Did you forget to use 'await'?"
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 45
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 68
+                      }
+                    },
+                    "newText": "await Promise.resolve([1, 2])"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add 'await'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "addMissingAwait",
+                  "description": "Add 'await'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 106
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 112
+                          },
+                          "newText": "await values"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 105
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 111
+                    }
+                  },
+                  "message": "Type 'Promise<number[]>' must have a '[Symbol.iterator]()' method that returns an iterator.",
+                  "severity": 1,
+                  "code": 2488,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 105
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 111
+                          }
+                        }
+                      },
+                      "message": "Did you forget to use 'await'?"
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 105
+                },
+                "end": {
+                  "line": 0,
+                  "character": 111
+                }
+              },
+              "message": "Type 'Promise<number[]>' must have a '[Symbol.iterator]()' method that returns an iterator.",
+              "severity": 1,
+              "code": 2488,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 105
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 111
+                      }
+                    }
+                  },
+                  "message": "Did you forget to use 'await'?"
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 105
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 111
+                      }
+                    },
+                    "newText": "await values"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": true
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

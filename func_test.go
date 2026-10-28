@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"errors"
@@ -52,7 +52,7 @@ func TestFuncExport(t *testing.T) {
 	typ := reflect.TypeOf((func(FunctionCall) Value)(nil))
 
 	f := func(expr string, t *testing.T) {
-		v, err := vm.RunString(expr)
+		v, err := vm.runVMString(expr)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -135,7 +135,7 @@ func TestWrappedFuncErrorPassthrough(t *testing.T) {
 
 func ExampleAssertConstructor() {
 	vm := New()
-	res, err := vm.RunString(`
+	res, err := vm.runVMString(`
 		(class C {
 			constructor(x) {
 				this.x = x;
@@ -238,7 +238,7 @@ func TestAsyncContextTracker(t *testing.T) {
 	})
 
 	t.Run("", func(t *testing.T) {
-		_, err := r.RunString(`
+		_, err := r.runVMString(`
 		group("1", async () => {
 		  check("1", "line A");
 		  await 3;
@@ -258,7 +258,7 @@ func TestAsyncContextTracker(t *testing.T) {
 	})
 
 	t.Run("", func(t *testing.T) {
-		_, err := r.RunString(`
+		_, err := r.runVMString(`
 		group("some", async () => {
 			check("some", "line A");
 		    (async () => {
@@ -277,7 +277,7 @@ func TestAsyncContextTracker(t *testing.T) {
 	})
 
 	t.Run("", func(t *testing.T) {
-		_, err := r.RunString(`
+		_, err := r.runVMString(`
 	group("Main", async () => {
 		check("Main", "0.1");
 		await Promise.all([

@@ -1,0 +1,416 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "const identity = <T>(value: T) => value;\nfunction isString(value: unknown) { return typeof value === \"string\"; }\nfunction pair() { return [1, \"x\"] as const; }\nconst result = pair();\nfunction object() { return {id: 1, text: \"x\"}; }\nconst record = object();\nclass Store { handler = (value: number) => value; }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "inlay-complex-true",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "const identity = <T>(value: T) => value;\nfunction isString(value: unknown) { return typeof value === \"string\"; }\nfunction pair() { return [1, \"x\"] as const; }\nconst result = pair();\nfunction object() { return {id: 1, text: \"x\"}; }\nconst record = object();\nclass Store { handler = (value: number) => value; }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/inlayHint",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 7,
+            "character": 0
+          }
+        }
+      },
+      "expected": [
+        {
+          "position": {
+            "line": 0,
+            "character": 14
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "<"
+            },
+            {
+              "value": "T",
+              "location": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 0,
+                    "character": 18
+                  },
+                  "end": {
+                    "line": 0,
+                    "character": 19
+                  }
+                }
+              }
+            },
+            {
+              "value": ">"
+            },
+            {
+              "value": "("
+            },
+            {
+              "value": "value"
+            },
+            {
+              "value": ": "
+            },
+            {
+              "value": "T",
+              "location": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 0,
+                    "character": 18
+                  },
+                  "end": {
+                    "line": 0,
+                    "character": 19
+                  }
+                }
+              }
+            },
+            {
+              "value": ")"
+            },
+            {
+              "value": " => "
+            },
+            {
+              "value": "T",
+              "location": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 0,
+                    "character": 18
+                  },
+                  "end": {
+                    "line": 0,
+                    "character": 19
+                  }
+                }
+              }
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 0,
+            "character": 30
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "T",
+              "location": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 0,
+                    "character": 18
+                  },
+                  "end": {
+                    "line": 0,
+                    "character": 19
+                  }
+                }
+              }
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 1,
+            "character": 33
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "value"
+            },
+            {
+              "value": " is "
+            },
+            {
+              "value": "string"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 2,
+            "character": 15
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "readonly "
+            },
+            {
+              "value": "["
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": ", "
+            },
+            {
+              "value": "\"x\""
+            },
+            {
+              "value": "]"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 3,
+            "character": 12
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "readonly "
+            },
+            {
+              "value": "["
+            },
+            {
+              "value": "1"
+            },
+            {
+              "value": ", "
+            },
+            {
+              "value": "\"x\""
+            },
+            {
+              "value": "]"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 4,
+            "character": 17
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "{"
+            },
+            {
+              "value": " "
+            },
+            {
+              "value": "id"
+            },
+            {
+              "value": ": "
+            },
+            {
+              "value": "number"
+            },
+            {
+              "value": "; "
+            },
+            {
+              "value": "text"
+            },
+            {
+              "value": ": "
+            },
+            {
+              "value": "string"
+            },
+            {
+              "value": " "
+            },
+            {
+              "value": "}"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 5,
+            "character": 12
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "{"
+            },
+            {
+              "value": " "
+            },
+            {
+              "value": "id"
+            },
+            {
+              "value": ": "
+            },
+            {
+              "value": "number"
+            },
+            {
+              "value": "; "
+            },
+            {
+              "value": "text"
+            },
+            {
+              "value": ": "
+            },
+            {
+              "value": "string"
+            },
+            {
+              "value": " "
+            },
+            {
+              "value": "}"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 6,
+            "character": 21
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "("
+            },
+            {
+              "value": "value"
+            },
+            {
+              "value": ": "
+            },
+            {
+              "value": "number"
+            },
+            {
+              "value": ")"
+            },
+            {
+              "value": " => "
+            },
+            {
+              "value": "number"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 6,
+            "character": 39
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "number"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "options": {
+      "preferences": {
+        "includeInlayParameterNameHints": "all",
+        "includeInlayParameterNameHintsWhenArgumentMatchesName": true,
+        "includeInlayFunctionParameterTypeHints": true,
+        "includeInlayVariableTypeHints": true,
+        "includeInlayVariableTypeHintsWhenTypeMatchesName": true,
+        "includeInlayPropertyDeclarationTypeHints": true,
+        "includeInlayFunctionLikeReturnTypeHints": true,
+        "includeInlayEnumMemberValueHints": true,
+        "interactiveInlayHints": true
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

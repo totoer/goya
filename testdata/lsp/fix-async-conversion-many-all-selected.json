@@ -1,0 +1,550 @@
+{
+  "schema_version": 1,
+  "name": "fix-async-conversion-many-all-selected",
+  "project": {
+    "files": {
+      "/main.ts": "export function first() { return Promise.resolve(1).then(value => value + 1); }\nexport function second() { return Promise.resolve(1).then(value => value + 1); }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export function first() { return Promise.resolve(1).then(value => value + 1); }\nexport function second() { return Promise.resolve(1).then(value => value + 1); }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 10000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 16
+              },
+              "end": {
+                "line": 0,
+                "character": 21
+              }
+            },
+            "message": "This may be converted to an async function.",
+            "severity": 4,
+            "code": 80006,
+            "source": "typescript"
+          },
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 16
+              },
+              "end": {
+                "line": 1,
+                "character": 22
+              }
+            },
+            "message": "This may be converted to an async function.",
+            "severity": 4,
+            "code": 80006,
+            "source": "typescript"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 16
+                },
+                "end": {
+                  "line": 0,
+                  "character": 21
+                }
+              },
+              "severity": 4,
+              "code": 80006,
+              "message": "This may be converted to an async function.",
+              "source": "typescript"
+            },
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 16
+                },
+                "end": {
+                  "line": 1,
+                  "character": 22
+                }
+              },
+              "severity": 4,
+              "code": 80006,
+              "message": "This may be converted to an async function.",
+              "source": "typescript"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Convert to async function",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "convertToAsyncFunction",
+                  "description": "Convert to async function",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 8
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 8
+                          },
+                          "newText": "async "
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 27
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 78
+                          },
+                          "newText": "const value_1 = await Promise.resolve(1);\nreturn value_1 + 1;"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "convertToAsyncFunction",
+                  "fixAllDescription": "Convert all to async functions"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 16
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 21
+                    }
+                  },
+                  "severity": 4,
+                  "code": 80006,
+                  "message": "This may be converted to an async function.",
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 16
+                },
+                "end": {
+                  "line": 0,
+                  "character": 21
+                }
+              },
+              "severity": 4,
+              "code": 80006,
+              "message": "This may be converted to an async function.",
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 7
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 7
+                      }
+                    },
+                    "newText": "async "
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 26
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 77
+                      }
+                    },
+                    "newText": "const value_1 = await Promise.resolve(1);\nreturn value_1 + 1;"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Convert to async function",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "convertToAsyncFunction",
+                  "description": "Convert to async function",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 8
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 8
+                          },
+                          "newText": "async "
+                        },
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 28
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 79
+                          },
+                          "newText": "const value_1 = await Promise.resolve(1);\nreturn value_1 + 1;"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "convertToAsyncFunction",
+                  "fixAllDescription": "Convert all to async functions"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 16
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 22
+                    }
+                  },
+                  "severity": 4,
+                  "code": 80006,
+                  "message": "This may be converted to an async function.",
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 16
+                },
+                "end": {
+                  "line": 1,
+                  "character": 22
+                }
+              },
+              "severity": 4,
+              "code": 80006,
+              "message": "This may be converted to an async function.",
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 7
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 7
+                      }
+                    },
+                    "newText": "async "
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 27
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 78
+                      }
+                    },
+                    "newText": "const value_1 = await Promise.resolve(1);\nreturn value_1 + 1;"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Convert all to async functions",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "convertToAsyncFunction"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 16
+                },
+                "end": {
+                  "line": 0,
+                  "character": 21
+                }
+              },
+              "severity": 4,
+              "code": 80006,
+              "message": "This may be converted to an async function.",
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeAction/resolve",
+      "params": {},
+      "params_from_code_action": {
+        "step": 2,
+        "index": 2
+      },
+      "expected": {
+        "title": "Convert all to async functions",
+        "kind": "quickfix",
+        "command": {
+          "command": "_typescript.applyFixAllCodeAction",
+          "arguments": [
+            {
+              "tsActionId": "convertToAsyncFunction"
+            }
+          ],
+          "title": ""
+        },
+        "diagnostics": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 16
+              },
+              "end": {
+                "line": 0,
+                "character": 21
+              }
+            },
+            "severity": 4,
+            "code": 80006,
+            "message": "This may be converted to an async function.",
+            "source": "typescript"
+          }
+        ],
+        "isPreferred": false,
+        "data": {
+          "globalId": 1,
+          "providerId": 2
+        },
+        "edit": {
+          "documentChanges": [
+            {
+              "textDocument": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "version": 2
+              },
+              "edits": [
+                {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 7
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 7
+                    }
+                  },
+                  "newText": "async "
+                },
+                {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 26
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 77
+                    }
+                  },
+                  "newText": "const value_1 = await Promise.resolve(1);\nreturn value_1 + 1;"
+                },
+                {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 7
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 7
+                    }
+                  },
+                  "newText": "async "
+                },
+                {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 27
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 78
+                    }
+                  },
+                  "newText": "const value_1 = await Promise.resolve(1);\nreturn value_1 + 1;"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

@@ -1,0 +1,504 @@
+{
+  "schema_version": 1,
+  "name": "fix-nan-equality-all",
+  "project": {
+    "files": {
+      "/main.ts": "declare const value: number;\nif (value === NaN) {}\nif (value != NaN) {}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "declare const value: number;\nif (value === NaN) {}\nif (value != NaN) {}\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 3,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Use `Number.isNaN(value)`.",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixNaNEquality",
+                  "description": "Use `Number.isNaN(value)`.",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 5
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 18
+                          },
+                          "newText": "Number.isNaN(value)"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixNaNEquality",
+                  "fixAllDescription": "Use `Number.isNaN` in all conditions."
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 4
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 17
+                    }
+                  },
+                  "message": "This condition will always return 'false'.",
+                  "severity": 1,
+                  "code": 2845,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 1,
+                            "character": 4
+                          },
+                          "end": {
+                            "line": 1,
+                            "character": 9
+                          }
+                        }
+                      },
+                      "message": "Did you mean 'Number.isNaN(value)'?"
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 4
+                },
+                "end": {
+                  "line": 1,
+                  "character": 17
+                }
+              },
+              "message": "This condition will always return 'false'.",
+              "severity": 1,
+              "code": 2845,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 4
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 9
+                      }
+                    }
+                  },
+                  "message": "Did you mean 'Number.isNaN(value)'?"
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 4
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 17
+                      }
+                    },
+                    "newText": "Number.isNaN(value)"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Use `!Number.isNaN(value)`.",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixNaNEquality",
+                  "description": "Use `!Number.isNaN(value)`.",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 3,
+                            "offset": 5
+                          },
+                          "end": {
+                            "line": 3,
+                            "offset": 17
+                          },
+                          "newText": "!Number.isNaN(value)"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixNaNEquality",
+                  "fixAllDescription": "Use `Number.isNaN` in all conditions."
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 4
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 16
+                    }
+                  },
+                  "message": "This condition will always return 'true'.",
+                  "severity": 1,
+                  "code": 2845,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 2,
+                            "character": 4
+                          },
+                          "end": {
+                            "line": 2,
+                            "character": 9
+                          }
+                        }
+                      },
+                      "message": "Did you mean '!Number.isNaN(value)'?"
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 4
+                },
+                "end": {
+                  "line": 2,
+                  "character": 16
+                }
+              },
+              "message": "This condition will always return 'true'.",
+              "severity": 1,
+              "code": 2845,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 4
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 9
+                      }
+                    }
+                  },
+                  "message": "Did you mean '!Number.isNaN(value)'?"
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 4
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 16
+                      }
+                    },
+                    "newText": "!Number.isNaN(value)"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Use `Number.isNaN` in all conditions.",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "fixNaNEquality"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 4
+                },
+                "end": {
+                  "line": 1,
+                  "character": 17
+                }
+              },
+              "message": "This condition will always return 'false'.",
+              "severity": 1,
+              "code": 2845,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 4
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 9
+                      }
+                    }
+                  },
+                  "message": "Did you mean 'Number.isNaN(value)'?"
+                }
+              ]
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeAction/resolve",
+      "params": {},
+      "params_from_code_action": {
+        "step": 1,
+        "index": 2
+      },
+      "expected": {
+        "title": "Use `Number.isNaN` in all conditions.",
+        "kind": "quickfix",
+        "command": {
+          "command": "_typescript.applyFixAllCodeAction",
+          "arguments": [
+            {
+              "tsActionId": "fixNaNEquality"
+            }
+          ],
+          "title": ""
+        },
+        "diagnostics": [
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 4
+              },
+              "end": {
+                "line": 1,
+                "character": 17
+              }
+            },
+            "message": "This condition will always return 'false'.",
+            "severity": 1,
+            "code": 2845,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 4
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 9
+                    }
+                  }
+                },
+                "message": "Did you mean 'Number.isNaN(value)'?"
+              }
+            ]
+          }
+        ],
+        "isPreferred": false,
+        "data": {
+          "globalId": 1,
+          "providerId": 2
+        },
+        "edit": {
+          "documentChanges": [
+            {
+              "textDocument": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "version": 2
+              },
+              "edits": [
+                {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 4
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 17
+                    }
+                  },
+                  "newText": "Number.isNaN(value)"
+                },
+                {
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 4
+                    },
+                    "end": {
+                      "line": 2,
+                      "character": 16
+                    }
+                  },
+                  "newText": "!Number.isNaN(value)"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

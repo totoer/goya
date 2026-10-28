@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "name": "fix-import-cts-static",
+  "project": {
+    "files": {
+      "/helper.d.cts": "declare class Box { static second: number; }\nexport = Box;\n",
+      "/main.cts": "second;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.cts",
+      "/helper.d.cts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "nodenext",
+      "moduleResolution": "nodenext",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "verbatimModuleSyntax": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.cts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "second;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 6000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.cts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 0
+              },
+              "end": {
+                "line": 0,
+                "character": 6
+              }
+            },
+            "message": "Cannot find name 'second'.",
+            "severity": 1,
+            "code": 2304,
+            "source": "typescript"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.cts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 0
+                },
+                "end": {
+                  "line": 0,
+                  "character": 6
+                }
+              },
+              "severity": 1,
+              "code": 2304,
+              "message": "Cannot find name 'second'.",
+              "source": "typescript"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Add import from \"./helper.cjs\"",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "import",
+                  "description": "Add import from \"./helper.cjs\"",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.cts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 1
+                          },
+                          "newText": "import Box = require(\"./helper.cjs\");\n\n"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 1
+                          },
+                          "newText": "Box."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 6
+                    }
+                  },
+                  "severity": 1,
+                  "code": 2304,
+                  "message": "Cannot find name 'second'.",
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.cts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 0
+                },
+                "end": {
+                  "line": 0,
+                  "character": 6
+                }
+              },
+              "severity": 1,
+              "code": 2304,
+              "message": "Cannot find name 'second'.",
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.cts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 0
+                      }
+                    },
+                    "newText": "import Box = require(\"./helper.cjs\");\n\n"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 0
+                      }
+                    },
+                    "newText": "Box."
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": true
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

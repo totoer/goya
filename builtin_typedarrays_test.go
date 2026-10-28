@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"bytes"
@@ -289,10 +289,9 @@ func TestTypedArraySortComparatorReturnValueNegZero(t *testing.T) {
 	const SCRIPT = `
 	var a = new Uint8Array([2, 1]);
 	a.sort( function(a, b) { return a > b ? 0 : -0; } );
-	for (var i = 1; i < a.length; i++) {
-		if (a[i] < a[i-1]) {
-			throw new Error("Array is not sorted: " + a);
-		}
+	// Both comparator results are equal to zero; stable sorting preserves order.
+	if (a[0] !== 2 || a[1] !== 1) {
+		throw new Error("Comparator -0 changed stable order: " + a);
 	}
 	`
 	testScript(SCRIPT, _undefined, t)
@@ -333,7 +332,7 @@ func TestTypedArrayExportToBytes(t *testing.T) {
 	arr.subarray(2, 4);
 	`
 	vm := New()
-	v, err := vm.RunString(SCRIPT)
+	v, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -354,7 +353,7 @@ func TestDataViewExportToBytes(t *testing.T) {
 	new DataView(arr.buffer, 4, 4);
 	`
 	vm := New()
-	v, err := vm.RunString(SCRIPT)
+	v, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -557,7 +556,7 @@ func TestArrayBufferTransferFromGo(t *testing.T) {
 	data := []byte{1, 2, 3}
 	ab := vm.NewArrayBuffer(data)
 	vm.Set("ab", ab)
-	v, err := vm.RunString(`ab.transfer()`)
+	v, err := vm.runVMString(`ab.transfer()`)
 	if err != nil {
 		t.Fatal(err)
 	}

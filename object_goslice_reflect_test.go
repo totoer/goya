@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"reflect"
@@ -15,7 +15,7 @@ func TestGoSliceReflectBasic(t *testing.T) {
 	`
 	r := New()
 	r.Set("a", []int{1, 2, 3, 4})
-	v, err := r.RunString(SCRIPT)
+	v, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,7 +35,7 @@ func TestGoSliceReflectIn(t *testing.T) {
 	`
 	r := New()
 	r.Set("a", []int{1, 2, 3, 4})
-	v, err := r.RunString(SCRIPT)
+	v, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -55,7 +55,7 @@ func TestGoSliceReflectSet(t *testing.T) {
 	r := New()
 	a := []int8{1, 2, 3, 4}
 	r.Set("a", a)
-	_, err := r.RunString(SCRIPT)
+	_, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -81,7 +81,7 @@ func TestGoSliceReflectPush(t *testing.T) {
 	t.Run("Can push to array by array ptr", func(t *testing.T) {
 		a := []int8{1}
 		r.Set("a", &a)
-		_, err := r.RunString(`a.push (10)`)
+		_, err := r.runVMString(`a.push (10)`)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -100,7 +100,7 @@ func TestGoSliceReflectPush(t *testing.T) {
 		}
 
 		r.Set("a", &a)
-		_, err := r.RunString(`a.A.push (10)`)
+		_, err := r.runVMString(`a.A.push (10)`)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -119,7 +119,7 @@ func TestGoSliceReflectStructField(t *testing.T) {
 		B *[]int
 	}
 	vm.Set("s", &s)
-	_, err := vm.RunString(`
+	_, err := vm.runVMString(`
 		'use strict';
 		s.A.push(1);
 		if (s.B !== null) {
@@ -140,7 +140,7 @@ func TestGoSliceReflectStructField(t *testing.T) {
 
 func TestGoSliceReflectExportToStructField(t *testing.T) {
 	vm := New()
-	v, err := vm.RunString(`({A: [1], B: [2]})`)
+	v, err := vm.runVMString(`({A: [1], B: [2]})`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -168,7 +168,7 @@ func TestGoSliceReflectProtoMethod(t *testing.T) {
 	r := New()
 	a := []int8{1, 2, 3, 4}
 	r.Set("a", a)
-	ret, err := r.RunString(SCRIPT)
+	ret, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -192,7 +192,7 @@ func TestGoSliceReflectMethod(t *testing.T) {
 	a := make(gosliceReflect_withMethods, 1)
 	a[0] = 42
 	vm.Set("a", a)
-	v, err := vm.RunString(SCRIPT)
+	v, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -216,7 +216,7 @@ func TestGoSliceReflectNilObjectIfaceVal(t *testing.T) {
 	r := New()
 	a := []Value{(*Object)(nil)}
 	r.Set("a", a)
-	ret, err := r.RunString(`
+	ret, err := r.runVMString(`
 	""+a[0];
 	`)
 	if err != nil {
@@ -233,7 +233,7 @@ func TestGoSliceReflectSetLength(t *testing.T) {
 	b := []testing.TB{&testing.T{}, &testing.T{}, (*testing.T)(nil)}
 	r.Set("a", &a)
 	r.Set("b", &b)
-	_, err := r.RunString(`
+	_, err := r.runVMString(`
 	'use strict';
 	a.length = 3;
 	if (a.length !== 3) {
@@ -310,7 +310,7 @@ func TestGoSliceReflectProtoProto(t *testing.T) {
 	proto := []*Object{{}, {}, {}, {}}
 	r.Set("a", &a)
 	r.Set("proto", proto)
-	_, err := r.RunString(`
+	_, err := r.runVMString(`
 	"use strict";
 	var protoproto = {};
 	Object.defineProperty(protoproto, "3", {
@@ -339,7 +339,7 @@ func TestGoSliceReflectDelete(t *testing.T) {
 	r := New()
 	a := []*Object{{}, nil, {}}
 	r.Set("a", a)
-	v, err := r.RunString(`
+	v, err := r.runVMString(`
 	delete a[0] && delete a[1] && delete a[3];
 	`)
 	if err != nil {
@@ -354,7 +354,7 @@ func TestGoSliceReflectPop(t *testing.T) {
 	r := New()
 	a := []string{"1", "", "3"}
 	r.Set("a", &a)
-	v, err := r.RunString(`
+	v, err := r.runVMString(`
 	a.pop()
 	`)
 	if err != nil {
@@ -369,7 +369,7 @@ func TestGoSliceReflectPopNoPtr(t *testing.T) {
 	r := New()
 	a := []string{"1", "", "3"}
 	r.Set("a", a)
-	v, err := r.RunString(`
+	v, err := r.runVMString(`
 	a.pop()
 	`)
 	if err != nil {
@@ -383,7 +383,7 @@ func TestGoSliceReflectPopNoPtr(t *testing.T) {
 func TestGoSliceReflectLengthProperty(t *testing.T) {
 	vm := New()
 	vm.Set("s", []int{2, 3, 4})
-	_, err := vm.RunString(`
+	_, err := vm.runVMString(`
 	if (!s.hasOwnProperty("length")) {
 		throw new Error("hasOwnProperty() returned false");
 	}
@@ -406,7 +406,7 @@ func (a testCustomSliceWithMethods) Method() bool {
 func TestGoSliceReflectMethods(t *testing.T) {
 	vm := New()
 	vm.Set("s", testCustomSliceWithMethods{1, 2, 3})
-	_, err := vm.RunString(`
+	_, err := vm.runVMString(`
 	if (!s.hasOwnProperty("Method")) {
 		throw new Error("hasOwnProperty() returned false");
 	}
@@ -423,7 +423,7 @@ func TestGoSliceReflectMethods(t *testing.T) {
 func TestGoSliceReflectExportAfterGrow(t *testing.T) {
 	vm := New()
 	vm.Set("a", []int{1})
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 		a.push(2);
 		a;
 	`)
@@ -449,7 +449,7 @@ func TestGoSliceReflectSort(t *testing.T) {
 		{Name: "test"},
 		{Name: "bin"},
 	})
-	ret, err := vm.RunString(`
+	ret, err := vm.runVMString(`
 //v.sort((a, b) => a.Name.localeCompare(b.Name)).map((x) => x.Name);
 	const tmp = v[0];
 	v[0] = v[1];
@@ -467,7 +467,7 @@ func TestGoSliceReflect111(t *testing.T) {
 	vm.Set("v", []int32{
 		1, 2,
 	})
-	ret, err := vm.RunString(`
+	ret, err := vm.runVMString(`
 //v.sort((a, b) => a.Name.localeCompare(b.Name)).map((x) => x.Name);
 	const tmp = v[0];
 	v[0] = v[1];
@@ -521,7 +521,7 @@ func TestGoSliceReflectNil(t *testing.T) {
 	t.Run("pointer to nil slice", func(t *testing.T) {
 		var a []int
 		vm.Set("a", &a)
-		_, err := vm.RunString(`a.push(1);`)
+		_, err := vm.runVMString(`a.push(1);`)
 		if err != nil {
 			t.Fatal(err)
 		}

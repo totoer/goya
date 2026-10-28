@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "name": "refactor-move-new-import-equals-apply-0",
+  "project": {
+    "files": {
+      "/main.ts": "import dep = require(\"./dep\");\nexport const value = dep.first + 1;\n",
+      "/dep.ts": "export const first = 1;\n",
+      "/tsconfig.json": "{\n  \"compilerOptions\": {\n    \"strict\": true,\n    \"target\": \"es2025\",\n    \"module\": \"esnext\",\n    \"moduleResolution\": \"bundler\",\n    \"lib\": [\n      \"es2025\"\n    ],\n    \"types\": [],\n    \"noEmit\": true\n  },\n  \"files\": [\n    \"main.ts\",\n    \"dep.ts\"\n  ]\n}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts",
+      "/dep.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    },
+    "config_file": "/tsconfig.json"
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "import dep = require(\"./dep\");\nexport const value = dep.first + 1;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 1,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 35
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "refactor.move.newFile"
+          ],
+          "triggerKind": 1
+        }
+      },
+      "expected": [
+        {
+          "title": "Move to a new file",
+          "kind": "refactor.move.newFile",
+          "command": {
+            "title": "Move to a new file",
+            "command": "_typescript.applyRefactoring",
+            "arguments": [
+              {
+                "file": "{{ROOT_PATH}}/main.ts",
+                "startLine": 2,
+                "startOffset": 1,
+                "endLine": 2,
+                "endOffset": 36,
+                "refactor": "Move to a new file",
+                "action": "Move to a new file"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "method": "workspace/executeCommand",
+      "params": {
+        "title": "Move to a new file",
+        "command": "_typescript.applyRefactoring",
+        "arguments": [
+          {
+            "file": "{{ROOT_PATH}}/main.ts",
+            "startLine": 2,
+            "startOffset": 1,
+            "endLine": 2,
+            "endOffset": 36,
+            "refactor": "Move to a new file",
+            "action": "Move to a new file"
+          }
+        ]
+      },
+      "record_client_requests": [
+        "workspace/applyEdit"
+      ],
+      "expected_client_requests": [
+        {
+          "method": "workspace/applyEdit",
+          "params": {
+            "edit": {
+              "changes": {
+                "{{ROOT_URI}}/main.ts": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 0
+                      }
+                    },
+                    "newText": ""
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 36
+                      }
+                    },
+                    "newText": ""
+                  }
+                ],
+                "{{ROOT_URI}}/tsconfig.json": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 14,
+                        "character": 12
+                      },
+                      "end": {
+                        "line": 14,
+                        "character": 12
+                      }
+                    },
+                    "newText": ","
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 14,
+                        "character": 12
+                      },
+                      "end": {
+                        "line": 14,
+                        "character": 12
+                      }
+                    },
+                    "newText": "\n    \"./value.ts\""
+                  }
+                ],
+                "{{ROOT_URI}}/value.ts": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 0
+                      }
+                    },
+                    "newText": "import * as dep from \"./dep\";\n\nexport const value = dep.first + 1;\n"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "expected": null,
+      "source_eof": {
+        "client_request_edits": [
+          {
+            "request": 0,
+            "edit": 1,
+            "uri": "{{ROOT_URI}}/main.ts",
+            "start": 31,
+            "length": 36,
+            "source_sha256": "e5eb58787d5dd5c98b158463e78ea48de90aed013356c8d395f1aff2e901d3cb"
+          }
+        ]
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          },
+          "disabledSupport": true
+        }
+      },
+      "workspace": {
+        "applyEdit": true,
+        "workspaceEdit": {
+          "documentChanges": true,
+          "resourceOperations": [
+            "create",
+            "rename",
+            "delete"
+          ]
+        }
+      }
+    },
+    "options": {
+      "supportsMoveToFileCodeAction": true
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

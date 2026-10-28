@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"fmt"
@@ -84,7 +84,7 @@ func TestSetEvilStdIterator1(t *testing.T) {
 
 func ExampleRuntime_ExportTo_setToMap() {
 	vm := New()
-	s, err := vm.RunString(`
+	s, err := vm.runVMString(`
 	new Set([1, 2, 3])
 	`)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleRuntime_ExportTo_setToMap() {
 
 func ExampleRuntime_ExportTo_setToSlice() {
 	vm := New()
-	s, err := vm.RunString(`
+	s, err := vm.runVMString(`
 	new Set([1, 2, 3])
 	`)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleRuntime_ExportTo_setToSlice() {
 
 func TestSetExportToSliceCircular(t *testing.T) {
 	vm := New()
-	s, err := vm.RunString(`
+	s, err := vm.runVMString(`
 	let s = new Set();
 	s.add(s);
 	s;
@@ -141,7 +141,7 @@ func TestSetExportToSliceCircular(t *testing.T) {
 
 func TestSetExportToArrayMismatchedLengths(t *testing.T) {
 	vm := New()
-	s, err := vm.RunString(`
+	s, err := vm.runVMString(`
 	new Set([1, 2])
 	`)
 	if err != nil {
@@ -160,7 +160,7 @@ func TestSetExportToArrayMismatchedLengths(t *testing.T) {
 func TestSetExportToNilMap(t *testing.T) {
 	vm := New()
 	var m map[int]interface{}
-	res, err := vm.RunString("new Set([1])")
+	res, err := vm.runVMString("new Set([1])")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -181,7 +181,7 @@ func TestSetExportToNonNilMap(t *testing.T) {
 	m := map[int]interface{}{
 		2: true,
 	}
-	res, err := vm.RunString("new Set([1])")
+	res, err := vm.runVMString("new Set([1])")
 	if err != nil {
 		t.Fatal(err)
 	}

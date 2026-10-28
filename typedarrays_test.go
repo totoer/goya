@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"bytes"
@@ -32,7 +32,7 @@ func TestArrayBufferGoWrapper(t *testing.T) {
 	data := []byte{0xAA, 0xBB}
 	buf := vm.NewArrayBuffer(data)
 	vm.Set("buf", buf)
-	_, err := vm.RunString(`
+	_, err := vm.runVMString(`
 	var a = new Uint8Array(buf);
 	if (a.length !== 2 || a[0] !== 0xAA || a[1] !== 0xBB) {
 		throw new Error(a);
@@ -41,7 +41,7 @@ func TestArrayBufferGoWrapper(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	ret, err := vm.RunString(`
+	ret, err := vm.runVMString(`
 	var b = Uint8Array.of(0xCC, 0xDD);
 	b.buffer;
 	`)
@@ -62,7 +62,7 @@ func TestArrayBufferGoWrapper(t *testing.T) {
 	if !buf1.Detached() {
 		t.Fatal("buf1.Detached() returned false")
 	}
-	_, err = vm.RunString(`
+	_, err = vm.runVMString(`
 	if (b[0] !== undefined) {
 		throw new Error("b[0] !== undefined");
 	}
@@ -400,7 +400,7 @@ func TestTypedArrayExport(t *testing.T) {
 	vm := New()
 
 	t.Run("uint8", func(t *testing.T) {
-		v, err := vm.RunString("new Uint8Array([1, 2])")
+		v, err := vm.runVMString("new Uint8Array([1, 2])")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -411,7 +411,7 @@ func TestTypedArrayExport(t *testing.T) {
 		} else {
 			t.Fatal("Wrong export type")
 		}
-		_, err = vm.RunString(`{
+		_, err = vm.runVMString(`{
 		let a = new Uint8Array([1, 2]);
 		if (a[0] !== 1 || a[1] !== 2) {
 			throw new Error(a);
@@ -423,7 +423,7 @@ func TestTypedArrayExport(t *testing.T) {
 	})
 
 	t.Run("uint8-slice", func(t *testing.T) {
-		v, err := vm.RunString(`{
+		v, err := vm.runVMString(`{
 			const buf = new Uint8Array([1, 2]).buffer;
 			new Uint8Array(buf, 1, 1);
 		}`)
@@ -437,7 +437,7 @@ func TestTypedArrayExport(t *testing.T) {
 		} else {
 			t.Fatal("Wrong export type")
 		}
-		_, err = vm.RunString(`{
+		_, err = vm.runVMString(`{
 		let a = new Uint8Array([1, 2]);
 		if (a[0] !== 1 || a[1] !== 2) {
 			throw new Error(a);
@@ -449,7 +449,7 @@ func TestTypedArrayExport(t *testing.T) {
 	})
 
 	t.Run("int8", func(t *testing.T) {
-		v, err := vm.RunString("new Int8Array([1, -2])")
+		v, err := vm.runVMString("new Int8Array([1, -2])")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -463,7 +463,7 @@ func TestTypedArrayExport(t *testing.T) {
 	})
 
 	t.Run("uint16", func(t *testing.T) {
-		v, err := vm.RunString("new Uint16Array([1, 63000])")
+		v, err := vm.runVMString("new Uint16Array([1, 63000])")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -477,7 +477,7 @@ func TestTypedArrayExport(t *testing.T) {
 	})
 
 	t.Run("int16", func(t *testing.T) {
-		v, err := vm.RunString("new Int16Array([1, -31000])")
+		v, err := vm.runVMString("new Int16Array([1, -31000])")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -491,7 +491,7 @@ func TestTypedArrayExport(t *testing.T) {
 	})
 
 	t.Run("uint32", func(t *testing.T) {
-		v, err := vm.RunString("new Uint32Array([1, 123456])")
+		v, err := vm.runVMString("new Uint32Array([1, 123456])")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -505,7 +505,7 @@ func TestTypedArrayExport(t *testing.T) {
 	})
 
 	t.Run("int32", func(t *testing.T) {
-		v, err := vm.RunString("new Int32Array([1, -123456])")
+		v, err := vm.runVMString("new Int32Array([1, -123456])")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -519,7 +519,7 @@ func TestTypedArrayExport(t *testing.T) {
 	})
 
 	t.Run("float32", func(t *testing.T) {
-		v, err := vm.RunString("new Float32Array([1, -1.23456])")
+		v, err := vm.runVMString("new Float32Array([1, -1.23456])")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -533,7 +533,7 @@ func TestTypedArrayExport(t *testing.T) {
 	})
 
 	t.Run("float64", func(t *testing.T) {
-		v, err := vm.RunString("new Float64Array([1, -1.23456789])")
+		v, err := vm.runVMString("new Float64Array([1, -1.23456789])")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -547,7 +547,7 @@ func TestTypedArrayExport(t *testing.T) {
 	})
 
 	t.Run("bigint64", func(t *testing.T) {
-		v, err := vm.RunString("new BigInt64Array([18446744073709551617n, 2n])")
+		v, err := vm.runVMString("new BigInt64Array([18446744073709551617n, 2n])")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -561,7 +561,7 @@ func TestTypedArrayExport(t *testing.T) {
 	})
 
 	t.Run("biguint64", func(t *testing.T) {
-		v, err := vm.RunString("new BigUint64Array([18446744073709551617n, 2n])")
+		v, err := vm.runVMString("new BigUint64Array([18446744073709551617n, 2n])")
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -580,7 +580,7 @@ func TestUint8ArrayFromHex(t *testing.T) {
 	vm := New()
 
 	// valid-hex string
-	retH, err := vm.RunString(`
+	retH, err := vm.runVMString(`
 	Uint8Array.fromHex("0123456789ABcdEf");
 	`)
 	if err != nil {
@@ -594,7 +594,7 @@ func TestUint8ArrayFromHex(t *testing.T) {
 	data := []byte{0xAA, 0xBB}
 	buf := vm.NewArrayBuffer(data)
 	vm.Set("buf", buf)
-	_, err = vm.RunString(`
+	_, err = vm.runVMString(`
 	var a = new Uint8Array(buf);
 	var b = Uint8Array.fromHex("AaBb");
 
@@ -611,7 +611,7 @@ func TestUint8ArrayFromHex(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	ret, err := vm.RunString(`
+	ret, err := vm.runVMString(`
 	var b = Uint8Array.fromHex("ccDD");
 	b.buffer;
 	`)
@@ -632,7 +632,7 @@ func TestUint8ArrayFromHex(t *testing.T) {
 	if !buf1.Detached() {
 		t.Fatal("buf1.Detached() returned false")
 	}
-	_, err = vm.RunString(`
+	_, err = vm.runVMString(`
 	if (b[0] !== undefined) {
 		throw new Error("b[0] !== undefined");
 	}

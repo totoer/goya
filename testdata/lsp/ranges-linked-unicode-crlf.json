@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.tsx": "// 😀\r\nconst node = <Box\r\n title=\"😀\"\r\n>text</Box>;\r\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.tsx"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "ranges-linked-unicode-crlf",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx",
+          "languageId": "typescriptreact",
+          "version": 1,
+          "text": "// 😀\r\nconst node = <Box\r\n title=\"😀\"\r\n>text</Box>;\r\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/foldingRange",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        }
+      },
+      "expected": [
+        {
+          "startLine": 1,
+          "endLine": 3
+        },
+        {
+          "startLine": 2,
+          "endLine": 2
+        }
+      ]
+    },
+    {
+      "method": "textDocument/linkedEditingRange",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        },
+        "position": {
+          "line": 1,
+          "character": 16
+        }
+      },
+      "expected": {
+        "ranges": [
+          {
+            "start": {
+              "line": 1,
+              "character": 14
+            },
+            "end": {
+              "line": 1,
+              "character": 17
+            }
+          },
+          {
+            "start": {
+              "line": 3,
+              "character": 7
+            },
+            "end": {
+              "line": 3,
+              "character": 10
+            }
+          }
+        ],
+        "wordPattern": "[a-zA-Z0-9:\\-\\._$]*"
+      }
+    },
+    {
+      "method": "textDocument/linkedEditingRange",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        },
+        "position": {
+          "line": 3,
+          "character": 8
+        }
+      },
+      "expected": {
+        "ranges": [
+          {
+            "start": {
+              "line": 1,
+              "character": 14
+            },
+            "end": {
+              "line": 1,
+              "character": 17
+            }
+          },
+          {
+            "start": {
+              "line": 3,
+              "character": 7
+            },
+            "end": {
+              "line": 3,
+              "character": 10
+            }
+          }
+        ],
+        "wordPattern": "[a-zA-Z0-9:\\-\\._$]*"
+      }
+    },
+    {
+      "method": "textDocument/selectionRange",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        },
+        "positions": [
+          {
+            "line": 2,
+            "character": 10
+          },
+          {
+            "line": 3,
+            "character": 2
+          }
+        ]
+      },
+      "expected": [
+        {
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 8
+            },
+            "end": {
+              "line": 2,
+              "character": 10
+            }
+          },
+          "parent": {
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 7
+              },
+              "end": {
+                "line": 2,
+                "character": 11
+              }
+            },
+            "parent": {
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 1
+                },
+                "end": {
+                  "line": 2,
+                  "character": 11
+                }
+              },
+              "parent": {
+                "range": {
+                  "start": {
+                    "line": 1,
+                    "character": 13
+                  },
+                  "end": {
+                    "line": 3,
+                    "character": 1
+                  }
+                },
+                "parent": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 13
+                    },
+                    "end": {
+                      "line": 3,
+                      "character": 11
+                    }
+                  },
+                  "parent": {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 3,
+                        "character": 12
+                      }
+                    },
+                    "parent": {
+                      "range": {
+                        "start": {
+                          "line": 0,
+                          "character": 0
+                        },
+                        "end": {
+                          "line": 3,
+                          "character": 14
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 3,
+              "character": 1
+            },
+            "end": {
+              "line": 3,
+              "character": 5
+            }
+          },
+          "parent": {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 13
+              },
+              "end": {
+                "line": 3,
+                "character": 11
+              }
+            },
+            "parent": {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 0
+                },
+                "end": {
+                  "line": 3,
+                  "character": 12
+                }
+              },
+              "parent": {
+                "range": {
+                  "start": {
+                    "line": 0,
+                    "character": 0
+                  },
+                  "end": {
+                    "line": 3,
+                    "character": 14
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "source_eof": {}
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

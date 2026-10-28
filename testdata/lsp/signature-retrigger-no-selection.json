@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "/** Numeric overload.\n * @param value input number\n * @param scale multiplier\n * @returns scaled number\n */\ndeclare function choose(value: number, scale?: number): number;\n/** Text overload.\n * @param value input text\n * @param suffix trailing text\n */\ndeclare function choose(value: string, suffix: string): string;\nchoose(\"a\", );\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "signature-retrigger-no-selection",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "/** Numeric overload.\n * @param value input number\n * @param scale multiplier\n * @returns scaled number\n */\ndeclare function choose(value: number, scale?: number): number;\n/** Text overload.\n * @param value input text\n * @param suffix trailing text\n */\ndeclare function choose(value: string, suffix: string): string;\nchoose(\"a\", );\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/signatureHelp",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 11,
+          "character": 12
+        },
+        "context": {
+          "triggerKind": 3,
+          "isRetrigger": true,
+          "activeSignatureHelp": {
+            "activeParameter": 0,
+            "signatures": [
+              {
+                "label": "choose(value: number, scale?: number): number",
+                "parameters": []
+              }
+            ]
+          }
+        }
+      },
+      "expected": {
+        "activeSignature": 1,
+        "activeParameter": 1,
+        "signatures": [
+          {
+            "label": "choose(value: number, scale?: number): number",
+            "documentation": {
+              "kind": "markdown",
+              "value": "Numeric overload.\n\n*@returns* — scaled number"
+            },
+            "parameters": [
+              {
+                "label": "value: number",
+                "documentation": {
+                  "kind": "markdown",
+                  "value": "input number"
+                }
+              },
+              {
+                "label": "scale?: number",
+                "documentation": {
+                  "kind": "markdown",
+                  "value": "multiplier"
+                }
+              }
+            ]
+          },
+          {
+            "label": "choose(value: string, suffix: string): string",
+            "documentation": {
+              "kind": "markdown",
+              "value": "Text overload."
+            },
+            "parameters": [
+              {
+                "label": "value: string",
+                "documentation": {
+                  "kind": "markdown",
+                  "value": "input text"
+                }
+              },
+              {
+                "label": "suffix: string",
+                "documentation": {
+                  "kind": "markdown",
+                  "value": "trailing text"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

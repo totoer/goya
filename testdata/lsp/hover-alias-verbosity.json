@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "type Point = { x: number; y: number };\ntype Shape = { origin: Point; next?: Shape };\ndeclare const shape: Shape;\nshape;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "hover-alias-verbosity",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "type Point = { x: number; y: number };\ntype Shape = { origin: Point; next?: Shape };\ndeclare const shape: Shape;\nshape;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/hover",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 3,
+          "character": 2
+        },
+        "verbosityLevel": 0
+      },
+      "expected": {
+        "contents": {
+          "kind": "markdown",
+          "value": "\n```typescript\nconst shape: Shape\n```\n"
+        },
+        "range": {
+          "start": {
+            "line": 3,
+            "character": 0
+          },
+          "end": {
+            "line": 3,
+            "character": 5
+          }
+        },
+        "canIncreaseVerbosityLevel": true
+      }
+    },
+    {
+      "method": "textDocument/hover",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 3,
+          "character": 2
+        },
+        "verbosityLevel": 1
+      },
+      "expected": {
+        "contents": {
+          "kind": "markdown",
+          "value": "\n```typescript\nconst shape: {\n    origin: Point;\n    next?: Shape;\n}\n```\n"
+        },
+        "range": {
+          "start": {
+            "line": 3,
+            "character": 0
+          },
+          "end": {
+            "line": 3,
+            "character": 5
+          }
+        },
+        "canIncreaseVerbosityLevel": true
+      }
+    },
+    {
+      "method": "textDocument/hover",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 3,
+          "character": 2
+        },
+        "verbosityLevel": 2
+      },
+      "expected": {
+        "contents": {
+          "kind": "markdown",
+          "value": "\n```typescript\nconst shape: {\n    origin: {\n        x: number;\n        y: number;\n    };\n    next?: Shape | undefined;\n}\n```\n"
+        },
+        "range": {
+          "start": {
+            "line": 3,
+            "character": 0
+          },
+          "end": {
+            "line": 3,
+            "character": 5
+          }
+        },
+        "canIncreaseVerbosityLevel": false
+      }
+    },
+    {
+      "method": "textDocument/hover",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 3,
+          "character": 2
+        },
+        "verbosityLevel": -1
+      },
+      "expected": {
+        "contents": {
+          "kind": "markdown",
+          "value": "\n```typescript\nconst shape: Shape\n```\n"
+        },
+        "range": {
+          "start": {
+            "line": 3,
+            "character": 0
+          },
+          "end": {
+            "line": 3,
+            "character": 5
+          }
+        },
+        "canIncreaseVerbosityLevel": true
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {},
+    "options": {
+      "supportsHoverVerbosity": true
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

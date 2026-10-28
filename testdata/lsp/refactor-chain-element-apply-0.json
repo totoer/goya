@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "name": "refactor-chain-element-apply-0",
+  "project": {
+    "files": {
+      "/main.ts": "declare const object: { value?: { name: string; run(): number } } | undefined;\nconst result = object && object[\"value\"];\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "declare const object: { value?: { name: string; run(): number } } | undefined;\nconst result = object && object[\"value\"];\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 1,
+            "character": 15
+          },
+          "end": {
+            "line": 1,
+            "character": 15
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "refactor.rewrite.expression.optionalChain"
+          ],
+          "triggerKind": 1
+        }
+      },
+      "expected": [
+        {
+          "title": "Convert to optional chain expression",
+          "kind": "refactor.rewrite.expression.optionalChain",
+          "command": {
+            "title": "Convert to optional chain expression",
+            "command": "_typescript.applyRefactoring",
+            "arguments": [
+              {
+                "file": "{{ROOT_PATH}}/main.ts",
+                "startLine": 2,
+                "startOffset": 16,
+                "endLine": 2,
+                "endOffset": 16,
+                "refactor": "Convert to optional chain expression",
+                "action": "Convert to optional chain expression"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "method": "workspace/executeCommand",
+      "params": {
+        "title": "Convert to optional chain expression",
+        "command": "_typescript.applyRefactoring",
+        "arguments": [
+          {
+            "file": "{{ROOT_PATH}}/main.ts",
+            "startLine": 2,
+            "startOffset": 16,
+            "endLine": 2,
+            "endOffset": 16,
+            "refactor": "Convert to optional chain expression",
+            "action": "Convert to optional chain expression"
+          }
+        ]
+      },
+      "record_client_requests": [
+        "workspace/applyEdit"
+      ],
+      "expected_client_requests": [
+        {
+          "method": "workspace/applyEdit",
+          "params": {
+            "edit": {
+              "changes": {
+                "{{ROOT_URI}}/main.ts": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 15
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 40
+                      }
+                    },
+                    "newText": "object?.[\"value\"]"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "expected": null
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          },
+          "disabledSupport": true
+        }
+      },
+      "workspace": {
+        "applyEdit": true
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

@@ -1,11 +1,11 @@
-package goja
+package goya
 
 import (
 	"fmt"
 	"reflect"
 	"strconv"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 /*

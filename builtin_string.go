@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"math"
@@ -7,22 +7,13 @@ import (
 	"unicode/utf16"
 	"unicode/utf8"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 
-	"github.com/dop251/goja/parser"
-	"golang.org/x/text/collate"
+	"github.com/totoer/goya/parser"
+	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 	"golang.org/x/text/unicode/norm"
 )
-
-func (r *Runtime) collator() *collate.Collator {
-	collator := r._collator
-	if collator == nil {
-		collator = collate.New(language.Und)
-		r._collator = collator
-	}
-	return collator
-}
 
 func toString(arg Value) String {
 	if s, ok := arg.(String); ok {
@@ -377,9 +368,52 @@ func (r *Runtime) stringproto_lastIndexOf(call FunctionCall) Value {
 
 func (r *Runtime) stringproto_localeCompare(call FunctionCall) Value {
 	r.checkObjectCoercible(call.This)
-	this := norm.NFD.String(call.This.toString().String())
-	that := norm.NFD.String(call.Argument(0).toString().String())
-	return intToValue(int64(r.collator().CompareString(this, that)))
+	left := call.This.toString().String()
+	right := call.Argument(0).toString().String()
+	collator := r.newIntlCollator([]Value{call.Argument(1), call.Argument(2)}, r.getIntlCollator()).self.(*intlCollatorObject)
+	return intToValue(int64(collator.compare(left, right)))
+}
+
+func (r *Runtime) stringproto_localeCase(call FunctionCall, upper bool) Value {
+	r.checkObjectCoercible(call.This)
+	source := call.This.toString()
+	locales := r.intlCanonicalLocales(call.Argument(0))
+	locale := "en-US"
+	if len(locales) > 0 {
+		locale = locales[0]
+	}
+	tag, _ := language.Parse(locale)
+	convert := func(text string, builder *StringBuilder) {
+		var caser cases.Caser
+		if upper {
+			caser = cases.Upper(tag)
+		} else {
+			// Preserve ECMAScript's Final_Sigma condition before applying
+			// the locale's other context-sensitive casing rules.
+			original := text
+			var fixed strings.Builder
+			for i, c := range original {
+				if c == 'Σ' {
+					if isFinalSigma(original, i) {
+						c = 'ς'
+					} else {
+						c = 'σ'
+					}
+				}
+				fixed.WriteRune(c)
+			}
+			text = fixed.String()
+			caser = cases.Lower(tag)
+		}
+		builder.WriteUTF8String(caserTransform(caser, text))
+	}
+	ascii, unicode := devirtualizeString(source)
+	if unicode != nil {
+		return unicode.toCase(convert)
+	}
+	var builder StringBuilder
+	convert(string(ascii), &builder)
+	return builder.String()
 }
 
 func (r *Runtime) stringproto_match(call FunctionCall) Value {
@@ -1242,8 +1276,12 @@ func createStringProtoTemplate() *objectTemplate {
 	t.putStr("split", func(r *Runtime) Value { return r.methodProp(r.stringproto_split, "split", 2) })
 	t.putStr("startsWith", func(r *Runtime) Value { return r.methodProp(r.stringproto_startsWith, "startsWith", 1) })
 	t.putStr("substring", func(r *Runtime) Value { return r.methodProp(r.stringproto_substring, "substring", 2) })
-	t.putStr("toLocaleLowerCase", func(r *Runtime) Value { return r.methodProp(r.stringproto_toLowerCase, "toLocaleLowerCase", 0) })
-	t.putStr("toLocaleUpperCase", func(r *Runtime) Value { return r.methodProp(r.stringproto_toUpperCase, "toLocaleUpperCase", 0) })
+	t.putStr("toLocaleLowerCase", func(r *Runtime) Value {
+		return r.methodProp(func(call FunctionCall) Value { return r.stringproto_localeCase(call, false) }, "toLocaleLowerCase", 0)
+	})
+	t.putStr("toLocaleUpperCase", func(r *Runtime) Value {
+		return r.methodProp(func(call FunctionCall) Value { return r.stringproto_localeCase(call, true) }, "toLocaleUpperCase", 0)
+	})
 	t.putStr("toLowerCase", func(r *Runtime) Value { return r.methodProp(r.stringproto_toLowerCase, "toLowerCase", 0) })
 	t.putStr("toString", func(r *Runtime) Value { return r.methodProp(r.stringproto_toString, "toString", 0) })
 	t.putStr("toUpperCase", func(r *Runtime) Value { return r.methodProp(r.stringproto_toUpperCase, "toUpperCase", 0) })

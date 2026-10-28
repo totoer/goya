@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"sort"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 const (

@@ -1,0 +1,801 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "type Alias = string;\nenum Color { Red, Blue }\ninterface Callable { (): void; new(): Callable; [name: string]: any; }\nnamespace Merge { export const a = 1; }\nnamespace Merge { export function b() {} }\ninterface Joined { first: number }\ninterface Joined { second: string }\nconst key = \"value\";\nconst record = { [key]: 1, [\"quoted\"]: 2, 1: 3, arrow: () => 1 };\nconst lambda = () => { const inside = 1; return inside; };\n[1].map(value => { const child = value; return child; });\nexport default class { run() {} }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "symbols-document-merged-computed",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "type Alias = string;\nenum Color { Red, Blue }\ninterface Callable { (): void; new(): Callable; [name: string]: any; }\nnamespace Merge { export const a = 1; }\nnamespace Merge { export function b() {} }\ninterface Joined { first: number }\ninterface Joined { second: string }\nconst key = \"value\";\nconst record = { [key]: 1, [\"quoted\"]: 2, 1: 3, arrow: () => 1 };\nconst lambda = () => { const inside = 1; return inside; };\n[1].map(value => { const child = value; return child; });\nexport default class { run() {} }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/documentSymbol",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": [
+        {
+          "name": "default",
+          "detail": "",
+          "kind": 5,
+          "range": {
+            "start": {
+              "line": 11,
+              "character": 0
+            },
+            "end": {
+              "line": 11,
+              "character": 33
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 11,
+              "character": 0
+            },
+            "end": {
+              "line": 11,
+              "character": 33
+            }
+          },
+          "children": [
+            {
+              "name": "run",
+              "detail": "",
+              "kind": 6,
+              "range": {
+                "start": {
+                  "line": 11,
+                  "character": 23
+                },
+                "end": {
+                  "line": 11,
+                  "character": 31
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 11,
+                  "character": 23
+                },
+                "end": {
+                  "line": 11,
+                  "character": 26
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Alias",
+          "detail": "",
+          "kind": 13,
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 0
+            },
+            "end": {
+              "line": 0,
+              "character": 20
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 0,
+              "character": 5
+            },
+            "end": {
+              "line": 0,
+              "character": 10
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "Callable",
+          "detail": "",
+          "kind": 11,
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 0
+            },
+            "end": {
+              "line": 2,
+              "character": 70
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 2,
+              "character": 10
+            },
+            "end": {
+              "line": 2,
+              "character": 18
+            }
+          },
+          "children": [
+            {
+              "name": "()",
+              "detail": "",
+              "kind": 13,
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 21
+                },
+                "end": {
+                  "line": 2,
+                  "character": 30
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 2,
+                  "character": 21
+                },
+                "end": {
+                  "line": 2,
+                  "character": 30
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "new()",
+              "detail": "",
+              "kind": 13,
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 31
+                },
+                "end": {
+                  "line": 2,
+                  "character": 47
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 2,
+                  "character": 31
+                },
+                "end": {
+                  "line": 2,
+                  "character": 47
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "[]",
+              "detail": "",
+              "kind": 13,
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 48
+                },
+                "end": {
+                  "line": 2,
+                  "character": 68
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 2,
+                  "character": 48
+                },
+                "end": {
+                  "line": 2,
+                  "character": 68
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Color",
+          "detail": "",
+          "kind": 10,
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 0
+            },
+            "end": {
+              "line": 1,
+              "character": 24
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 1,
+              "character": 5
+            },
+            "end": {
+              "line": 1,
+              "character": 10
+            }
+          },
+          "children": [
+            {
+              "name": "Blue",
+              "detail": "",
+              "kind": 14,
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 18
+                },
+                "end": {
+                  "line": 1,
+                  "character": 22
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 1,
+                  "character": 18
+                },
+                "end": {
+                  "line": 1,
+                  "character": 22
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "Red",
+              "detail": "",
+              "kind": 14,
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 13
+                },
+                "end": {
+                  "line": 1,
+                  "character": 16
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 1,
+                  "character": 13
+                },
+                "end": {
+                  "line": 1,
+                  "character": 16
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Joined",
+          "detail": "",
+          "kind": 11,
+          "range": {
+            "start": {
+              "line": 5,
+              "character": 0
+            },
+            "end": {
+              "line": 5,
+              "character": 34
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 5,
+              "character": 10
+            },
+            "end": {
+              "line": 5,
+              "character": 16
+            }
+          },
+          "children": [
+            {
+              "name": "first",
+              "detail": "",
+              "kind": 7,
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 19
+                },
+                "end": {
+                  "line": 5,
+                  "character": 32
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 5,
+                  "character": 19
+                },
+                "end": {
+                  "line": 5,
+                  "character": 24
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Joined",
+          "detail": "",
+          "kind": 11,
+          "range": {
+            "start": {
+              "line": 6,
+              "character": 0
+            },
+            "end": {
+              "line": 6,
+              "character": 35
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 6,
+              "character": 0
+            },
+            "end": {
+              "line": 6,
+              "character": 35
+            }
+          },
+          "children": [
+            {
+              "name": "second",
+              "detail": "",
+              "kind": 7,
+              "range": {
+                "start": {
+                  "line": 6,
+                  "character": 19
+                },
+                "end": {
+                  "line": 6,
+                  "character": 33
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 6,
+                  "character": 19
+                },
+                "end": {
+                  "line": 6,
+                  "character": 25
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "key",
+          "detail": "",
+          "kind": 14,
+          "range": {
+            "start": {
+              "line": 7,
+              "character": 6
+            },
+            "end": {
+              "line": 7,
+              "character": 19
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 7,
+              "character": 6
+            },
+            "end": {
+              "line": 7,
+              "character": 9
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "lambda",
+          "detail": "",
+          "kind": 14,
+          "range": {
+            "start": {
+              "line": 9,
+              "character": 6
+            },
+            "end": {
+              "line": 9,
+              "character": 57
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 9,
+              "character": 6
+            },
+            "end": {
+              "line": 9,
+              "character": 12
+            }
+          },
+          "children": [
+            {
+              "name": "inside",
+              "detail": "",
+              "kind": 14,
+              "range": {
+                "start": {
+                  "line": 9,
+                  "character": 29
+                },
+                "end": {
+                  "line": 9,
+                  "character": 39
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 9,
+                  "character": 29
+                },
+                "end": {
+                  "line": 9,
+                  "character": 35
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "map() callback",
+          "detail": "",
+          "kind": 12,
+          "range": {
+            "start": {
+              "line": 10,
+              "character": 8
+            },
+            "end": {
+              "line": 10,
+              "character": 55
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 10,
+              "character": 8
+            },
+            "end": {
+              "line": 10,
+              "character": 55
+            }
+          },
+          "children": [
+            {
+              "name": "child",
+              "detail": "",
+              "kind": 14,
+              "range": {
+                "start": {
+                  "line": 10,
+                  "character": 25
+                },
+                "end": {
+                  "line": 10,
+                  "character": 38
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 10,
+                  "character": 25
+                },
+                "end": {
+                  "line": 10,
+                  "character": 30
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Merge",
+          "detail": "",
+          "kind": 2,
+          "range": {
+            "start": {
+              "line": 3,
+              "character": 0
+            },
+            "end": {
+              "line": 3,
+              "character": 39
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 3,
+              "character": 10
+            },
+            "end": {
+              "line": 3,
+              "character": 15
+            }
+          },
+          "children": [
+            {
+              "name": "a",
+              "detail": "",
+              "kind": 14,
+              "range": {
+                "start": {
+                  "line": 3,
+                  "character": 31
+                },
+                "end": {
+                  "line": 3,
+                  "character": 36
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 3,
+                  "character": 31
+                },
+                "end": {
+                  "line": 3,
+                  "character": 32
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Merge",
+          "detail": "",
+          "kind": 2,
+          "range": {
+            "start": {
+              "line": 4,
+              "character": 0
+            },
+            "end": {
+              "line": 4,
+              "character": 42
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 4,
+              "character": 0
+            },
+            "end": {
+              "line": 4,
+              "character": 42
+            }
+          },
+          "children": [
+            {
+              "name": "b",
+              "detail": "",
+              "kind": 12,
+              "range": {
+                "start": {
+                  "line": 4,
+                  "character": 18
+                },
+                "end": {
+                  "line": 4,
+                  "character": 40
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 4,
+                  "character": 34
+                },
+                "end": {
+                  "line": 4,
+                  "character": 35
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "record",
+          "detail": "",
+          "kind": 14,
+          "range": {
+            "start": {
+              "line": 8,
+              "character": 6
+            },
+            "end": {
+              "line": 8,
+              "character": 64
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 8,
+              "character": 6
+            },
+            "end": {
+              "line": 8,
+              "character": 12
+            }
+          },
+          "children": [
+            {
+              "name": "[key]",
+              "detail": "",
+              "kind": 7,
+              "range": {
+                "start": {
+                  "line": 8,
+                  "character": 17
+                },
+                "end": {
+                  "line": 8,
+                  "character": 25
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 8,
+                  "character": 17
+                },
+                "end": {
+                  "line": 8,
+                  "character": 22
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "1",
+              "detail": "",
+              "kind": 7,
+              "range": {
+                "start": {
+                  "line": 8,
+                  "character": 42
+                },
+                "end": {
+                  "line": 8,
+                  "character": 46
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 8,
+                  "character": 42
+                },
+                "end": {
+                  "line": 8,
+                  "character": 43
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "arrow",
+              "detail": "",
+              "kind": 6,
+              "range": {
+                "start": {
+                  "line": 8,
+                  "character": 48
+                },
+                "end": {
+                  "line": 8,
+                  "character": 62
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 8,
+                  "character": 48
+                },
+                "end": {
+                  "line": 8,
+                  "character": 53
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "[\"quoted\"]",
+              "detail": "",
+              "kind": 7,
+              "range": {
+                "start": {
+                  "line": 8,
+                  "character": 27
+                },
+                "end": {
+                  "line": 8,
+                  "character": 40
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 8,
+                  "character": 27
+                },
+                "end": {
+                  "line": 8,
+                  "character": 37
+                }
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "documentSymbol": {
+          "hierarchicalDocumentSymbolSupport": true
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

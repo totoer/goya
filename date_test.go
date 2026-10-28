@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"testing"
@@ -33,7 +33,7 @@ func TestDateUTC(t *testing.T) {
 
 	`
 
-	testScriptWithTestLib(SCRIPT, _undefined, t)
+	newLocalVMFixtureRuntime().testScriptWithTestLib(SCRIPT, _undefined, t)
 }
 
 func TestNewDate(t *testing.T) {
@@ -42,7 +42,7 @@ func TestNewDate(t *testing.T) {
 	d1.getUTCHours() === 12;
 
 	`
-	testScript(SCRIPT, valueTrue, t)
+	newLocalVMFixtureRuntime().testScript(SCRIPT, valueTrue, t)
 }
 
 func TestNewDate0(t *testing.T) {
@@ -50,7 +50,7 @@ func TestNewDate0(t *testing.T) {
 	(new Date(0)).toUTCString();
 
 	`
-	testScript(SCRIPT, asciiString("Thu, 01 Jan 1970 00:00:00 GMT"), t)
+	newLocalVMFixtureRuntime().testScript(SCRIPT, asciiString("Thu, 01 Jan 1970 00:00:00 GMT"), t)
 }
 
 func TestSetHour(t *testing.T) {
@@ -80,7 +80,7 @@ func TestSetHour(t *testing.T) {
 	assert.sameValue(d.getSeconds(), 45);
 
 	`
-	testScriptWithTestLib(SCRIPT, _undefined, t)
+	newLocalVMFixtureRuntime().testScriptWithTestLib(SCRIPT, _undefined, t)
 
 }
 
@@ -107,7 +107,7 @@ func TestSetMinute(t *testing.T) {
 	assert.sameValue(d.getHours(), 13);
 
 	`
-	testScriptWithTestLib(SCRIPT, _undefined, t)
+	newLocalVMFixtureRuntime().testScriptWithTestLib(SCRIPT, _undefined, t)
 
 }
 
@@ -127,7 +127,7 @@ func TestTimezoneOffset(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	testScript(SCRIPT, intToValue(-60), t)
+	newLocalVMFixtureRuntime().testScript(SCRIPT, intToValue(-60), t)
 }
 
 func TestDateValueOf(t *testing.T) {
@@ -136,13 +136,16 @@ func TestDateValueOf(t *testing.T) {
 	d9.valueOf();
 	`
 
-	testScript(SCRIPT, intToValue(1.23e15), t)
+	newLocalVMFixtureRuntime().testScript(SCRIPT, intToValue(1.23e15), t)
 }
 
 func TestDateSetters(t *testing.T) {
 	const SCRIPT = `
 	assert.sameValue((new Date(0)).setMilliseconds(2345), 2345, "setMilliseconds(2345)");
-	assert.sameValue(new Date(1000).setMilliseconds(23450000000000), 23450000001000, "setMilliseconds(23450000000000)");
+	// Local setters apply the zone offset at the normalized result. London
+	// had UTC+1 in January 1970 and UTC+0 at the resulting January date.
+	assert.sameValue(new Date(1000).setMilliseconds(23450000000000), 23450003601000, "local setMilliseconds across offset change");
+	assert.sameValue(new Date(1000).setUTCMilliseconds(23450000000000), 23450000001000, "UTC setMilliseconds");
 	assert.sameValue((new Date(0)).setUTCMilliseconds(2345), 2345, "setUTCMilliseconds()");
 	assert.sameValue((new Date(0)).setSeconds(12), 12000, "setSeconds()");
 	assert.sameValue((new Date(0)).setUTCSeconds(12), 12000, "setUTCSeconds()");
@@ -174,7 +177,7 @@ func TestDateSetters(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	testScriptWithTestLib(SCRIPT, _undefined, t)
+	newLocalVMFixtureRuntime().testScriptWithTestLib(SCRIPT, _undefined, t)
 }
 
 func TestDateLegacyMethods(t *testing.T) {
@@ -190,7 +193,7 @@ func TestDateLegacyMethods(t *testing.T) {
 	assert.sameValue(d.setYear(70), new Date(1970, 0).getTime(), "setYear() on invalid date");
 	assert.sameValue(Date.prototype.toGMTString, Date.prototype.toUTCString, "toGMTString");
 	`
-	testScriptWithTestLib(SCRIPT, _undefined, t)
+	newLocalVMFixtureRuntime().testScriptWithTestLib(SCRIPT, _undefined, t)
 }
 
 func TestDateToGMTString(t *testing.T) {
@@ -293,7 +296,7 @@ func TestDateParse(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	testScriptWithTestLib(SCRIPT, _undefined, t)
+	newLocalVMFixtureRuntime().testScriptWithTestLib(SCRIPT, _undefined, t)
 }
 
 func TestDateMaxValues(t *testing.T) {
@@ -303,7 +306,7 @@ func TestDateMaxValues(t *testing.T) {
 	assert.sameValue((new Date(0)).setUTCMilliseconds(-8.64e15), -8.64e15);
 	assert.sameValue((new Date(0)).setUTCSeconds(-8640000000000), -8.64e15);
 	`
-	testScriptWithTestLib(SCRIPT, _undefined, t)
+	newLocalVMFixtureRuntime().testScriptWithTestLib(SCRIPT, _undefined, t)
 }
 
 func TestDateTimeClipOverflow(t *testing.T) {
@@ -320,12 +323,12 @@ func TestDateTimeClipOverflow(t *testing.T) {
 	assert.sameValue(Date.UTC(-271821, 3, 20), -8.64e15, "min");
 	assert.sameValue(Date.UTC(-271821, 3, 19, 23, 59, 59, 999), NaN, "min - 1");
 	`
-	testScriptWithTestLib(SCRIPT, _undefined, t)
+	newLocalVMFixtureRuntime().testScriptWithTestLib(SCRIPT, _undefined, t)
 }
 
 func TestDateExport(t *testing.T) {
 	vm := New()
-	res, err := vm.RunString(`new Date(1000)`)
+	res, err := vm.runVMString(`new Date(1000)`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -334,7 +337,7 @@ func TestDateExport(t *testing.T) {
 		if d.UnixNano()/1e6 != 1000 {
 			t.Fatalf("Invalid exported date: %v", d)
 		}
-		if loc := d.Location(); loc != time.Local {
+		if loc := d.Location(); loc != time.UTC {
 			t.Fatalf("Invalid timezone: %v", loc)
 		}
 	} else {
@@ -346,12 +349,12 @@ func TestDateToJSON(t *testing.T) {
 	const SCRIPT = `
 	Date.prototype.toJSON.call({ toISOString: function () { return 1; } })
 	`
-	testScript(SCRIPT, intToValue(1), t)
+	newLocalVMFixtureRuntime().testScript(SCRIPT, intToValue(1), t)
 }
 
 func TestDateExportType(t *testing.T) {
 	vm := New()
-	v, err := vm.RunString(`new Date()`)
+	v, err := vm.runVMString(`new Date()`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -665,5 +668,5 @@ testCasesNegative.forEach(function (s) {
     assertTrue(isNaN(Date.parse(s)), s + " is not NaN.");
 });
 `
-	testScriptWithTestLib(SCRIPT, _undefined, t)
+	newLocalVMFixtureRuntime().testScriptWithTestLib(SCRIPT, _undefined, t)
 }

@@ -1,0 +1,628 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "export const Zebra = 1;\nexport function getValue() { return Zebra; }\n",
+      "/helper.ts": "export class Alpha { value = 1; }\nexport const getVeryLongValue = 2;\nexport interface GetValueResult { value: string }\n",
+      "/tsconfig.json": "{\"compilerOptions\": {\"strict\": true, \"target\": \"es2025\", \"module\": \"esnext\", \"moduleResolution\": \"bundler\", \"lib\": [\"es2025\"], \"types\": [], \"noEmit\": true}, \"files\": [\"main.ts\", \"helper.ts\"]}"
+    },
+    "declarations": {},
+    "entry_points": [],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    },
+    "config_file": "/tsconfig.json"
+  },
+  "name": "symbols-workspace-search",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "export const Zebra = 1;\nexport function getValue() { return Zebra; }\n"
+        }
+      }
+    },
+    {
+      "method": "workspace/symbol",
+      "params": {
+        "query": ""
+      },
+      "expected": [
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 0
+              },
+              "end": {
+                "line": 0,
+                "character": 33
+              }
+            }
+          },
+          "kind": 5,
+          "name": "Alpha"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/main.ts",
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 0
+              },
+              "end": {
+                "line": 1,
+                "character": 44
+              }
+            }
+          },
+          "kind": 12,
+          "name": "getValue"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 0
+              },
+              "end": {
+                "line": 2,
+                "character": 49
+              }
+            }
+          },
+          "kind": 11,
+          "name": "GetValueResult"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 13
+              },
+              "end": {
+                "line": 1,
+                "character": 33
+              }
+            }
+          },
+          "kind": 14,
+          "name": "getVeryLongValue"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 21
+              },
+              "end": {
+                "line": 0,
+                "character": 31
+              }
+            }
+          },
+          "kind": 7,
+          "name": "value"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 34
+              },
+              "end": {
+                "line": 2,
+                "character": 47
+              }
+            }
+          },
+          "kind": 7,
+          "name": "value"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/main.ts",
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 13
+              },
+              "end": {
+                "line": 0,
+                "character": 22
+              }
+            }
+          },
+          "kind": 14,
+          "name": "Zebra"
+        }
+      ]
+    },
+    {
+      "method": "workspace/symbol",
+      "params": {
+        "query": "Alpha"
+      },
+      "expected": [
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 0
+              },
+              "end": {
+                "line": 0,
+                "character": 33
+              }
+            }
+          },
+          "kind": 5,
+          "name": "Alpha"
+        }
+      ]
+    },
+    {
+      "method": "workspace/symbol",
+      "params": {
+        "query": "value"
+      },
+      "expected": [
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 21
+              },
+              "end": {
+                "line": 0,
+                "character": 31
+              }
+            }
+          },
+          "kind": 7,
+          "name": "value"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 34
+              },
+              "end": {
+                "line": 2,
+                "character": 47
+              }
+            }
+          },
+          "kind": 7,
+          "name": "value"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/main.ts",
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 0
+              },
+              "end": {
+                "line": 1,
+                "character": 44
+              }
+            }
+          },
+          "kind": 12,
+          "name": "getValue"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 0
+              },
+              "end": {
+                "line": 2,
+                "character": 49
+              }
+            }
+          },
+          "kind": 11,
+          "name": "GetValueResult"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 13
+              },
+              "end": {
+                "line": 1,
+                "character": 33
+              }
+            }
+          },
+          "kind": 14,
+          "name": "getVeryLongValue"
+        }
+      ]
+    },
+    {
+      "method": "workspace/symbol",
+      "params": {
+        "query": "gV"
+      },
+      "expected": [
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 13
+              },
+              "end": {
+                "line": 1,
+                "character": 33
+              }
+            }
+          },
+          "kind": 14,
+          "name": "getVeryLongValue"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/main.ts",
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 0
+              },
+              "end": {
+                "line": 1,
+                "character": 44
+              }
+            }
+          },
+          "kind": 12,
+          "name": "getValue"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 0
+              },
+              "end": {
+                "line": 2,
+                "character": 49
+              }
+            }
+          },
+          "kind": 11,
+          "name": "GetValueResult"
+        }
+      ]
+    },
+    {
+      "method": "workspace/symbol",
+      "params": {
+        "query": "gvl"
+      },
+      "expected": []
+    },
+    {
+      "method": "workspace/symbol",
+      "params": {
+        "query": "get value"
+      },
+      "expected": [
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 21
+              },
+              "end": {
+                "line": 0,
+                "character": 31
+              }
+            }
+          },
+          "kind": 7,
+          "name": "value"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 34
+              },
+              "end": {
+                "line": 2,
+                "character": 47
+              }
+            }
+          },
+          "kind": 7,
+          "name": "value"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/main.ts",
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 0
+              },
+              "end": {
+                "line": 1,
+                "character": 44
+              }
+            }
+          },
+          "kind": 12,
+          "name": "getValue"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 0
+              },
+              "end": {
+                "line": 2,
+                "character": 49
+              }
+            }
+          },
+          "kind": 11,
+          "name": "GetValueResult"
+        },
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 13
+              },
+              "end": {
+                "line": 1,
+                "character": 33
+              }
+            }
+          },
+          "kind": 14,
+          "name": "getVeryLongValue"
+        }
+      ]
+    },
+    {
+      "method": "workspace/symbol",
+      "params": {
+        "query": "Alpha.value"
+      },
+      "expected": []
+    },
+    {
+      "method": "workspace/symbol",
+      "params": {
+        "query": "missing"
+      },
+      "expected": []
+    },
+    {
+      "method": "textDocument/didChange",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "version": 2
+        },
+        "contentChanges": [
+          {
+            "text": "export const Zebra = 1;\nexport function getValue() { return Zebra; }\nexport class Added {}\n"
+          }
+        ]
+      }
+    },
+    {
+      "method": "workspace/symbol",
+      "params": {
+        "query": "Added"
+      },
+      "expected": [
+        {
+          "location": {
+            "uri": "{{ROOT_URI}}/main.ts",
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 0
+              },
+              "end": {
+                "line": 2,
+                "character": 21
+              }
+            }
+          },
+          "kind": 5,
+          "name": "Added"
+        }
+      ]
+    },
+    {
+      "method": "textDocument/documentSymbol",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": [
+        {
+          "name": "Added",
+          "detail": "",
+          "kind": 5,
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 0
+            },
+            "end": {
+              "line": 2,
+              "character": 21
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 2,
+              "character": 13
+            },
+            "end": {
+              "line": 2,
+              "character": 18
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "getValue",
+          "detail": "",
+          "kind": 12,
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 0
+            },
+            "end": {
+              "line": 1,
+              "character": 44
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 1,
+              "character": 16
+            },
+            "end": {
+              "line": 1,
+              "character": 24
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "Zebra",
+          "detail": "",
+          "kind": 14,
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 13
+            },
+            "end": {
+              "line": 0,
+              "character": 22
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 0,
+              "character": 13
+            },
+            "end": {
+              "line": 0,
+              "character": 18
+            }
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/helper.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "export class Alpha { value = 1; }\nexport const getVeryLongValue = 2;\nexport interface GetValueResult { value: string }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/didClose",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      }
+    },
+    {
+      "method": "workspace/symbol",
+      "params": {
+        "query": "Added"
+      },
+      "expected": []
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "documentSymbol": {
+          "hierarchicalDocumentSymbolSupport": true
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

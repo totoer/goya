@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 const (
@@ -37,6 +37,7 @@ type stash struct {
 	// If this is a top-level function stash, sets the type of the function. If set, dynamic var declarations
 	// created by direct eval go here.
 	funcType funcType
+	module   *moduleInstance
 }
 
 type context struct {
@@ -696,13 +697,21 @@ func (vm *vm) run() {
 	}
 
 	if interrupted {
-		vm.interruptLock.Lock()
-		v := &InterruptedError{
-			iface: vm.interruptVal,
-		}
-		v.stack = vm.captureStack(nil, 0)
-		vm.interruptLock.Unlock()
-		panic(v)
+		vm.throwInterrupt()
+	}
+}
+
+func (vm *vm) throwInterrupt() {
+	vm.interruptLock.Lock()
+	v := &InterruptedError{iface: vm.interruptVal}
+	v.stack = vm.captureStack(nil, 0)
+	vm.interruptLock.Unlock()
+	panic(v)
+}
+
+func (vm *vm) checkInterrupt() {
+	if atomic.LoadUint32(&vm.interrupted) != 0 {
+		vm.throwInterrupt()
 	}
 }
 
@@ -3619,55 +3628,6 @@ func (_pop) exec(vm *vm) {
 	vm.pc++
 }
 
-func (vm *vm) callEval(n int, strict bool) {
-	if vm.r.toObject(vm.stack[vm.sp-n-1]) == vm.r.global.Eval {
-		if n > 0 {
-			srcVal := vm.stack[vm.sp-n]
-			if src, ok := srcVal.(String); ok {
-				ret := vm.r.eval(src, true, strict)
-				vm.stack[vm.sp-n-2] = ret
-			} else {
-				vm.stack[vm.sp-n-2] = srcVal
-			}
-		} else {
-			vm.stack[vm.sp-n-2] = _undefined
-		}
-
-		vm.sp -= n + 1
-		vm.pc++
-	} else {
-		call(n).exec(vm)
-	}
-}
-
-type callEval uint32
-
-func (numargs callEval) exec(vm *vm) {
-	vm.callEval(int(numargs), false)
-}
-
-type callEvalStrict uint32
-
-func (numargs callEvalStrict) exec(vm *vm) {
-	vm.callEval(int(numargs), true)
-}
-
-type _callEvalVariadic struct{}
-
-var callEvalVariadic _callEvalVariadic
-
-func (_callEvalVariadic) exec(vm *vm) {
-	vm.callEval(vm.countVariadicArgs()-2, false)
-}
-
-type _callEvalVariadicStrict struct{}
-
-var callEvalVariadicStrict _callEvalVariadicStrict
-
-func (_callEvalVariadicStrict) exec(vm *vm) {
-	vm.callEval(vm.countVariadicArgs()-2, true)
-}
-
 type _boxThis struct{}
 
 var boxThis _boxThis
@@ -4164,6 +4124,8 @@ func getHomeObject(v Value) *Object {
 		case *generatorMethodFuncObject:
 			return fn.homeObject
 		case *asyncMethodFuncObject:
+			return fn.homeObject
+		case *tsAsyncGeneratorFunctionObject:
 			return fn.homeObject
 		case *classFuncObject:
 			return o.runtime.toObject(fn.getStr("prototype", nil))
@@ -5699,22 +5661,6 @@ func (vm *vm) getStashPtr(s uint32) *Value {
 	return &stash.values[idx]
 }
 
-type getThisDynamic struct{}
-
-func (getThisDynamic) exec(vm *vm) {
-	for stash := vm.stash; stash != nil; stash = stash.outer {
-		if stash.obj == nil {
-			if v, exists := stash.getByName(thisBindingName, false); exists {
-				vm.push(v)
-				vm.pc++
-				return
-			}
-		}
-	}
-	vm.push(vm.r.globalObject)
-	vm.pc++
-}
-
 type throwConst struct {
 	v interface{}
 }
@@ -5741,21 +5687,6 @@ func (r resolveThisStash) exec(vm *vm) {
 	}
 	vm.refStack = append(vm.refStack, &thisRef{v: &stash.values, idx: int(idx)})
 	vm.pc++
-}
-
-type resolveThisDynamic struct{}
-
-func (resolveThisDynamic) exec(vm *vm) {
-	for stash := vm.stash; stash != nil; stash = stash.outer {
-		if stash.obj == nil {
-			if idx, exists := stash.names[thisBindingName]; exists {
-				vm.refStack = append(vm.refStack, &thisRef{v: &stash.values, idx: int(idx &^ maskTyp)})
-				vm.pc++
-				return
-			}
-		}
-	}
-	panic(vm.r.newError(vm.r.getReferenceError(), "Compiler bug: 'this' reference is not found in resolveThisDynamic"))
 }
 
 type defineComputedKey int

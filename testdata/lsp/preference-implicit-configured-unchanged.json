@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "name": "preference-implicit-configured-unchanged",
+  "project": {
+    "files": {
+      "/main.ts": "export const value: number = null;\n",
+      "/tsconfig.json": "{\"compilerOptions\": {\"strictNullChecks\": true, \"types\": []}, \"files\": [\"main.ts\"]}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {},
+    "config_file": "/tsconfig.json"
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export const value: number = null;\n"
+        }
+      }
+    },
+    {
+      "method": "workspace/didChangeConfiguration",
+      "notification": true,
+      "params": {
+        "settings": {
+          "implicitProjectConfiguration": {
+            "strict": false,
+            "strictNullChecks": false
+          }
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 3000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 13
+              },
+              "end": {
+                "line": 0,
+                "character": 18
+              }
+            },
+            "message": "Type 'null' is not assignable to type 'number'.",
+            "severity": 1,
+            "code": 2322,
+            "source": "typescript"
+          }
+        ]
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

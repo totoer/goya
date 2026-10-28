@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"hash/maphash"
@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 type asciiString string

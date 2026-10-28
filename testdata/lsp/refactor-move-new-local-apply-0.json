@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "name": "refactor-move-new-local-apply-0",
+  "project": {
+    "files": {
+      "/main.ts": "const first = 1;\nconst second = first + 2;\nexport { second };\n",
+      "/tsconfig.json": "{\n  \"compilerOptions\": {\n    \"strict\": true,\n    \"target\": \"es2025\",\n    \"module\": \"esnext\",\n    \"moduleResolution\": \"bundler\",\n    \"lib\": [\n      \"es2025\"\n    ],\n    \"types\": [],\n    \"noEmit\": true\n  },\n  \"files\": [\n    \"main.ts\"\n  ]\n}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    },
+    "config_file": "/tsconfig.json"
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "const first = 1;\nconst second = first + 2;\nexport { second };\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 1,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 25
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "refactor.move.newFile"
+          ],
+          "triggerKind": 1
+        }
+      },
+      "expected": [
+        {
+          "title": "Move to a new file",
+          "kind": "refactor.move.newFile",
+          "command": {
+            "title": "Move to a new file",
+            "command": "_typescript.applyRefactoring",
+            "arguments": [
+              {
+                "file": "{{ROOT_PATH}}/main.ts",
+                "startLine": 2,
+                "startOffset": 1,
+                "endLine": 2,
+                "endOffset": 26,
+                "refactor": "Move to a new file",
+                "action": "Move to a new file"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "method": "workspace/executeCommand",
+      "params": {
+        "title": "Move to a new file",
+        "command": "_typescript.applyRefactoring",
+        "arguments": [
+          {
+            "file": "{{ROOT_PATH}}/main.ts",
+            "startLine": 2,
+            "startOffset": 1,
+            "endLine": 2,
+            "endOffset": 26,
+            "refactor": "Move to a new file",
+            "action": "Move to a new file"
+          }
+        ]
+      },
+      "record_client_requests": [
+        "workspace/applyEdit"
+      ],
+      "expected_client_requests": [
+        {
+          "method": "workspace/applyEdit",
+          "params": {
+            "edit": {
+              "changes": {
+                "{{ROOT_URI}}/main.ts": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 0
+                      }
+                    },
+                    "newText": "export "
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 0
+                      }
+                    },
+                    "newText": ""
+                  }
+                ],
+                "{{ROOT_URI}}/tsconfig.json": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 13,
+                        "character": 13
+                      },
+                      "end": {
+                        "line": 13,
+                        "character": 13
+                      }
+                    },
+                    "newText": ","
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 13,
+                        "character": 13
+                      },
+                      "end": {
+                        "line": 13,
+                        "character": 13
+                      }
+                    },
+                    "newText": "\n    \"./second.ts\""
+                  }
+                ],
+                "{{ROOT_URI}}/second.ts": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 0
+                      }
+                    },
+                    "newText": "import { first } from \"./main\";\n\nconst second = first + 2;\n"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "expected": null
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          },
+          "disabledSupport": true
+        }
+      },
+      "workspace": {
+        "applyEdit": true,
+        "workspaceEdit": {
+          "documentChanges": true,
+          "resourceOperations": [
+            "create",
+            "rename",
+            "delete"
+          ]
+        }
+      }
+    },
+    "options": {
+      "supportsMoveToFileCodeAction": true
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    2304
+  ],
+  "edited_compiler_error_reason": "The pinned TypeScript independently reports these remaining errors after the exact reference proposal: Cannot find name 'second'.. The editor preserves the reference edits and never mutates the session catalog."
+}

@@ -1,0 +1,7749 @@
+{
+  "schema_version": 1,
+  "name": "completion-auto-import-type-only",
+  "project": {
+    "files": {
+      "/main.ts": "export {};\nlet value: Sha;\n",
+      "/helper.ts": "export interface Shape { value:number; }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts",
+      "/helper.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "export {};\nlet value: Sha;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/completion",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 1,
+          "character": 14
+        }
+      },
+      "expected": {
+        "items": [
+          {
+            "label": "AggregateError",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 1
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "AggregateError",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "AggregateErrorConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 2
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "AggregateErrorConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "any",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 3
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "any",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Array",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 4
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Array",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ArrayBuffer",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 5
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ArrayBuffer",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ArrayBufferConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 6
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ArrayBufferConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ArrayBufferLike",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 7
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ArrayBufferLike",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ArrayBufferTypes",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 8
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ArrayBufferTypes",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ArrayBufferView",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 9
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ArrayBufferView",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ArrayConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 10
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ArrayConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ArrayIterator",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 11
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ArrayIterator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ArrayLike",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 12
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ArrayLike",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "asserts",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 13
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "asserts",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "AsyncGenerator",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 14
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "AsyncGenerator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "AsyncGeneratorFunction",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 15
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "AsyncGeneratorFunction",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "AsyncGeneratorFunctionConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 16
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "AsyncGeneratorFunctionConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "AsyncIterable",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 17
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "AsyncIterable",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "AsyncIterableIterator",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 18
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "AsyncIterableIterator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "AsyncIterator",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 19
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "AsyncIterator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "AsyncIteratorObject",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 20
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "AsyncIteratorObject",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Atomics",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 21
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Atomics",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Awaited",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 22
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Awaited",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "bigint",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 23
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "bigint",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "BigInt",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 24
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "BigInt",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "BigInt64Array",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 25
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "BigInt64Array",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "BigInt64ArrayConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 26
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "BigInt64ArrayConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "BigIntConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 27
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "BigIntConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "BigIntToLocaleStringOptions",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 28
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "BigIntToLocaleStringOptions",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "BigUint64Array",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 29
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "BigUint64Array",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "BigUint64ArrayConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 30
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "BigUint64ArrayConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "boolean",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 31
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "boolean",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Boolean",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 32
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Boolean",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "BooleanConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 33
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "BooleanConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "BuiltinIteratorReturn",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 34
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "BuiltinIteratorReturn",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "CallableFunction",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 35
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "CallableFunction",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Capitalize",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 36
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Capitalize",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ClassAccessorDecoratorContext",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 37
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ClassAccessorDecoratorContext",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ClassAccessorDecoratorResult",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 38
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ClassAccessorDecoratorResult",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ClassAccessorDecoratorTarget",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 39
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ClassAccessorDecoratorTarget",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ClassDecorator",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 40
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ClassDecorator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ClassDecoratorContext",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 41
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ClassDecoratorContext",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ClassFieldDecoratorContext",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 42
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ClassFieldDecoratorContext",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ClassGetterDecoratorContext",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 43
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ClassGetterDecoratorContext",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ClassMemberDecoratorContext",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 44
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ClassMemberDecoratorContext",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ClassMethodDecoratorContext",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 45
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ClassMethodDecoratorContext",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ClassSetterDecoratorContext",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 46
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ClassSetterDecoratorContext",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ConcatArray",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 47
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ConcatArray",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ConstructorParameters",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 48
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ConstructorParameters",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "DataView",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 49
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "DataView",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "DataViewConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 50
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "DataViewConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Date",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 51
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Date",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "DateConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 52
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "DateConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "DecoratorContext",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 53
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "DecoratorContext",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "DecoratorMetadata",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 54
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "DecoratorMetadata",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "DecoratorMetadataObject",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 55
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "DecoratorMetadataObject",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Error",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 56
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Error",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ErrorConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 57
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ErrorConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ErrorOptions",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 58
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ErrorOptions",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "EvalError",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 59
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "EvalError",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "EvalErrorConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 60
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "EvalErrorConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Exclude",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 61
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Exclude",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Extract",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 62
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Extract",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "false",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 63
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "false",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "FinalizationRegistry",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 64
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "FinalizationRegistry",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "FinalizationRegistryConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 65
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "FinalizationRegistryConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "FlatArray",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 66
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "FlatArray",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Float16Array",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 67
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Float16Array",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Float16ArrayConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 68
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Float16ArrayConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Float32Array",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 69
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Float32Array",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Float32ArrayConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 70
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Float32ArrayConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Float64Array",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 71
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Float64Array",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Float64ArrayConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 72
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Float64ArrayConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Function",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 73
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Function",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "FunctionConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 74
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "FunctionConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Generator",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 75
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Generator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "GeneratorFunction",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 76
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "GeneratorFunction",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "GeneratorFunctionConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 77
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "GeneratorFunctionConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "globalThis",
+            "kind": 9,
+            "sortText": "15",
+            "data": {
+              "cacheId": 78
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "globalThis",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "IArguments",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 79
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "IArguments",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ImportAttributes",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 80
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ImportAttributes",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ImportCallOptions",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 81
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ImportCallOptions",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ImportMeta",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 82
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ImportMeta",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "infer",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 83
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "infer",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "InstanceType",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 84
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "InstanceType",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Int8Array",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 85
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Int8Array",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Int8ArrayConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 86
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Int8ArrayConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Int16Array",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 87
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Int16Array",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Int16ArrayConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 88
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Int16ArrayConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Int32Array",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 89
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Int32Array",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Int32ArrayConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 90
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Int32ArrayConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Intl",
+            "kind": 9,
+            "sortText": "15",
+            "data": {
+              "cacheId": 91
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Intl",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Iterable",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 92
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Iterable",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "IterableIterator",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 93
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "IterableIterator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Iterator",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 94
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Iterator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "IteratorConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 95
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "IteratorConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "IteratorObject",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 96
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "IteratorObject",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "IteratorResult",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 97
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "IteratorResult",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "IteratorReturnResult",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 98
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "IteratorReturnResult",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "IteratorYieldResult",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 99
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "IteratorYieldResult",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "JSON",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 100
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "JSON",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "keyof",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 101
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "keyof",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Lowercase",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 102
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Lowercase",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Map",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 103
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Map",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "MapConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 104
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "MapConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "MapIterator",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 105
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "MapIterator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Math",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 106
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Math",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "MethodDecorator",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 107
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "MethodDecorator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "never",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 108
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "never",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "NewableFunction",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 109
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "NewableFunction",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "NoInfer",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 110
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "NoInfer",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "NonNullable",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 111
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "NonNullable",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "null",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 112
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "null",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "number",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 113
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "number",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Number",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 114
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Number",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "NumberConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 115
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "NumberConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "object",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 116
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "object",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Object",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 117
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Object",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ObjectConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 118
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ObjectConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Omit",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 119
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Omit",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "OmitThisParameter",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 120
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "OmitThisParameter",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ParameterDecorator",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 121
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ParameterDecorator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Parameters",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 122
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Parameters",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Partial",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 123
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Partial",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Pick",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 124
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Pick",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Promise",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 125
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Promise",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "PromiseConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 126
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "PromiseConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "PromiseConstructorLike",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 127
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "PromiseConstructorLike",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "PromiseFulfilledResult",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 128
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "PromiseFulfilledResult",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "PromiseLike",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 129
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "PromiseLike",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "PromiseRejectedResult",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 130
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "PromiseRejectedResult",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "PromiseSettledResult",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 131
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "PromiseSettledResult",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "PromiseWithResolvers",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 132
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "PromiseWithResolvers",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "PropertyDecorator",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 133
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "PropertyDecorator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "PropertyDescriptor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 134
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "PropertyDescriptor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "PropertyDescriptorMap",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 135
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "PropertyDescriptorMap",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "PropertyKey",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 136
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "PropertyKey",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ProxyConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 137
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ProxyConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ProxyHandler",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 138
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ProxyHandler",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "RangeError",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 139
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "RangeError",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "RangeErrorConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 140
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "RangeErrorConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "readonly",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 141
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "readonly",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Readonly",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 142
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Readonly",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ReadonlyArray",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 143
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ReadonlyArray",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ReadonlyMap",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 144
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ReadonlyMap",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ReadonlySet",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 145
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ReadonlySet",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ReadonlySetLike",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 146
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ReadonlySetLike",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Record",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 147
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Record",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ReferenceError",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 148
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ReferenceError",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ReferenceErrorConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 149
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ReferenceErrorConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "RegExp",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 150
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "RegExp",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "RegExpConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 151
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "RegExpConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "RegExpExecArray",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 152
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "RegExpExecArray",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "RegExpIndicesArray",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 153
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "RegExpIndicesArray",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "RegExpMatchArray",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 154
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "RegExpMatchArray",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "RegExpStringIterator",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 155
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "RegExpStringIterator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Required",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 156
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Required",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ReturnType",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 157
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ReturnType",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Set",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 158
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Set",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "SetConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 159
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "SetConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "SetIterator",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 160
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "SetIterator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "SharedArrayBuffer",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 161
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "SharedArrayBuffer",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "SharedArrayBufferConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 162
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "SharedArrayBufferConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "string",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 163
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "string",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "String",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 164
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "String",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "StringConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 165
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "StringConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "StringIterator",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 166
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "StringIterator",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "symbol",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 167
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "symbol",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Symbol",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 168
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Symbol",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "SymbolConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 169
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "SymbolConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "SyntaxError",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 170
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "SyntaxError",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "SyntaxErrorConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 171
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "SyntaxErrorConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "TemplateStringsArray",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 172
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "TemplateStringsArray",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ThisParameterType",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 173
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ThisParameterType",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ThisType",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 174
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "ThisType",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "true",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 175
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "true",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "TypedPropertyDescriptor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 176
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "TypedPropertyDescriptor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "TypeError",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 177
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "TypeError",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "TypeErrorConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 178
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "TypeErrorConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "typeof",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 179
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "typeof",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Uint8Array",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 180
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Uint8Array",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Uint8ArrayConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 181
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Uint8ArrayConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Uint8ClampedArray",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 182
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Uint8ClampedArray",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Uint8ClampedArrayConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 183
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Uint8ClampedArrayConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Uint16Array",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 184
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Uint16Array",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Uint16ArrayConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 185
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Uint16ArrayConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Uint32Array",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 186
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Uint32Array",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Uint32ArrayConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 187
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Uint32ArrayConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Uncapitalize",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 188
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Uncapitalize",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "undefined",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 189
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "undefined",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "unique",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 190
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "unique",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "unknown",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 191
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "unknown",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Uppercase",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 192
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "Uppercase",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "URIError",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 193
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "URIError",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "URIErrorConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 194
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "URIErrorConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "void",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 195
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "void",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "WeakKey",
+            "kind": 7,
+            "sortText": "15",
+            "data": {
+              "cacheId": 196
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "WeakKey",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "WeakKeyTypes",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 197
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "WeakKeyTypes",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "WeakMap",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 198
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "WeakMap",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "WeakMapConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 199
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "WeakMapConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "WeakRef",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 200
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "WeakRef",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "WeakRefConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 201
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "WeakRefConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "WeakSet",
+            "kind": 6,
+            "sortText": "15",
+            "data": {
+              "cacheId": 202
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "WeakSet",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "WeakSetConstructor",
+            "kind": 8,
+            "sortText": "15",
+            "data": {
+              "cacheId": 203
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "textEdit": {
+              "newText": "WeakSetConstructor",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "Shape",
+            "kind": 8,
+            "sortText": "￿16",
+            "data": {
+              "cacheId": 204
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "detail": "./helper",
+            "textEdit": {
+              "newText": "Shape",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          },
+          {
+            "label": "ImportAssertions",
+            "kind": 8,
+            "sortText": "z15",
+            "data": {
+              "cacheId": 205
+            },
+            "commitCharacters": [
+              ".",
+              ",",
+              ";",
+              "("
+            ],
+            "tags": [
+              1
+            ],
+            "textEdit": {
+              "newText": "ImportAssertions",
+              "insert": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 14
+                }
+              }
+            }
+          }
+        ],
+        "isIncomplete": false
+      }
+    },
+    {
+      "method": "completionItem/resolve",
+      "params": {},
+      "params_from_completion": {
+        "step": 1,
+        "index": 203
+      },
+      "expected": {
+        "label": "Shape",
+        "kind": 8,
+        "sortText": "￿16",
+        "data": {
+          "file": "/var/folders/n8/86dwcb052_14n9t7r0g7fc_h0000gn/T/goya-lsp-oracle-u_99ba1_/main.ts",
+          "line": 2,
+          "offset": 15,
+          "entryNames": [
+            {
+              "name": "Shape",
+              "source": "./helper",
+              "data": {
+                "exportName": "Shape",
+                "exportMapKey": "5 192 Shape ",
+                "moduleSpecifier": "./helper",
+                "fileName": "/var/folders/n8/86dwcb052_14n9t7r0g7fc_h0000gn/T/goya-lsp-oracle-u_99ba1_/helper.ts"
+              }
+            }
+          ]
+        },
+        "commitCharacters": [
+          ".",
+          ",",
+          ";",
+          "("
+        ],
+        "detail": "Auto import from './helper'\ninterface Shape",
+        "textEdit": {
+          "newText": "Shape",
+          "insert": {
+            "start": {
+              "line": 1,
+              "character": 11
+            },
+            "end": {
+              "line": 1,
+              "character": 14
+            }
+          },
+          "replace": {
+            "start": {
+              "line": 1,
+              "character": 11
+            },
+            "end": {
+              "line": 1,
+              "character": 14
+            }
+          }
+        },
+        "additionalTextEdits": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 0
+              },
+              "end": {
+                "line": 0,
+                "character": 0
+              }
+            },
+            "newText": "import type { Shape } from \"./helper\";\n\n"
+          }
+        ]
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "completion": {
+          "completionItem": {
+            "snippetSupport": true,
+            "commitCharactersSupport": true,
+            "labelDetailsSupport": true,
+            "insertReplaceSupport": true,
+            "documentationFormat": [
+              "markdown"
+            ]
+          }
+        }
+      }
+    },
+    "options": {
+      "preferences": {
+        "preferTypeOnlyAutoImports": true
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

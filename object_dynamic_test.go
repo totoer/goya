@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"sync"
@@ -340,7 +340,7 @@ func TestSharedDynamicObject(t *testing.T) {
 	go func() {
 		vm := New()
 		vm.Set("o", o)
-		_, err := vm.RunString(`
+		_, err := vm.runVMString(`
 			for (let i = 0; i < 10000; i++) {
 				o[i] = i;
 			}
@@ -349,7 +349,7 @@ func TestSharedDynamicObject(t *testing.T) {
 	}()
 	vm := New()
 	vm.Set("o", o)
-	_, err := vm.RunString(`
+	_, err := vm.runVMString(`
 			for (let i = 0; i < 10000; i++) {
 				o[i] = i+1;
 			}
@@ -441,7 +441,7 @@ func TestSharedDynamicArray(t *testing.T) {
 	go func() {
 		vm := New()
 		vm.Set("o", o)
-		_, err := vm.RunString(`
+		_, err := vm.runVMString(`
 			for (let i = 0; i < 10000; i++) {
 				o[i] = i;
 			}
@@ -450,7 +450,7 @@ func TestSharedDynamicArray(t *testing.T) {
 	}()
 	vm := New()
 	vm.Set("o", o)
-	_, err := vm.RunString(`
+	_, err := vm.runVMString(`
 			for (let i = 0; i < 10000; i++) {
 				o[i] = i+1;
 			}

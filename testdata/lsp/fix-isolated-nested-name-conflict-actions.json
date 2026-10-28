@@ -1,0 +1,731 @@
+{
+  "schema_version": 1,
+  "name": "fix-isolated-nested-name-conflict-actions",
+  "project": {
+    "files": {
+      "/main.ts": "const newLocal = 1;\nexport const shape = { value: Math.random() };\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "isolatedDeclarations": true,
+      "declaration": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "const newLocal = 1;\nexport const shape = { value: Math.random() };\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 6000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 30
+              },
+              "end": {
+                "line": 1,
+                "character": 43
+              }
+            },
+            "message": "Expression type can't be inferred with --isolatedDeclarations.",
+            "severity": 1,
+            "code": 9013,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 13
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 18
+                    }
+                  }
+                },
+                "message": "Add a type annotation to the variable shape."
+              },
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 30
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 43
+                    }
+                  }
+                },
+                "message": "Add satisfies and a type assertion to this expression (satisfies T as T) to make the type explicit."
+              }
+            ]
+          },
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 6
+              },
+              "end": {
+                "line": 0,
+                "character": 14
+              }
+            },
+            "message": "'newLocal' is declared but its value is never read.",
+            "severity": 4,
+            "code": 6133,
+            "source": "typescript"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 30
+                },
+                "end": {
+                  "line": 1,
+                  "character": 43
+                }
+              },
+              "message": "Expression type can't be inferred with --isolatedDeclarations.",
+              "severity": 1,
+              "code": 9013,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 13
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 18
+                      }
+                    }
+                  },
+                  "message": "Add a type annotation to the variable shape."
+                },
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 30
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 43
+                      }
+                    }
+                  },
+                  "message": "Add satisfies and a type assertion to this expression (satisfies T as T) to make the type explicit."
+                }
+              ]
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Add annotation of type '{ value: number; }'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "add-annotation",
+                  "description": "Add annotation of type '{ value: number; }'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 19
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 19
+                          },
+                          "newText": ": {\n    value: number;\n}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 30
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 43
+                    }
+                  },
+                  "message": "Expression type can't be inferred with --isolatedDeclarations.",
+                  "severity": 1,
+                  "code": 9013,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 1,
+                            "character": 13
+                          },
+                          "end": {
+                            "line": 1,
+                            "character": 18
+                          }
+                        }
+                      },
+                      "message": "Add a type annotation to the variable shape."
+                    },
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 1,
+                            "character": 30
+                          },
+                          "end": {
+                            "line": 1,
+                            "character": 43
+                          }
+                        }
+                      },
+                      "message": "Add satisfies and a type assertion to this expression (satisfies T as T) to make the type explicit."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 30
+                },
+                "end": {
+                  "line": 1,
+                  "character": 43
+                }
+              },
+              "message": "Expression type can't be inferred with --isolatedDeclarations.",
+              "severity": 1,
+              "code": 9013,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 13
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 18
+                      }
+                    }
+                  },
+                  "message": "Add a type annotation to the variable shape."
+                },
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 30
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 43
+                      }
+                    }
+                  },
+                  "message": "Add satisfies and a type assertion to this expression (satisfies T as T) to make the type explicit."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 18
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 18
+                      }
+                    },
+                    "newText": ": {\n    value: number;\n}"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add satisfies and an inline type assertion with 'number'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "add-type-assertion",
+                  "description": "Add satisfies and an inline type assertion with 'number'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 31
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 44
+                          },
+                          "newText": "Math.random() satisfies number as number"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 30
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 43
+                    }
+                  },
+                  "message": "Expression type can't be inferred with --isolatedDeclarations.",
+                  "severity": 1,
+                  "code": 9013,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 1,
+                            "character": 13
+                          },
+                          "end": {
+                            "line": 1,
+                            "character": 18
+                          }
+                        }
+                      },
+                      "message": "Add a type annotation to the variable shape."
+                    },
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 1,
+                            "character": 30
+                          },
+                          "end": {
+                            "line": 1,
+                            "character": 43
+                          }
+                        }
+                      },
+                      "message": "Add satisfies and a type assertion to this expression (satisfies T as T) to make the type explicit."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 30
+                },
+                "end": {
+                  "line": 1,
+                  "character": 43
+                }
+              },
+              "message": "Expression type can't be inferred with --isolatedDeclarations.",
+              "severity": 1,
+              "code": 9013,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 13
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 18
+                      }
+                    }
+                  },
+                  "message": "Add a type annotation to the variable shape."
+                },
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 30
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 43
+                      }
+                    }
+                  },
+                  "message": "Add satisfies and a type assertion to this expression (satisfies T as T) to make the type explicit."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 30
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 43
+                      }
+                    },
+                    "newText": "Math.random() satisfies number as number"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Extract to variable and replace with 'newLocal_1 as typeof newLocal_1'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "extract-expression",
+                  "description": "Extract to variable and replace with 'newLocal_1 as typeof newLocal_1'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 1
+                          },
+                          "newText": "const newLocal_1 = Math.random();\n"
+                        },
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 31
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 44
+                          },
+                          "newText": "newLocal_1 as typeof newLocal_1"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 30
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 43
+                    }
+                  },
+                  "message": "Expression type can't be inferred with --isolatedDeclarations.",
+                  "severity": 1,
+                  "code": 9013,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 1,
+                            "character": 13
+                          },
+                          "end": {
+                            "line": 1,
+                            "character": 18
+                          }
+                        }
+                      },
+                      "message": "Add a type annotation to the variable shape."
+                    },
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 1,
+                            "character": 30
+                          },
+                          "end": {
+                            "line": 1,
+                            "character": 43
+                          }
+                        }
+                      },
+                      "message": "Add satisfies and a type assertion to this expression (satisfies T as T) to make the type explicit."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 30
+                },
+                "end": {
+                  "line": 1,
+                  "character": 43
+                }
+              },
+              "message": "Expression type can't be inferred with --isolatedDeclarations.",
+              "severity": 1,
+              "code": 9013,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 13
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 18
+                      }
+                    }
+                  },
+                  "message": "Add a type annotation to the variable shape."
+                },
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 30
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 43
+                      }
+                    }
+                  },
+                  "message": "Add satisfies and a type assertion to this expression (satisfies T as T) to make the type explicit."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 0
+                      }
+                    },
+                    "newText": "const newLocal_1 = Math.random();\n"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 30
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 43
+                      }
+                    },
+                    "newText": "newLocal_1 as typeof newLocal_1"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

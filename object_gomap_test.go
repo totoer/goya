@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import "testing"
 
@@ -11,7 +11,7 @@ func TestGomapProp(t *testing.T) {
 		"a": 40,
 		"b": 2,
 	})
-	v, err := r.RunString(SCRIPT)
+	v, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -49,7 +49,7 @@ func TestGomapEnumerate(t *testing.T) {
 		"x": 40,
 		"y": 2,
 	})
-	v, err := r.RunString(SCRIPT)
+	v, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -90,7 +90,7 @@ func TestGomapDeleteWhileEnumerate(t *testing.T) {
 		"x": 40,
 		"y": 2,
 	})
-	v, err := r.RunString(SCRIPT)
+	v, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -106,7 +106,7 @@ func TestGomapInstanceOf(t *testing.T) {
 	`
 	r := New()
 	r.Set("o", map[string]interface{}{})
-	v, err := r.RunString(SCRIPT)
+	v, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -122,7 +122,7 @@ func TestGomapTypeOf(t *testing.T) {
 	`
 	r := New()
 	r.Set("o", map[string]interface{}{})
-	v, err := r.RunString(SCRIPT)
+	v, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -140,7 +140,7 @@ func TestGomapProto(t *testing.T) {
 	r.Set("o", map[string]interface{}{
 		"test": 42,
 	})
-	v, err := r.RunString(SCRIPT)
+	v, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -168,7 +168,7 @@ func TestGoMapExtensibility(t *testing.T) {
 
 	r := New()
 	r.Set("o", map[string]interface{}{})
-	v, err := r.RunString(SCRIPT)
+	v, err := r.runVMString(SCRIPT)
 	if err != nil {
 		if ex, ok := err.(*Exception); ok {
 			t.Fatal(ex.String())
@@ -318,7 +318,7 @@ func TestGoMapUnicode(t *testing.T) {
 	}
 	vm.Set("m", m)
 	vm.Set("s", &s)
-	res, err := vm.RunString(SCRIPT)
+	res, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}

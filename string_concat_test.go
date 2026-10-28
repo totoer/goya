@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 func BenchmarkStringConcatLoop(b *testing.B) {
 	vm := New()
 	for b.Loop() {
-		v, err := vm.RunString(`
+		v, err := vm.runVMString(`
 			var s = "";
 			for (var i = 0; i < 10000; i++) {
 				s += "x";
@@ -24,7 +24,7 @@ func BenchmarkStringConcatLoop(b *testing.B) {
 func BenchmarkStringConcatLoopLarge(b *testing.B) {
 	vm := New()
 	for b.Loop() {
-		v, err := vm.RunString(`
+		v, err := vm.runVMString(`
 			var s = "";
 			for (var i = 0; i < 100000; i++) {
 				s += "x";
@@ -41,7 +41,7 @@ func BenchmarkStringConcatLoopLarge(b *testing.B) {
 func BenchmarkStringConcatLoopUnicode(b *testing.B) {
 	vm := New()
 	for b.Loop() {
-		v, err := vm.RunString(`
+		v, err := vm.runVMString(`
 			var s = "";
 			for (var i = 0; i < 10000; i++) {
 				s += "\u4e2d";
@@ -57,7 +57,7 @@ func BenchmarkStringConcatLoopUnicode(b *testing.B) {
 
 func TestConcatStringBasic(t *testing.T) {
 	vm := New()
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 		var s = "hello";
 		s += " ";
 		s += "world";
@@ -73,7 +73,7 @@ func TestConcatStringBasic(t *testing.T) {
 
 func TestConcatStringLength(t *testing.T) {
 	vm := New()
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 		var s = "";
 		for (var i = 0; i < 100; i++) {
 			s += "ab";
@@ -90,7 +90,7 @@ func TestConcatStringLength(t *testing.T) {
 
 func TestConcatStringCharAt(t *testing.T) {
 	vm := New()
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 		var s = "a";
 		for (var i = 0; i < 100; i++) {
 			s += "b";
@@ -107,7 +107,7 @@ func TestConcatStringCharAt(t *testing.T) {
 
 func TestConcatStringIndexOf(t *testing.T) {
 	vm := New()
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 		var s = "hello";
 		for (var i = 0; i < 100; i++) {
 			s += "x";
@@ -124,7 +124,7 @@ func TestConcatStringIndexOf(t *testing.T) {
 
 func TestConcatStringEquality(t *testing.T) {
 	vm := New()
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 		var s1 = "";
 		for (var i = 0; i < 100; i++) {
 			s1 += "x";

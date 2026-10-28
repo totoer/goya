@@ -1,0 +1,1043 @@
+{
+  "components": [
+    {
+      "name": "typescript",
+      "version": "6.0.3",
+      "commit": "050880ce59e30b356b686bd3144efe24f875ebc8",
+      "license": "Apache-2.0",
+      "notices": [
+        {
+          "source": "LICENSE.txt",
+          "copy": "docs/licenses/typescript-6.0.3/LICENSE.txt",
+          "sha256": "a7d00bfd54525bc694b6e32f64c7ebcf5e6b7ae3657be5cc12767bce74654a47"
+        },
+        {
+          "source": "ThirdPartyNoticeText.txt",
+          "copy": "docs/licenses/typescript-6.0.3/ThirdPartyNoticeText.txt",
+          "sha256": "1af3c68039c57e539422da82a4faada506ce6d0ea6f90e0b699d02dbcdb7a90c"
+        }
+      ],
+      "sources": [
+        {
+          "path": "src/services/patternMatcher.ts",
+          "sha256": "960d797747d91d2b23419b33b44a7f90371ec155044d5dd80f19fb1181fff1f1",
+          "adaptations": [
+            "internal/tsfrontend/editorpattern/pattern.go"
+          ]
+        },
+        {
+          "path": "src/testRunner/unittests/services/patternMatcher.ts",
+          "sha256": "7e88657280b09c885edbee1a4db483b8936e99861eb41e0f5b3feed781459e5e",
+          "adaptations": [
+            "internal/tsfrontend/editorpattern/pattern_test.go"
+          ]
+        },
+        {
+          "path": "src/services/smartSelection.ts",
+          "sha256": "67a1b31f395bcb208c51ee60f26a8ce3a0bc1137e676ce66fcb5416704682811",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/navigateTo.ts",
+          "sha256": "c3dbb2c66bec9bd5c1b77dff2330b393cb04c8c337ef5f878a2ff21043054768",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/classifier2020.ts",
+          "sha256": "9a4630be9e25685f9137be9613f50e80d6bda0813c119a1aec978ed617d4de6f",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/inlayHints.ts",
+          "sha256": "da8b8aa66827e11a61ea2dc4f04bf0f7f8741c5e94aba2b7e978ae70b495bac6",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/callHierarchy.ts",
+          "sha256": "21e328b3a21696e94febfd2f0da6fc0ef98a0bc14481876a93938907d557af8c",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/types.ts",
+          "sha256": "7b9f919240901802291cf15f8eede8de9a6b9194e24676fd4bd45102e78ca431",
+          "adaptations": [
+            "lsp/protocol/formatting.go"
+          ]
+        },
+        {
+          "path": "src/services/codeFixProvider.ts",
+          "sha256": "2d91eacb58d5860cc9eb88d95d96e2eb6832c2758cf256d61785a8e05450a1dc",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/convertConstToLet.ts",
+          "sha256": "63a154a01a39987191884d052e9de48e6c829aa075d6851dd77f0b453453852c",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/useBigintLiteral.ts",
+          "sha256": "9f1f5bc79e1acaefe62e2c1c21d4f47bf3fff5ecd1384d24ccefaf6297ce785f",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixNoPropertyAccessFromIndexSignature.ts",
+          "sha256": "50e602f202252c066e5ea2e0f46539307bc384ae6cff336ea5d3d1c4385844b1",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixExtendsInterfaceBecomesImplements.ts",
+          "sha256": "5e0ba84153ae827c76c1ea3a76b50dd9b938448869ba38d939ccf61cb73fd36d",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/addConvertToUnknownForNonOverlappingTypes.ts",
+          "sha256": "37c3e3d25d30baea65526918c78c524d7e3aa9d5fdcbebdb147047b9f0c45154",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixPropertyAssignment.ts",
+          "sha256": "4292c46e00529b1f8f9319b263286288ea9568177d3b0af17a28234dffc0232d",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixExpectedComma.ts",
+          "sha256": "74b752751bbc0d9441c6a32c2c06e2f3a7e30c1e9a995dc6abcd5f9dc3e6c482",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixAddMissingNewOperator.ts",
+          "sha256": "0c62e7f8f94b68f88937cc4770c311669022d7279b3fabf3e69dfa107d6ede6e",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixAddModuleReferTypeMissingTypeof.ts",
+          "sha256": "a210f721fb260d4af5c82f383f633a12315356e89be40cc16ed6faea17f85ee2",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/removeAccidentalCallParentheses.ts",
+          "sha256": "08d16c52a2d1a2f3152023a11ec8c927c54e7aa1de0cc0c8f12a62f509fa88e6",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixAwaitInSyncFunction.ts",
+          "sha256": "0a6c6e0c43807d51e034f91862934316ee656179551d723f135e999c4e69e848",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/removeUnnecessaryAwait.ts",
+          "sha256": "5e4e3caf38a5c15d7eebfbd26461437e0ec068e06c56385b68be2851dac6d01c",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixMissingCallParentheses.ts",
+          "sha256": "cd0ad8ae18e3796c0cf59cfb69c8ab1524e3b78b54ae476c23e13aee93bf9dce",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixForgottenThisPropertyAccess.ts",
+          "sha256": "1e450de8745d2630888281d694830731260472443e1ab5a3452afc948b4b93e8",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixUnusedLabel.ts",
+          "sha256": "fe002ab8ca9237e5e9ad02881ff15509ffa86f749506477a904494bc73d41069",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/correctQualifiedNameToIndexedAccessType.ts",
+          "sha256": "8656babb232c9ae895c2cf5cdcf64dcd90690d5c24e557750d382dbb5fc5838a",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/addMissingDeclareProperty.ts",
+          "sha256": "87045cbffbab42527553587630712ebe4a13e262008497bf5ebb455ec9cc326b",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixInvalidJsxCharacters.ts",
+          "sha256": "6a860606e97687175667a677bba43bfd3e16863b22f3ff6179dc091e7b85eb4e",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/addEmptyExportDeclaration.ts",
+          "sha256": "c5ca4c785a58f287608e575509fcb607be32475a7358a9a5a9dbfbbe86264f35",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixConstructorForDerivedNeedSuperCall.ts",
+          "sha256": "43280aecfe8d22a8f14ffd355aa1638dfa701d845a2fe637ad68417e74d3253f",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/textChanges.ts",
+          "sha256": "1978c8a775af8ddc0ed1473477912b6b666e7623fbf1eff15804a07235db40c0",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json",
+            "internal/tsfrontend/refactor/convert_export.go"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixOverrideModifier.ts",
+          "sha256": "d50c0e6e3e32cf25b6bdeca388f633a6d64f62cbecd28d943802e950f0783709",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/addMissingInvocationForDecorator.ts",
+          "sha256": "381facf05703fb52b1dc60a0ba08b27744227bd9b52bf55fe1cc55a3cca24b1e",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/wrapDecoratorInParentheses.ts",
+          "sha256": "36e296010551af0bfcf1c55e626546fe9e02a470825a779f05d79c772749013b",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixReturnTypeInAsyncFunction.ts",
+          "sha256": "6d75798f6431eda69c90fd28e93f47c69f435f3b20be662ecbcfaf93eeb14384",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixNaNEquality.ts",
+          "sha256": "d6b53a8631fa3d1be859aeafcb2f47ebe1c3c2dbeb679559cd68790d08b3e89e",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixClassDoesntImplementInheritedAbstractMember.ts",
+          "sha256": "84e3e17c6e8d1cad10abb3862563e618cb144207c4067d9d83d8e99ede61f846",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixUnreachableCode.ts",
+          "sha256": "b53d0c7766f4614953443a5bbdf520bac1d02d151b364d949dd3f733a64e3930",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/addNameToNamelessParameter.ts",
+          "sha256": "edeca87ece78b63ee818bbbd6cdc93667fa3a3f6b96dff7bf0a79deca0873c6e",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/convertLiteralTypeToMappedType.ts",
+          "sha256": "082c811f3fa5ab098f36e77a2224ac8ee9bbd1cd39226fe876d209fb2acb0404",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/convertToMappedObjectType.ts",
+          "sha256": "07b94c0026abd5d3392a73dde830813a769e3aae2e434171be50650b30149de3",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/splitTypeOnlyImport.ts",
+          "sha256": "64fee7004663098937dba4b40762c487d98cbf10dfd61ca92af426c762c9287d",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/useDefaultImport.ts",
+          "sha256": "4ce386f1228fdc9697cbca38dc9035564d9baf412b65e6f61a052289c518f894",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/suggestionDiagnostics.ts",
+          "sha256": "9ac82a84edd136367a7a8fff543174bdf5998c3e46622c8c14e7af1daa805407",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/utilities.ts",
+          "sha256": "5ebe358b22a398bb71980a66b1a8a35ee7b0f60fbfe7f37286fbdde1b0ee80be",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json",
+            "internal/tsfrontend/refactor/extract_type.go",
+            "internal/tsfrontend/refactor/convert_import.go",
+            "internal/tsfrontend/refactor/destructured_parameters.go",
+            "internal/tsfrontend/refactor/extract_symbol_range.go",
+            "internal/tsfrontend/refactor/move.go"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixUnusedIdentifier.ts",
+          "sha256": "a5b0e0c8a59686dc8922216d5894b58a6d885de82976d76ca7ecb2ef08ba4388",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/compiler/checker.ts",
+          "sha256": "ffe288edd0eae68f65e4b81b5bbfd4fe5fbed62b55246dc140813078555050fb",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/organizeImports.ts",
+          "sha256": "75c6811e269418c9c5b97200c20eee451c38e20f55c2122d65babb0ac6d96b0e",
+          "adaptations": [
+            "lsp/imports.go",
+            "internal/tsfrontend/editorcollation/collation.go",
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/compiler/core.ts",
+          "sha256": "c35b2cfa5216d4979aff3f963071c979d0b57d2242649df3dc6cb7c9f4a10b1b",
+          "adaptations": [
+            "internal/tsfrontend/editorcollation/collation.go"
+          ]
+        },
+        {
+          "path": "src/services/getEditsForFileRename.ts",
+          "sha256": "1703113c02c4116501debf8ae7019a7010f501a63650d5fd01d24e73e558b24c",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json",
+            "lsp/file_rename.go"
+          ]
+        },
+        {
+          "path": "src/server/session.ts",
+          "sha256": "7fec7291b05667989f1772557113da014f0cc994e12fed2f825cbccf3ec0b198",
+          "adaptations": [
+            "lsp/file_rename.go",
+            "internal/tsfrontend/editor/file_rename.go"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/addMissingConst.ts",
+          "sha256": "157982192c3f1cdb94ed0de60e3d8cd11e20b65efc080901223abd99ec87330f",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixIncorrectNamedTupleSyntax.ts",
+          "sha256": "0e9060d31c8c7f45f4b1ba03588c5c9349117d911b09bbb498259de8243e5255",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixClassSuperMustPrecedeThisAccess.ts",
+          "sha256": "602e871483539af04ff2c480de29ddd4780bad82e8fadf2a3ced1ac90a2d208c",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixAddVoidToPromise.ts",
+          "sha256": "68379ace865b5050f85ee8414bacd1cf35a5a435271404f9b3b860128be5f50d",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixJSDocTypes.ts",
+          "sha256": "bb3684be1753f3a489d0b2c58c0806a8496bd83989e55ed958c7bf190a308b7d",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/convertToTypeOnlyExport.ts",
+          "sha256": "a17568fa579d9cde2964cc14c19fea4d48546cca6a6364cda71415d92fabde67",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/wrapJsxInFragment.ts",
+          "sha256": "98e89e6005984f6e9dbe345b356db109563e74f9f4f7de918355cbf7ddcc5338",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/addMissingAsync.ts",
+          "sha256": "9d80983743c5121ac6fd536b3c92b850c1cbc46f6187861790f185a7456915f7",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixAddMissingConstraint.ts",
+          "sha256": "18ba5a2b3644b82951cd9b9472d7cd011e7516c68c0ced6c16259d7267dabe81",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixStrictClassInitialization.ts",
+          "sha256": "662512b0bc86e3d5f64ff039d628dd73aa6a8aebb05a53534a8bb54a202355dd",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/compiler/factory/parenthesizerRules.ts",
+          "sha256": "94aa00739f9d2b7f41ca6c5d0aaa5495a1d4d4b7c8af1919361a64a7abf90764",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixEnableJsxFlag.ts",
+          "sha256": "20f253025ba0af7a98008ec7adbe7e33d457d801f1583209615aa519b4d41277",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixModuleAndTargetOptions.ts",
+          "sha256": "d7efbfdd3a01bbce88e1a7b624a314b7b0a33f065e9e5b07fd05962bb37a07cc",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/helpers.ts",
+          "sha256": "8065ef21583287b06bcfc21eb48e1bb3dca767e3b1cc7d43834cd17a91b7ab7d",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixSpelling.ts",
+          "sha256": "14733f15d79faa6d1b9f2e79339eea900b12960b50aa1fb66ae55ac50b8da568",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixAddMissingMember.ts",
+          "sha256": "d5314e3b2170329e879060f949b3a47adecf38feb663fa1b72164296503fe8a9",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/findAllReferences.ts",
+          "sha256": "c38a6254265d9d61602829669d4c94ae614ef272b3c1d2e1abd67c50b5269c08",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/convertToTypeOnlyImport.ts",
+          "sha256": "2edd3c734c90cd25f0ecb079d35072c7ea7eff929e88474613c63a8f588a8b44",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/addOptionalPropertyUndefined.ts",
+          "sha256": "ef4707d101639b1ae14966be9c7a56b2223328a797f716ee12362fc089f423f6",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/requireInTs.ts",
+          "sha256": "46b9de95cfb68aee595907470396f6812223756333ce0318d703de60008fd016",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/addMissingResolutionModeImportAttribute.ts",
+          "sha256": "744d9a264d9b630947eba6d46233681aefe9aac498910392c5c817d35c5bbac9",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixInvalidImportSyntax.ts",
+          "sha256": "4d6161d035ea1c25b6feef3f8969dd03affdd36d247a8c1fe5b8f850dda731e0",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixImportNonExportedMember.ts",
+          "sha256": "27ea6c0df3c5753448360b86b9afc67dcc0d3ed7b05a1340eac19b138fb1eb04",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixAddMissingParam.ts",
+          "sha256": "fcf7bfcf8939a4891d2fd5831a21d75e90e94dbfedc19e0dc16359795dce8e54",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/addMissingAwait.ts",
+          "sha256": "c4c6dfe3183c396f0fcba8a1da228b28890dc1704d3681b41f3adc8ed97fefa6",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/annotateWithTypeFromJSDoc.ts",
+          "sha256": "58a6f6c22881f34ac535b496e2715c00d03bc1146e25bb00d4bb232c7f7dd395",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/compiler/utilities.ts",
+          "sha256": "9ad3da097b0b7dca95b6866c9f07216bf562e1706fe2fe05553f966709a0ea81",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json",
+            "internal/tsfrontend/refactor/inline_variable.go",
+            "lsp/inferred_configuration.go"
+          ]
+        },
+        {
+          "path": "src/compiler/utilitiesPublic.ts",
+          "sha256": "4b5b5726bc08d7d4f08645ee66b7322c6d2019fa239e7158e2f642ae2bd964e2",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json",
+            "internal/tsfrontend/refactor/destructured_parameters.go"
+          ]
+        },
+        {
+          "path": "src/compiler/parser.ts",
+          "sha256": "7d63eca71e53e31f7c26b3804eefe61a8809aa6989ce0a7ce1377919e81b963f",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/convertTypedefToType.ts",
+          "sha256": "6197df4182302deab81be4a6dddae93b568254dab65aa07d9557aa6bc90991c8",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/services.ts",
+          "sha256": "0abf6e21f776e6a9bba697db6824bc35605a07b74a09f8c70f4e41cee1db2b61",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/returnValueCorrect.ts",
+          "sha256": "a3fb0251d318def419d5c6f2ee8c7e9c1f904e9db6e8d69fa64dfdb56949c0f2",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixUnmatchedParameter.ts",
+          "sha256": "b58f6d0088259e6193cbe888b5096a29b4901dbd50f4a086fbabaef8852dcaea",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/compiler/emitter.ts",
+          "sha256": "910f74394f8f4cbef48fe25387e5da6224742754b9a7699ef77312af6f453d63",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json",
+            "internal/tsfrontend/refactor/destructured_parameters.go"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixPropertyOverrideAccessor.ts",
+          "sha256": "22bd41dbe61c52e9bb13f530a5e03bceefe907a767cff74d9f6194b686128751",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/generateAccessors.ts",
+          "sha256": "ff3988e7928820620432d8f56cfaab5ef4de3d1fbfddb20d5529874aec6f1374",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json",
+            "internal/tsfrontend/refactor/accessors.go"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixUnreferenceableDecoratorMetadata.ts",
+          "sha256": "3873577ee8e0599f69208bca9ad427c057d90945a6af720ada868a3389d1ded2",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/refactors/convertImport.ts",
+          "sha256": "7bdb364b2e5b6d2368435c5895acf230fc5557be6e4e4262b79ce9480738d2d6",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/convertFunctionToEs6Class.ts",
+          "sha256": "3a1706c57c427ff99b9e9ed581359881b339b7e768098481b9b43324a19ad83b",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/compiler/binder.ts",
+          "sha256": "b2a0d4d09bfdd389297e346776d12297e4add7e0b62ba2015862e6b50dcb2aa3",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/convertToAsyncFunction.ts",
+          "sha256": "4c167ebbb0da45586e9664d68d22a6fd526eb1c27c2b8eaf56f397ab0fb01658",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/convertToEsModule.ts",
+          "sha256": "846c853838c8b481224b972af71369938301cd7955bee98d3a549f3dfcbfce4f",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/compiler/factory/nodeConverters.ts",
+          "sha256": "3d5979059f70d4c381bbd5998181441dd6aaa7e15f6564a8f97d446ad85b041d",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/inferFromUsage.ts",
+          "sha256": "88985269d2bba9890bfec2d281d2481647433385fbe85a3619fc3ba3edddeab1",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixImplicitThis.ts",
+          "sha256": "e9cc96c583d28f304f374f28a85f3409307a2d2b813b5d0f26cb340ce69b3b31",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/fixMissingTypeAnnotationOnExports.ts",
+          "sha256": "2c64921a71ad0a427177ca67451bfea68aae2b20f75857a403a7906427e4a017",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/compiler/expressionToTypeNode.ts",
+          "sha256": "43c6b56dfabaf84c3591fc363763aecbd5b4adfa420879b283aeebca2d405462",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/codefixes/importFixes.ts",
+          "sha256": "4166d8b757f4aeb553f5316dc13b58a6106e19b12e3aa91b2dacf4db034c099b",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json",
+            "internal/tsfrontend/refactor/move_imports.go"
+          ]
+        },
+        {
+          "path": "src/services/exportInfoMap.ts",
+          "sha256": "a10aca98b1c2f11250c3ec4690afca2cfb338b828382380f8128bb516d603dbf",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/refactorProvider.ts",
+          "sha256": "0c36e4a17df3828ef1594cd7a6e6f4c05066c3e2da761d43311f48427aacf221",
+          "adaptations": [
+            "internal/tsfrontend/refactor/engine.go",
+            "lsp/protocol/refactor.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/helpers.ts",
+          "sha256": "a8dc0cdbc7b24fb4c78c6dabc1a8737ce30ca1530c4268f9fe7815c872abdeec",
+          "adaptations": [
+            "internal/tsfrontend/refactor/engine.go",
+            "internal/tsfrontend/refactor/extract_symbol.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/addOrRemoveBracesToArrowFunction.ts",
+          "sha256": "f56f582271454d26430efa73de8f623bc89bb47a2c47feac9e96c51c104349f6",
+          "adaptations": [
+            "internal/tsfrontend/refactor/braces.go",
+            "internal/tsfrontend/refactor/comments.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/convertArrowFunctionOrFunctionExpression.ts",
+          "sha256": "07f9fe8affce4a8b85c4f7b2bc2abf1b64574116cdf8059aa9ea7a0f4c7c2d32",
+          "adaptations": [
+            "internal/tsfrontend/refactor/function.go",
+            "internal/tsfrontend/refactor/comments.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/extractType.ts",
+          "sha256": "1c9771844ea117e1414365311fb181ca3a8fc58dcea06e761abd6d47c190a93f",
+          "adaptations": [
+            "internal/tsfrontend/refactor/extract_type.go"
+          ]
+        },
+        {
+          "path": "src/compiler/factory/emitNode.ts",
+          "sha256": "d4e8f25e7c30e6c6f5fbb72d56812d140f8d15384be4a7bd4da226a47559583a",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json",
+            "internal/tsfrontend/refactor/inline_variable.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/inferFunctionReturnType.ts",
+          "sha256": "3e6fa8aa0c694870e0838487ef85874dd30b9bf9ebef9ba0007651237fdbbf59",
+          "adaptations": [
+            "internal/tsfrontend/refactor/infer_return.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/generateGetAccessorAndSetAccessor.ts",
+          "sha256": "f2ce6aca978be57e87b0aff2e55f6019d7026a51219cc90ac1362bb37fa3a0bc",
+          "adaptations": [
+            "internal/tsfrontend/refactor/accessors.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/inlineVariable.ts",
+          "sha256": "ec08d57e8e89779786498a060c31f69791af6b2b6478ac6a974258715773bf59",
+          "adaptations": [
+            "internal/tsfrontend/refactor/inline_variable.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/convertOverloadListToSingleSignature.ts",
+          "sha256": "b7486198935e2b793284176d13c7e21fd25e31efd24f37d6287d069fc1a01345",
+          "adaptations": [
+            "internal/tsfrontend/refactor/overload.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/convertStringOrTemplateLiteral.ts",
+          "sha256": "8df13c7e8d089222da1ab81ac90caf6642e161166e780abbafa6de0cee5a4cbc",
+          "adaptations": [
+            "internal/tsfrontend/refactor/string_template.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/convertToOptionalChainExpression.ts",
+          "sha256": "dab776403e46430afdffc6793dd9c835294cb89232bf77e924c822855eb0e23f",
+          "adaptations": [
+            "internal/tsfrontend/refactor/optional_chain.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/convertExport.ts",
+          "sha256": "0e99fdb9dfc44fffee584871f963026636ae45648ead55abe92e848c899143cc",
+          "adaptations": [
+            "internal/tsfrontend/refactor/convert_export.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/convertParamsToDestructuredObject.ts",
+          "sha256": "fb766156d001b915911215e0258d4ee07e7441f33e91dbaf23dfbcb202901b74",
+          "adaptations": [
+            "internal/tsfrontend/refactor/destructured_parameters.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/extractSymbol.ts",
+          "sha256": "9041813803303a24b6aa17db88ca45c61fc4e24e519b54a9d3954d4d35f16f73",
+          "adaptations": [
+            "internal/tsfrontend/refactor/extract_symbol.go",
+            "internal/tsfrontend/refactor/extract_symbol_analysis.go",
+            "internal/tsfrontend/refactor/extract_symbol_constant.go",
+            "internal/tsfrontend/refactor/extract_symbol_function.go",
+            "internal/tsfrontend/refactor/extract_symbol_range.go"
+          ]
+        },
+        {
+          "path": "src/compiler/symbolWalker.ts",
+          "sha256": "6aec8fecf7d57abd557bdbd4a9744ba2a1f3d8fcc9e9b84721158bd4f284300a",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/services/refactors/moveToFile.ts",
+          "sha256": "4cc95490781a41685f38f713db468572e0f69fd3cd0b31fde7f2a2bd996e801e",
+          "adaptations": [
+            "internal/tsfrontend/refactor/move_range.go",
+            "internal/tsfrontend/refactor/move.go",
+            "internal/tsfrontend/refactor/move_edits.go",
+            "internal/tsfrontend/refactor/move_imports.go",
+            "internal/tsfrontend/refactor/move_usage.go"
+          ]
+        },
+        {
+          "path": "src/services/refactors/moveToNewFile.ts",
+          "sha256": "e39f6b5c6594dc711bd44fd98fdf897d803806def287889d4fab262d5e199d45",
+          "adaptations": [
+            "internal/tsfrontend/refactor/move.go"
+          ]
+        },
+        {
+          "path": "src/services/completions.ts",
+          "sha256": "1c1dd24578245728ac6d4a9f36e6df448f7b0eff08dcd6991dcdb1cceeab6eb7",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "typescript-language-server",
+      "version": "6.0.2",
+      "commit": "7b28f104e741feba092045550738e8549e4ccb11",
+      "license": "Apache-2.0 AND MIT (VS Code portions)",
+      "notices": [
+        {
+          "source": "LICENSE",
+          "copy": "docs/licenses/typescript-language-server-6.0.2/LICENSE",
+          "sha256": "899d21038f87dd6243dd33b7ee82a078e639d4325a427c01e64d8116315b9680"
+        }
+      ],
+      "sources": [
+        {
+          "path": "src/document-symbol.ts",
+          "sha256": "7f66ab594fb579271eac24671973b46c496e40d268383b9e682e55592e015d72",
+          "adaptations": [
+            "lsp/symbols.go",
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json"
+          ]
+        },
+        {
+          "path": "src/protocol-translation.ts",
+          "sha256": "88a45b8de8f50692a6098262c3de0550166deea62a69ac3ef26a48f4c128c3c1",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json",
+            "lsp/diagnostic_capabilities.go",
+            "lsp/code_action.go"
+          ]
+        },
+        {
+          "path": "src/features/call-hierarchy.ts",
+          "sha256": "e86bb8fc4ddcb20a148ebb553925301217e2967c94756f4cf8f192f3846dade9",
+          "adaptations": [
+            "lsp/call_hierarchy.go"
+          ]
+        },
+        {
+          "path": "src/features/inlay-hints.ts",
+          "sha256": "99a3eed157fa21c44f481b9c9d67c4e57ae854140647d08d121add0eeb923f41",
+          "adaptations": [
+            "lsp/inlay_hints.go"
+          ]
+        },
+        {
+          "path": "src/features/semantic-tokens.ts",
+          "sha256": "6237e56139e1986ffb046abd2b014cfd41ba110e8dc228da3a52bfd37cb2e5f9",
+          "adaptations": [
+            "lsp/semantic_tokens.go"
+          ]
+        },
+        {
+          "path": "src/features/code-lens/baseCodeLensProvider.ts",
+          "sha256": "7a3668cf32d5fa3b728205bc1c8b06f63a837cff68623300b18acab8eb99c5ee",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json",
+            "lsp/code_lens.go"
+          ]
+        },
+        {
+          "path": "src/features/code-lens/referencesCodeLens.ts",
+          "sha256": "1195c11ca4640b5644d030fb0439898e8c0425c6e04983c1be9ee751859b9a13",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json",
+            "lsp/code_lens.go"
+          ]
+        },
+        {
+          "path": "src/features/code-lens/implementationsCodeLens.ts",
+          "sha256": "3d6a9939f89454c2350c15d05bee4ffb0af3d9908604dbe181787ce3c01c9d4e",
+          "adaptations": [
+            "internal/tsfrontend/cmd/importupstream/patches/embedded-language-service.json",
+            "lsp/code_lens.go"
+          ]
+        },
+        {
+          "path": "src/features/codeActions/quickFix.ts",
+          "sha256": "6bbc8a04401197d4aaf34ce598b64760274217b22a08d8fae28784ed8d5e2db2",
+          "adaptations": [
+            "lsp/code_action.go",
+            "lsp/code_action_commands.go"
+          ]
+        },
+        {
+          "path": "src/features/codeActions/codeActionManager.ts",
+          "sha256": "785cc9831edd1639d897aaff82e61c72f621abb0fc5d886ecd455d44c3bd4ad1",
+          "adaptations": [
+            "lsp/code_action.go",
+            "lsp/code_action_handlers.go"
+          ]
+        },
+        {
+          "path": "src/utils/fixNames.ts",
+          "sha256": "c705664dadd96d6a313054384eaa493e965bacd0f3814e4c42bfea1d51fa2535",
+          "adaptations": [
+            "lsp/code_action.go"
+          ]
+        },
+        {
+          "path": "src/features/util/codeAction.ts",
+          "sha256": "e25ec7fe399c4efd803849850ddda6a35547fc6272ca623a2f19d5d35c2db68f",
+          "adaptations": [
+            "lsp/code_action.go",
+            "lsp/code_action_commands.go"
+          ]
+        },
+        {
+          "path": "src/lsp-server.ts",
+          "sha256": "7b69352a492f160348556b7b087231e92bfe709b4e761ee2e04f546117e44406",
+          "adaptations": [
+            "lsp/code_action_handlers.go",
+            "lsp/imports.go",
+            "lsp/file_rename.go",
+            "lsp/refactor_commands.go",
+            "lsp/server.go",
+            "lsp/compatibility_commands.go",
+            "lsp/completion_code_action.go"
+          ]
+        },
+        {
+          "path": "src/features/codeActions/fixAll.ts",
+          "sha256": "055eff9a363edde9a250b861398f0165016d4996213744fd93c3123d56d17292",
+          "adaptations": [
+            "lsp/source_action.go"
+          ]
+        },
+        {
+          "path": "src/utils/errorCodes.ts",
+          "sha256": "aeaf145ce23431e1b957e57a7077e1a4dcf8649db7d4a506619b343f738bb014",
+          "adaptations": [
+            "lsp/source_action.go"
+          ]
+        },
+        {
+          "path": "src/organize-imports.ts",
+          "sha256": "089a8f3cbd386bae8ab73218a59b801b233d6ca9e42345c4c7e78a9605655b4d",
+          "adaptations": [
+            "lsp/imports.go"
+          ]
+        },
+        {
+          "path": "src/refactor.ts",
+          "sha256": "5c08aac058b96f6ddb39dd920720479bfed23307844168dd2d5cb26914c3ecd5",
+          "adaptations": [
+            "lsp/refactor_actions.go"
+          ]
+        },
+        {
+          "path": "src/completion.ts",
+          "sha256": "e4b75d583747c661a0e43c6ed0f58b53afbafc6c4399bbfe10b7380b9e837843",
+          "adaptations": [
+            "lsp/completion_presentation.go"
+          ]
+        },
+        {
+          "path": "src/utils/tsconfig.ts",
+          "sha256": "3c61c685e670ee7775de61856f058ef9aeb71e6e97aeddf3e830d8b4ac5a21c2",
+          "adaptations": [
+            "lsp/inferred_configuration.go",
+            "internal/tsfrontend/editor/workspace.go"
+          ]
+        }
+      ]
+    }
+  ]
+}

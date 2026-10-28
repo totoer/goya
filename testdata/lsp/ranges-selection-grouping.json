@@ -1,0 +1,929 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "import {a} from \"./a\";\nimport {b} from \"./b\";\n/**\n * mapped docs\n */\ntype Mapping<T> = { readonly [K in keyof T]?: T[K] };\ninterface Shape { readonly value?: string; run(...args: number[]): void }\nfunction use(a = 1, ...rest: number[]) {\n const {value: picked = \"x\"} = {value: `${a}-${rest[0]}`};\n return picked;\n}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "ranges-selection-grouping",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "import {a} from \"./a\";\nimport {b} from \"./b\";\n/**\n * mapped docs\n */\ntype Mapping<T> = { readonly [K in keyof T]?: T[K] };\ninterface Shape { readonly value?: string; run(...args: number[]): void }\nfunction use(a = 1, ...rest: number[]) {\n const {value: picked = \"x\"} = {value: `${a}-${rest[0]}`};\n return picked;\n}\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/selectionRange",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "positions": [
+          {
+            "line": 0,
+            "character": 10
+          },
+          {
+            "line": 1,
+            "character": 10
+          },
+          {
+            "line": 5,
+            "character": 22
+          },
+          {
+            "line": 5,
+            "character": 33
+          },
+          {
+            "line": 5,
+            "character": 44
+          },
+          {
+            "line": 6,
+            "character": 35
+          },
+          {
+            "line": 6,
+            "character": 55
+          },
+          {
+            "line": 7,
+            "character": 14
+          },
+          {
+            "line": 8,
+            "character": 20
+          },
+          {
+            "line": 8,
+            "character": 41
+          },
+          {
+            "line": 3,
+            "character": 5
+          }
+        ]
+      },
+      "expected": [
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 9
+            },
+            "end": {
+              "line": 0,
+              "character": 10
+            }
+          },
+          "parent": {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 7
+              },
+              "end": {
+                "line": 0,
+                "character": 10
+              }
+            },
+            "parent": {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 0
+                },
+                "end": {
+                  "line": 0,
+                  "character": 22
+                }
+              },
+              "parent": {
+                "range": {
+                  "start": {
+                    "line": 0,
+                    "character": 0
+                  },
+                  "end": {
+                    "line": 1,
+                    "character": 22
+                  }
+                },
+                "parent": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 10,
+                      "character": 2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 9
+            },
+            "end": {
+              "line": 1,
+              "character": 10
+            }
+          },
+          "parent": {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 7
+              },
+              "end": {
+                "line": 1,
+                "character": 10
+              }
+            },
+            "parent": {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 0
+                },
+                "end": {
+                  "line": 1,
+                  "character": 22
+                }
+              },
+              "parent": {
+                "range": {
+                  "start": {
+                    "line": 0,
+                    "character": 0
+                  },
+                  "end": {
+                    "line": 1,
+                    "character": 22
+                  }
+                },
+                "parent": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 10,
+                      "character": 2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 5,
+              "character": 20
+            },
+            "end": {
+              "line": 5,
+              "character": 28
+            }
+          },
+          "parent": {
+            "range": {
+              "start": {
+                "line": 5,
+                "character": 20
+              },
+              "end": {
+                "line": 5,
+                "character": 44
+              }
+            },
+            "parent": {
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 20
+                },
+                "end": {
+                  "line": 5,
+                  "character": 50
+                }
+              },
+              "parent": {
+                "range": {
+                  "start": {
+                    "line": 5,
+                    "character": 18
+                  },
+                  "end": {
+                    "line": 5,
+                    "character": 52
+                  }
+                },
+                "parent": {
+                  "range": {
+                    "start": {
+                      "line": 5,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 5,
+                      "character": 53
+                    }
+                  },
+                  "parent": {
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 5,
+                        "character": 53
+                      }
+                    },
+                    "parent": {
+                      "range": {
+                        "start": {
+                          "line": 0,
+                          "character": 0
+                        },
+                        "end": {
+                          "line": 10,
+                          "character": 2
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 5,
+              "character": 32
+            },
+            "end": {
+              "line": 5,
+              "character": 34
+            }
+          },
+          "parent": {
+            "range": {
+              "start": {
+                "line": 5,
+                "character": 30
+              },
+              "end": {
+                "line": 5,
+                "character": 42
+              }
+            },
+            "parent": {
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 29
+                },
+                "end": {
+                  "line": 5,
+                  "character": 43
+                }
+              },
+              "parent": {
+                "range": {
+                  "start": {
+                    "line": 5,
+                    "character": 20
+                  },
+                  "end": {
+                    "line": 5,
+                    "character": 44
+                  }
+                },
+                "parent": {
+                  "range": {
+                    "start": {
+                      "line": 5,
+                      "character": 20
+                    },
+                    "end": {
+                      "line": 5,
+                      "character": 50
+                    }
+                  },
+                  "parent": {
+                    "range": {
+                      "start": {
+                        "line": 5,
+                        "character": 18
+                      },
+                      "end": {
+                        "line": 5,
+                        "character": 52
+                      }
+                    },
+                    "parent": {
+                      "range": {
+                        "start": {
+                          "line": 5,
+                          "character": 0
+                        },
+                        "end": {
+                          "line": 5,
+                          "character": 53
+                        }
+                      },
+                      "parent": {
+                        "range": {
+                          "start": {
+                            "line": 2,
+                            "character": 0
+                          },
+                          "end": {
+                            "line": 5,
+                            "character": 53
+                          }
+                        },
+                        "parent": {
+                          "range": {
+                            "start": {
+                              "line": 0,
+                              "character": 0
+                            },
+                            "end": {
+                              "line": 10,
+                              "character": 2
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 5,
+              "character": 44
+            },
+            "end": {
+              "line": 5,
+              "character": 45
+            }
+          },
+          "parent": {
+            "range": {
+              "start": {
+                "line": 5,
+                "character": 20
+              },
+              "end": {
+                "line": 5,
+                "character": 50
+              }
+            },
+            "parent": {
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 18
+                },
+                "end": {
+                  "line": 5,
+                  "character": 52
+                }
+              },
+              "parent": {
+                "range": {
+                  "start": {
+                    "line": 5,
+                    "character": 0
+                  },
+                  "end": {
+                    "line": 5,
+                    "character": 53
+                  }
+                },
+                "parent": {
+                  "range": {
+                    "start": {
+                      "line": 2,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 5,
+                      "character": 53
+                    }
+                  },
+                  "parent": {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 10,
+                        "character": 2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 6,
+              "character": 35
+            },
+            "end": {
+              "line": 6,
+              "character": 41
+            }
+          },
+          "parent": {
+            "range": {
+              "start": {
+                "line": 6,
+                "character": 18
+              },
+              "end": {
+                "line": 6,
+                "character": 42
+              }
+            },
+            "parent": {
+              "range": {
+                "start": {
+                  "line": 6,
+                  "character": 18
+                },
+                "end": {
+                  "line": 6,
+                  "character": 71
+                }
+              },
+              "parent": {
+                "range": {
+                  "start": {
+                    "line": 6,
+                    "character": 0
+                  },
+                  "end": {
+                    "line": 6,
+                    "character": 73
+                  }
+                },
+                "parent": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 10,
+                      "character": 2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 6,
+              "character": 54
+            },
+            "end": {
+              "line": 6,
+              "character": 55
+            }
+          },
+          "parent": {
+            "range": {
+              "start": {
+                "line": 6,
+                "character": 47
+              },
+              "end": {
+                "line": 6,
+                "character": 64
+              }
+            },
+            "parent": {
+              "range": {
+                "start": {
+                  "line": 6,
+                  "character": 43
+                },
+                "end": {
+                  "line": 6,
+                  "character": 71
+                }
+              },
+              "parent": {
+                "range": {
+                  "start": {
+                    "line": 6,
+                    "character": 18
+                  },
+                  "end": {
+                    "line": 6,
+                    "character": 71
+                  }
+                },
+                "parent": {
+                  "range": {
+                    "start": {
+                      "line": 6,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 6,
+                      "character": 73
+                    }
+                  },
+                  "parent": {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 10,
+                        "character": 2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 7,
+              "character": 13
+            },
+            "end": {
+              "line": 7,
+              "character": 14
+            }
+          },
+          "parent": {
+            "range": {
+              "start": {
+                "line": 7,
+                "character": 13
+              },
+              "end": {
+                "line": 7,
+                "character": 18
+              }
+            },
+            "parent": {
+              "range": {
+                "start": {
+                  "line": 7,
+                  "character": 13
+                },
+                "end": {
+                  "line": 7,
+                  "character": 37
+                }
+              },
+              "parent": {
+                "range": {
+                  "start": {
+                    "line": 7,
+                    "character": 0
+                  },
+                  "end": {
+                    "line": 10,
+                    "character": 1
+                  }
+                },
+                "parent": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 10,
+                      "character": 2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 8,
+              "character": 15
+            },
+            "end": {
+              "line": 8,
+              "character": 21
+            }
+          },
+          "parent": {
+            "range": {
+              "start": {
+                "line": 8,
+                "character": 8
+              },
+              "end": {
+                "line": 8,
+                "character": 21
+              }
+            },
+            "parent": {
+              "range": {
+                "start": {
+                  "line": 8,
+                  "character": 8
+                },
+                "end": {
+                  "line": 8,
+                  "character": 27
+                }
+              },
+              "parent": {
+                "range": {
+                  "start": {
+                    "line": 8,
+                    "character": 7
+                  },
+                  "end": {
+                    "line": 8,
+                    "character": 28
+                  }
+                },
+                "parent": {
+                  "range": {
+                    "start": {
+                      "line": 8,
+                      "character": 1
+                    },
+                    "end": {
+                      "line": 8,
+                      "character": 58
+                    }
+                  },
+                  "parent": {
+                    "range": {
+                      "start": {
+                        "line": 7,
+                        "character": 40
+                      },
+                      "end": {
+                        "line": 10,
+                        "character": 0
+                      }
+                    },
+                    "parent": {
+                      "range": {
+                        "start": {
+                          "line": 7,
+                          "character": 39
+                        },
+                        "end": {
+                          "line": 10,
+                          "character": 1
+                        }
+                      },
+                      "parent": {
+                        "range": {
+                          "start": {
+                            "line": 7,
+                            "character": 0
+                          },
+                          "end": {
+                            "line": 10,
+                            "character": 1
+                          }
+                        },
+                        "parent": {
+                          "range": {
+                            "start": {
+                              "line": 0,
+                              "character": 0
+                            },
+                            "end": {
+                              "line": 10,
+                              "character": 2
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 8,
+              "character": 40
+            },
+            "end": {
+              "line": 8,
+              "character": 55
+            }
+          },
+          "parent": {
+            "range": {
+              "start": {
+                "line": 8,
+                "character": 39
+              },
+              "end": {
+                "line": 8,
+                "character": 56
+              }
+            },
+            "parent": {
+              "range": {
+                "start": {
+                  "line": 8,
+                  "character": 32
+                },
+                "end": {
+                  "line": 8,
+                  "character": 56
+                }
+              },
+              "parent": {
+                "range": {
+                  "start": {
+                    "line": 8,
+                    "character": 31
+                  },
+                  "end": {
+                    "line": 8,
+                    "character": 57
+                  }
+                },
+                "parent": {
+                  "range": {
+                    "start": {
+                      "line": 8,
+                      "character": 1
+                    },
+                    "end": {
+                      "line": 8,
+                      "character": 58
+                    }
+                  },
+                  "parent": {
+                    "range": {
+                      "start": {
+                        "line": 7,
+                        "character": 40
+                      },
+                      "end": {
+                        "line": 10,
+                        "character": 0
+                      }
+                    },
+                    "parent": {
+                      "range": {
+                        "start": {
+                          "line": 7,
+                          "character": 39
+                        },
+                        "end": {
+                          "line": 10,
+                          "character": 1
+                        }
+                      },
+                      "parent": {
+                        "range": {
+                          "start": {
+                            "line": 7,
+                            "character": 0
+                          },
+                          "end": {
+                            "line": 10,
+                            "character": 1
+                          }
+                        },
+                        "parent": {
+                          "range": {
+                            "start": {
+                              "line": 0,
+                              "character": 0
+                            },
+                            "end": {
+                              "line": 10,
+                              "character": 2
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 0
+            },
+            "end": {
+              "line": 4,
+              "character": 3
+            }
+          },
+          "parent": {
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 0
+              },
+              "end": {
+                "line": 5,
+                "character": 53
+              }
+            },
+            "parent": {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 0
+                },
+                "end": {
+                  "line": 10,
+                  "character": 2
+                }
+              }
+            }
+          }
+        }
+      ],
+      "source_eof": {}
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

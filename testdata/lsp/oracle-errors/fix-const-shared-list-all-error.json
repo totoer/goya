@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "name": "fix-const-shared-list-all-error",
+  "project": {
+    "files": {
+      "/main.ts": "const first = 1, second = 2;\nfirst = 2; second = 3;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "const first = 1, second = 2;\nfirst = 2; second = 3;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 6000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 0
+              },
+              "end": {
+                "line": 1,
+                "character": 5
+              }
+            },
+            "message": "Cannot assign to 'first' because it is a constant.",
+            "severity": 1,
+            "code": 2588,
+            "source": "typescript"
+          },
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 11
+              },
+              "end": {
+                "line": 1,
+                "character": 17
+              }
+            },
+            "message": "Cannot assign to 'second' because it is a constant.",
+            "severity": 1,
+            "code": 2588,
+            "source": "typescript"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 0
+                },
+                "end": {
+                  "line": 1,
+                  "character": 5
+                }
+              },
+              "severity": 1,
+              "code": 2588,
+              "message": "Cannot assign to 'first' because it is a constant.",
+              "source": "typescript"
+            },
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 17
+                }
+              },
+              "severity": 1,
+              "code": 2588,
+              "message": "Cannot assign to 'second' because it is a constant.",
+              "source": "typescript"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Convert 'const' to 'let'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixConvertConstToLet",
+                  "description": "Convert 'const' to 'let'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 6
+                          },
+                          "newText": "let"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixConvertConstToLet",
+                  "fixAllDescription": "Convert all 'const' to 'let'"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 11
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 17
+                    }
+                  },
+                  "severity": 1,
+                  "code": 2588,
+                  "message": "Cannot assign to 'second' because it is a constant.",
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 11
+                },
+                "end": {
+                  "line": 1,
+                  "character": 17
+                }
+              },
+              "severity": 1,
+              "code": 2588,
+              "message": "Cannot assign to 'second' because it is a constant.",
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 5
+                      }
+                    },
+                    "newText": "let"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Convert all 'const' to 'let'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "fixConvertConstToLet"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 0
+                },
+                "end": {
+                  "line": 1,
+                  "character": 5
+                }
+              },
+              "severity": 1,
+              "code": 2588,
+              "message": "Cannot assign to 'first' because it is a constant.",
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeAction/resolve",
+      "params": {},
+      "params_from_code_action": {
+        "step": 2,
+        "index": 1
+      },
+      "expected_error": {
+        "code": 1,
+        "message": "<main> TypeScript Server Error (6.0.3)\nDebug Failure. False expression: Changes overlap\r\nVerbose Debug Information: {\"pos\":0,\"end\":5} and {\"pos\":0,\"end\":5}\nError: Debug Failure. False expression: Changes overlap\r\nVerbose Debug Information: {\"pos\":0,\"end\":5} and {\"pos\":0,\"end\":5}\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180564:15\n    at mapDefined (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:2610:22)\n    at Object.getTextChangesFromChanges (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180560:12)\n    at _ChangeTracker.getChanges (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180457:35)\n    at _ChangeTracker.with (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:179936:20)\n    at Object.getAllCodeActions (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:167266:79)\n    at Object.getAllFixes (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:155905:65)\n    at Object.getCombinedCodeFix (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:154173:31)\n    at IpcIOSession.getCombinedCodeFix (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197293:46)\n    at getCombinedCodeFix (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:195291:43)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197591:15\n    at IpcIOSession.executeWithRequestId (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197580:14)\n    at IpcIOSession.executeCommand (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197589:29)\n    at IpcIOSession.onMessage (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197637:68)\n    at process.<anonymous> (/private/tmp/goya-lsp-reference/ts-package/package/lib/_tsserver.js:519:14)\n    at process.emit (node:events:514:20)\n    at emit (node:internal/child_process:1004:14)\n    at process.processTicksAndRejections (node:internal/process/task_queues:91:21)"
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

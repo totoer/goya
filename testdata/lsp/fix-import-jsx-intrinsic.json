@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "name": "fix-import-jsx-intrinsic",
+  "project": {
+    "files": {
+      "/react.ts": "const React = { createElement(...args: any[]): any { return {}; } }; export default React;\nexport function Box(): any { return {}; }\n",
+      "/jsx.d.ts": "declare namespace JSX { interface IntrinsicElements { div: any; } }\n",
+      "/main.tsx": "export const value = <div />;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.tsx",
+      "/react.ts",
+      "/jsx.d.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "jsx": "react"
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx",
+          "languageId": "typescriptreact",
+          "version": 2,
+          "text": "export const value = <div />;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 6000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 22
+              },
+              "end": {
+                "line": 0,
+                "character": 25
+              }
+            },
+            "message": "This JSX tag requires 'React' to be in scope, but it could not be found.",
+            "severity": 1,
+            "code": 2874,
+            "source": "typescript"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx",
+          "languageId": null
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 22
+                },
+                "end": {
+                  "line": 0,
+                  "character": 25
+                }
+              },
+              "severity": 1,
+              "code": 2874,
+              "message": "This JSX tag requires 'React' to be in scope, but it could not be found.",
+              "source": "typescript"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Import 'React' from \"./react\"",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "import",
+                  "description": "Import 'React' from \"./react\"",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.tsx",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 1
+                          },
+                          "newText": "import React from \"./react\";\n\n"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 22
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 25
+                    }
+                  },
+                  "severity": 1,
+                  "code": 2874,
+                  "message": "This JSX tag requires 'React' to be in scope, but it could not be found.",
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.tsx"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 22
+                },
+                "end": {
+                  "line": 0,
+                  "character": 25
+                }
+              },
+              "severity": 1,
+              "code": 2874,
+              "message": "This JSX tag requires 'React' to be in scope, but it could not be found.",
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.tsx",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 0
+                      }
+                    },
+                    "newText": "import React from \"./react\";\n\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": true
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

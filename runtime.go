@@ -1,7 +1,8 @@
-package goja
+package goya
 
 import (
 	"bytes"
+	stdcontext "context"
 	"errors"
 	"fmt"
 	"go/ast"
@@ -14,14 +15,13 @@ import (
 	"reflect"
 	"runtime"
 	"strconv"
+	"sync/atomic"
 	"time"
+	"weak"
 
-	"golang.org/x/text/collate"
-
-	js_ast "github.com/dop251/goja/ast"
-	"github.com/dop251/goja/file"
-	"github.com/dop251/goja/parser"
-	"github.com/dop251/goja/unistring"
+	js_ast "github.com/totoer/goya/ast"
+	"github.com/totoer/goya/file"
+	"github.com/totoer/goya/unistring"
 )
 
 const (
@@ -65,10 +65,12 @@ type global struct {
 	Promise  *Object
 	Math     *Object
 	JSON     *Object
+	Atomics  *Object
 
 	AsyncFunction *Object
 
 	ArrayBuffer       *Object
+	SharedArrayBuffer *Object
 	DataView          *Object
 	TypedArray        *Object
 	Uint8Array        *Object
@@ -79,23 +81,29 @@ type global struct {
 	Uint32Array       *Object
 	Int32Array        *Object
 	Float32Array      *Object
+	Float16Array      *Object
 	Float64Array      *Object
 	BigInt64Array     *Object
 	BigUint64Array    *Object
 
-	WeakSet *Object
-	WeakMap *Object
-	Map     *Object
-	Set     *Object
+	WeakSet              *Object
+	WeakMap              *Object
+	WeakRef              *Object
+	FinalizationRegistry *Object
+	Map                  *Object
+	Set                  *Object
 
-	Error          *Object
-	AggregateError *Object
-	TypeError      *Object
-	ReferenceError *Object
-	SyntaxError    *Object
-	RangeError     *Object
-	EvalError      *Object
-	URIError       *Object
+	Error                *Object
+	AggregateError       *Object
+	SuppressedError      *Object
+	DisposableStack      *Object
+	AsyncDisposableStack *Object
+	TypeError            *Object
+	ReferenceError       *Object
+	SyntaxError          *Object
+	RangeError           *Object
+	EvalError            *Object
+	URIError             *Object
 
 	GoError *Object
 
@@ -110,20 +118,27 @@ type global struct {
 	DatePrototype     *Object
 	SymbolPrototype   *Object
 
-	ArrayBufferPrototype *Object
-	DataViewPrototype    *Object
-	TypedArrayPrototype  *Object
-	WeakSetPrototype     *Object
-	WeakMapPrototype     *Object
-	MapPrototype         *Object
-	SetPrototype         *Object
-	PromisePrototype     *Object
+	ArrayBufferPrototype          *Object
+	SharedArrayBufferPrototype    *Object
+	DataViewPrototype             *Object
+	TypedArrayPrototype           *Object
+	WeakSetPrototype              *Object
+	WeakMapPrototype              *Object
+	WeakRefPrototype              *Object
+	FinalizationRegistryPrototype *Object
+	MapPrototype                  *Object
+	SetPrototype                  *Object
+	PromisePrototype              *Object
 
 	GeneratorFunctionPrototype *Object
 	GeneratorFunction          *Object
 	GeneratorPrototype         *Object
 
-	AsyncFunctionPrototype *Object
+	AsyncFunctionPrototype            *Object
+	TSAsyncGeneratorFunctionPrototype *Object
+	TSAsyncGeneratorFunction          *Object
+	TSAsyncGeneratorPrototype         *Object
+	TSAsyncIteratorPrototype          *Object
 
 	Iterator                      *Object
 	IteratorPrototype             *Object
@@ -136,8 +151,6 @@ type global struct {
 	RegExpStringIteratorPrototype *Object
 
 	ErrorPrototype *Object
-
-	Eval *Object
 
 	thrower *Object
 
@@ -190,20 +203,39 @@ type Runtime struct {
 	stringSingleton *stringObject
 	rand            RandSource
 	now             Now
-	_collator       *collate.Collator
-	parserOptions   []parser.Option
+	timeZone        *time.Location
+	timeZoneName    string
 
 	symbolRegistry map[unistring.String]*Symbol
 
 	fieldsInfoCache  map[reflect.Type]*reflectFieldsInfo
 	methodsInfoCache map[reflect.Type]*reflectMethodsInfo
 
-	fieldNameMapper FieldNameMapper
+	fieldNameMapper    FieldNameMapper
+	hostEnvironment    *Environment
+	hostModules        map[string]map[string]Value
+	hostGlobals        map[string]Value
+	hostViews          map[hostViewKey]*Object
+	hostViewSources    map[*Object]reflect.Value
+	moduleInstances    map[string]*moduleInstance
+	dynamicResolutions map[string]string
+	typeScriptHelpers  map[string]Value
 
 	vm   *vm
 	hash *maphash.Hash
 
-	jobQueue []func()
+	jobQueue             *runtimeJobQueue
+	drainingJobs         bool
+	keptObjects          map[Value]struct{}
+	finalizations        *finalizationQueue
+	drainingCleanup      bool
+	internationalization *intlRuntimeState
+	regexpStatics        [14]String
+	sharedBuffers        map[weak.Pointer[sharedArrayStorage]]weak.Pointer[arrayBufferObject]
+	waitAgent            *waitAgentState
+	waitPromises         map[uint64]*promiseCapability
+	waitSequence         uint64
+	blockingWait         atomic.Pointer[atomicWaiter]
 
 	promiseRejectionTracker PromiseRejectionTracker
 	asyncContextTracker     AsyncContextTracker
@@ -240,7 +272,23 @@ func (f *StackFrame) Position() file.Position {
 	if f.prg == nil || f.prg.src == nil {
 		return file.Position{}
 	}
-	return f.prg.src.Position(f.prg.sourceOffset(f.pc))
+	offset := f.prg.sourceOffset(f.pc)
+	position := f.prg.src.Position(offset)
+	if f.prg.checking != nil {
+		source := f.prg.src.Source()
+		start := offset - position.Column + 1
+		if start >= 0 && offset >= start && offset <= len(source) {
+			column := 1
+			for _, ch := range source[start:offset] {
+				column++
+				if ch > 0xffff {
+					column++
+				}
+			}
+			position.Column = column
+		}
+	}
+	return position
 }
 
 func (f *StackFrame) WriteToValueBuilder(b *StringBuilder) {
@@ -446,13 +494,17 @@ func (r *Runtime) getIteratorPrototype() *Object {
 		o = &Object{runtime: r}
 		r.global.IteratorPrototype = o
 		o.self = r.createIterProto(o)
+		o.self._putSym(SymDispose, valueProp(r.newNativeFunc(r.iteratorDispose, "[Symbol.dispose]", 0), true, false, true))
 	}
 	return o
 }
 
 func (r *Runtime) init() {
+	r.jobQueue = &runtimeJobQueue{}
 	r.rand = rand.Float64
 	r.now = time.Now
+	r.timeZone = time.UTC
+	r.timeZoneName = "UTC"
 
 	r.global.ObjectPrototype = &Object{runtime: r}
 	r.newTemplatedObject(getObjectProtoTemplate(), r.global.ObjectPrototype)
@@ -635,6 +687,7 @@ func (r *Runtime) newGeneratorMethod(name unistring.String, length int, strict b
 func (r *Runtime) newAsyncMethod(name unistring.String, length int, strict bool) (f *asyncMethodFuncObject) {
 	f = &asyncMethodFuncObject{}
 	r.initBaseJsFunction(&f.baseJsFuncObject, strict)
+	f.prototype = r.getAsyncFunctionPrototype()
 	f.val.self = f
 	f.init(name, intToValue(int64(length)))
 	return
@@ -949,60 +1002,6 @@ func (r *Runtime) builtin_thrower(call FunctionCall) Value {
 	return nil
 }
 
-func (r *Runtime) eval(srcVal String, direct, strict bool) Value {
-	src := escapeInvalidUtf16(srcVal)
-	vm := r.vm
-	inGlobal := true
-	if direct {
-		for s := vm.stash; s != nil; s = s.outer {
-			if s.isVariable() {
-				inGlobal = false
-				break
-			}
-		}
-	}
-	vm.pushCtx()
-	funcObj := _undefined
-	if !direct {
-		vm.stash = &r.global.stash
-		vm.privEnv = nil
-	} else {
-		if sb := vm.sb; sb > 0 {
-			funcObj = vm.stack[sb-1]
-		}
-	}
-	p, err := r.compile("<eval>", src, strict, inGlobal, r.vm)
-	if err != nil {
-		panic(err)
-	}
-
-	vm.prg = p
-	vm.pc = 0
-	vm.args = 0
-	vm.result = _undefined
-	vm.push(funcObj)
-	vm.sb = vm.sp
-	vm.push(nil) // this
-	ex := vm.runTry()
-	retval := vm.result
-	vm.popCtx()
-	if ex != nil {
-		panic(ex)
-	}
-	vm.sp -= 2
-	return retval
-}
-
-func (r *Runtime) builtin_eval(call FunctionCall) Value {
-	if len(call.Arguments) == 0 {
-		return _undefined
-	}
-	if str, ok := call.Arguments[0].(String); ok {
-		return r.eval(str, false, false)
-	}
-	return call.Arguments[0]
-}
-
 func (r *Runtime) constructToCall(construct func(args []Value, proto *Object) *Object, proto *Object) func(call FunctionCall) Value {
 	return func(call FunctionCall) Value {
 		return construct(call.Arguments, proto)
@@ -1046,10 +1045,7 @@ func toInt8(v Value) int8 {
 	}
 
 	if f, ok := v.(valueFloat); ok {
-		f := float64(f)
-		if !math.IsNaN(f) && !math.IsInf(f, 0) {
-			return int8(int64(f))
-		}
+		return int8(floatToUint32(float64(f)))
 	}
 	return 0
 }
@@ -1061,10 +1057,7 @@ func toUint8(v Value) uint8 {
 	}
 
 	if f, ok := v.(valueFloat); ok {
-		f := float64(f)
-		if !math.IsNaN(f) && !math.IsInf(f, 0) {
-			return uint8(int64(f))
-		}
+		return uint8(floatToUint32(float64(f)))
 	}
 	return 0
 }
@@ -1115,10 +1108,7 @@ func toInt16(v Value) int16 {
 	}
 
 	if f, ok := v.(valueFloat); ok {
-		f := float64(f)
-		if !math.IsNaN(f) && !math.IsInf(f, 0) {
-			return int16(int64(f))
-		}
+		return int16(floatToUint32(float64(f)))
 	}
 	return 0
 }
@@ -1338,11 +1328,11 @@ func (r *Runtime) toIndex(v Value) int {
 	num := v.ToInteger()
 	if num >= 0 && num < maxInt {
 		if bits.UintSize == 32 && num >= math.MaxInt32 {
-			panic(r.newErrorf(r.getRangeError(), "Index %s overflows int", v.String()))
+			panic(r.newErrorf(r.getRangeError(), "Index %d overflows int", num))
 		}
 		return int(num)
 	}
-	panic(r.newErrorf(r.getRangeError(), "Invalid index %s", v.String()))
+	panic(r.newErrorf(r.getRangeError(), "Invalid index %d", num))
 }
 
 func (r *Runtime) toBoolean(b bool) Value {
@@ -1353,72 +1343,32 @@ func (r *Runtime) toBoolean(b bool) Value {
 	}
 }
 
-// New creates an instance of a Javascript runtime that can be used to run code. Multiple instances may be created and
-// used simultaneously, however it is not possible to pass JS values across runtimes.
+// New creates a TypeScript runtime. Independent runtimes may execute a shared
+// checked Program concurrently; script values belong to their creating runtime.
 func New() *Runtime {
 	r := &Runtime{}
 	r.init()
 	return r
 }
 
-// Compile creates an internal representation of the JavaScript code that can be later run using the Runtime.RunProgram()
-// method. This representation is not linked to a runtime in any way and can be run in multiple runtimes (possibly
-// at the same time).
-func Compile(name, src string, strict bool) (*Program, error) {
-	return compile(name, src, strict, true, nil)
-}
-
-// CompileAST creates an internal representation of the JavaScript code that can be later run using the Runtime.RunProgram()
-// method. This representation is not linked to a runtime in any way and can be run in multiple runtimes (possibly
-// at the same time).
-func CompileAST(prg *js_ast.Program, strict bool) (*Program, error) {
-	return compileAST(prg, strict, true, nil)
-}
-
 // MustCompile is like Compile but panics if the code cannot be compiled.
-// It simplifies safe initialization of global variables holding compiled JavaScript code.
-func MustCompile(name, src string, strict bool) *Program {
-	prg, err := Compile(name, src, strict)
+func MustCompile(ctx stdcontext.Context, project Project, environment *Environment, options CompileOptions) *Program {
+	prg, diagnostics, err := Compile(ctx, project, environment, options)
 	if err != nil {
 		panic(err)
 	}
-
+	if prg == nil {
+		panic(&CompilationError{Diagnostics: diagnostics})
+	}
 	return prg
 }
 
-// Parse takes a source string and produces a parsed AST. Use this function if you want to pass options
-// to the parser, e.g.:
-//
-//	p, err := Parse("test.js", "var a = true", parser.WithDisableSourceMaps)
-//	if err != nil { /* ... */ }
-//	prg, err := CompileAST(p, true)
-//	// ...
-//
-// Otherwise use Compile which combines both steps.
-func Parse(name, src string, options ...parser.Option) (prg *js_ast.Program, err error) {
-	prg, err1 := parser.ParseFile(nil, name, src, 0, options...)
-	if err1 != nil {
-		// FIXME offset
-		err = &CompilerSyntaxError{
-			CompilerError: CompilerError{
-				Message: err1.Error(),
-			},
-		}
-	}
-	return
-}
-
-func compile(name, src string, strict, inGlobal bool, evalVm *vm, parserOptions ...parser.Option) (p *Program, err error) {
-	prg, err := Parse(name, src, parserOptions...)
-	if err != nil {
-		return
-	}
-
-	return compileAST(prg, strict, inGlobal, evalVm)
-}
-
-func compileAST(prg *js_ast.Program, strict, inGlobal bool, evalVm *vm) (p *Program, err error) {
+func compileAST(prg *js_ast.Program, strict, inGlobal bool, checked ...*typeScriptProgram) (p *Program, err error) {
 	c := newCompiler()
+	if len(checked) > 0 {
+		c.checking = checked[0]
+		c.p.checking = checked[0]
+	}
 
 	defer func() {
 		if x := recover(); x != nil {
@@ -1432,41 +1382,29 @@ func compileAST(prg *js_ast.Program, strict, inGlobal bool, evalVm *vm) (p *Prog
 		}
 	}()
 
-	c.compile(prg, strict, inGlobal, evalVm)
+	c.compile(prg, strict, inGlobal)
 	p = c.p
 	return
 }
 
-func (r *Runtime) compile(name, src string, strict, inGlobal bool, evalVm *vm) (p *Program, err error) {
-	p, err = compile(name, src, strict, inGlobal, evalVm, r.parserOptions...)
-	if err != nil {
-		switch x1 := err.(type) {
-		case *CompilerSyntaxError:
-			err = &Exception{
-				val: r.builtin_new(r.getSyntaxError(), []Value{newStringValue(x1.Error())}),
-			}
-		case *CompilerReferenceError:
-			err = &Exception{
-				val: r.newError(r.getReferenceError(), x1.Message),
-			} // TODO proper message
-		}
-	}
-	return
-}
-
-// RunString executes the given string in the global context.
+// RunString checks and executes a TypeScript source using the bound Environment.
 func (r *Runtime) RunString(str string) (Value, error) {
 	return r.RunScript("", str)
 }
 
-// RunScript executes the given string in the global context.
+// RunScript checks and executes a single TypeScript source. Use Compile with a
+// Project to provide imports or custom options. Names must be TypeScript paths.
 func (r *Runtime) RunScript(name, src string) (Value, error) {
-	p, err := r.compile(name, src, false, true, nil)
-
+	if name == "" {
+		name = "/script.ts"
+	}
+	p, diagnostics, err := Compile(stdcontext.Background(), Project{EntryPoints: []string{name}, Files: map[string]string{name: src}}, r.hostEnvironment, nil)
 	if err != nil {
 		return nil, err
 	}
-
+	if p == nil {
+		return nil, &CompilationError{Diagnostics: diagnostics}
+	}
 	return r.RunProgram(p)
 }
 
@@ -1493,6 +1431,24 @@ func asUncatchableException(v interface{}) error {
 
 // RunProgram executes a pre-compiled (see Compile()) code in the global context.
 func (r *Runtime) RunProgram(p *Program) (result Value, err error) {
+	if p == nil {
+		return nil, errors.New("cannot run a nil program")
+	}
+	if p.typescript == nil {
+		return nil, errors.New("program has no checked TypeScript compilation certificate")
+	}
+	if err := r.preflightTypeScript(p); err != nil {
+		return nil, err
+	}
+	if p.typescript.units != nil && !p.typescript.scriptEntry {
+		return r.runModuleGraph(p)
+	}
+	return r.runCheckedOperations(p)
+}
+
+// runCheckedOperations executes operations produced by the checked backend.
+// Module factories use this after the entire graph has passed preflight.
+func (r *Runtime) runCheckedOperations(p *Program) (result Value, err error) {
 	vm := r.vm
 	recursive := len(vm.callStack) > 0
 	defer func() {
@@ -1506,6 +1462,7 @@ func (r *Runtime) RunProgram(p *Program) (result Value, err error) {
 			if ex := asUncatchableException(x); ex != nil {
 				err = ex
 				if len(vm.callStack) == 0 {
+					r.abortModuleEvaluation(ex)
 					r.leaveAbrupt()
 				}
 			} else {
@@ -1567,14 +1524,17 @@ func (r *Runtime) CaptureCallStack(depth int, stack []StackFrame) []StackFrame {
 	return r.vm.captureStack(stack, offset)
 }
 
-// Interrupt a running JavaScript. The corresponding Go call will return an *InterruptedError containing v.
+// Interrupt running TypeScript. The corresponding Go call returns an *InterruptedError containing v.
 // If the interrupt propagates until the stack is empty the currently queued promise resolve/reject jobs will be cleared
 // without being executed. This is the same time they would be executed otherwise.
-// Note, it only works while in JavaScript code, it does not interrupt native Go functions (which includes all built-ins).
+// Interrupt also wakes a blocking Atomics.wait. Other native Go functions must cooperate with cancellation.
 // If the runtime is currently not running, it will be immediately interrupted on the next Run*() call.
 // To avoid that use ClearInterrupt()
 func (r *Runtime) Interrupt(v interface{}) {
 	r.vm.Interrupt(v)
+	if waiter := r.blockingWait.Load(); waiter != nil {
+		waiter.cancel("interrupted")
+	}
 }
 
 // ClearInterrupt resets the interrupt flag. Typically this needs to be called before the runtime
@@ -1726,7 +1686,7 @@ func(FunctionCall, *Runtime) Value is treated as above, except the *Runtime is a
 func(ConstructorCall) *Object is treated as a native constructor, allowing to use it with the new
 operator:
 
-	func MyObject(call goja.ConstructorCall) *goja.Object {
+	func MyObject(call goya.ConstructorCall) *goya.Object {
 	   // call.This contains the newly created object as per http://www.ecma-international.org/ecma-262/5.1/index.html#sec-13.2.2
 	   // call.Arguments contain arguments passed to the function
 
@@ -1736,7 +1696,7 @@ operator:
 
 	   // If return value is a non-nil *Object, it will be used instead of call.This
 	   // This way it is possible to return a Go struct or a map converted
-	   // into goja.Value using ToValue(), however in this case
+	   // into goya.Value using ToValue(), however in this case
 	   // instanceof will not work as expected, unless you set the prototype:
 	   //
 	   // instance := &myCustomStruct{}
@@ -2213,7 +2173,7 @@ func (r *Runtime) toReflectValue(v Value, dst reflect.Value, ctx *objectExportCt
 			}
 		}
 		if et.Kind() == reflect.String {
-			tme, ok := dateParse(v.String())
+			tme, ok := dateParse(v.String(), r.timeZone)
 			if !ok {
 				return fmt.Errorf("could not convert string %v to %v", v, typ)
 			}
@@ -2524,11 +2484,6 @@ func (r *Runtime) SetTimeSource(now Now) {
 	r.now = now
 }
 
-// SetParserOptions sets parser options to be used by RunString, RunScript and eval() within the code.
-func (r *Runtime) SetParserOptions(opts ...parser.Option) {
-	r.parserOptions = opts
-}
-
 // SetMaxCallStackSize sets the maximum function call depth. When exceeded, a *StackOverflowError is thrown and
 // returned by RunProgram or by a Callable call. This is useful to prevent memory exhaustion caused by an
 // infinite recursion. The default value is math.MaxInt32.
@@ -2540,7 +2495,7 @@ func (r *Runtime) SetMaxCallStackSize(size int) {
 
 // New is an equivalent of the 'new' operator allowing to call it directly from Go.
 func (r *Runtime) New(construct Value, args ...Value) (o *Object, err error) {
-	err = r.try(func() {
+	err = r.runWrapped(func() {
 		o = r.builtin_new(r.toObject(construct), args)
 	})
 	return
@@ -2594,6 +2549,7 @@ func (r *Runtime) runWrapped(f func()) (err error) {
 			if ex := asUncatchableException(x); ex != nil {
 				err = ex
 				if len(r.vm.callStack) == 0 {
+					r.abortModuleEvaluation(ex)
 					r.leaveAbrupt()
 				}
 			} else {
@@ -3069,20 +3025,36 @@ func (r *Runtime) getHash() *maphash.Hash {
 
 // called when the top level function returns normally (i.e. control is passed outside the Runtime).
 func (r *Runtime) leave() {
-	var jobs []func()
-	for len(r.jobQueue) > 0 {
-		jobs, r.jobQueue = r.jobQueue, jobs[:0]
-		for _, job := range jobs {
-			job()
-		}
+	if r.drainingJobs {
+		return
 	}
-	r.jobQueue = nil
+	r.keptObjects = nil
+	r.drainingJobs = true
+	defer func() { r.drainingJobs = false }()
+	for {
+		job, ok := r.jobQueue.pop()
+		if !ok {
+			break
+		}
+		r.vm.checkInterrupt()
+		if job.run != nil {
+			job.run()
+		} else {
+			r.resolveAtomicWait(job.waitID, job.waitResult)
+		}
+		r.keptObjects = nil
+	}
 	r.vm.stack = nil
 }
 
 // called when the top level function returns (i.e. control is passed outside the Runtime) but it was due to an interrupt
 func (r *Runtime) leaveAbrupt() {
-	r.jobQueue = nil
+	r.keptObjects = nil
+	if r.waitAgent != nil {
+		r.waitAgent.cancelAll()
+	}
+	clear(r.waitPromises)
+	r.jobQueue.clear()
 	r.ClearInterrupt()
 }
 

@@ -1,0 +1,545 @@
+{
+  "schema_version": 1,
+  "name": "fix-void-promise-all",
+  "project": {
+    "files": {
+      "/main.ts": "export const value = new Promise(resolve => { resolve(); });\nexport const other = new Promise<number>(done => { done(); });\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export const value = new Promise(resolve => { resolve(); });\nexport const other = new Promise<number>(done => { done(); });\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Add 'void' to Promise resolved without a value",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "addVoidToPromise",
+                  "description": "Add 'void' to Promise resolved without a value",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 33
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 33
+                          },
+                          "newText": "<void>"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "addVoidToPromise",
+                  "fixAllDescription": "Add 'void' to all Promises resolved without a value"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 46
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 53
+                    }
+                  },
+                  "message": "Expected 1 arguments, but got 0. Did you forget to include 'void' in your type argument to 'Promise'?",
+                  "severity": 1,
+                  "code": 2794,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "goya-lib:///lib.es2015.promise.d.ts",
+                        "range": {
+                          "start": {
+                            "line": 28,
+                            "character": 33
+                          },
+                          "end": {
+                            "line": 28,
+                            "character": 58
+                          }
+                        }
+                      },
+                      "message": "An argument for 'value' was not provided."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 46
+                },
+                "end": {
+                  "line": 0,
+                  "character": 53
+                }
+              },
+              "message": "Expected 1 arguments, but got 0. Did you forget to include 'void' in your type argument to 'Promise'?",
+              "severity": 1,
+              "code": 2794,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "goya-lib:///lib.es2015.promise.d.ts",
+                    "range": {
+                      "start": {
+                        "line": 28,
+                        "character": 33
+                      },
+                      "end": {
+                        "line": 28,
+                        "character": 58
+                      }
+                    }
+                  },
+                  "message": "An argument for 'value' was not provided."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 32
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 32
+                      }
+                    },
+                    "newText": "<void>"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add 'void' to Promise resolved without a value",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "addVoidToPromise",
+                  "description": "Add 'void' to Promise resolved without a value",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 40
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 40
+                          },
+                          "newText": " | void"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "addVoidToPromise",
+                  "fixAllDescription": "Add 'void' to all Promises resolved without a value"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 51
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 55
+                    }
+                  },
+                  "message": "Expected 1 arguments, but got 0. Did you forget to include 'void' in your type argument to 'Promise'?",
+                  "severity": 1,
+                  "code": 2794,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "goya-lib:///lib.es2015.promise.d.ts",
+                        "range": {
+                          "start": {
+                            "line": 28,
+                            "character": 33
+                          },
+                          "end": {
+                            "line": 28,
+                            "character": 58
+                          }
+                        }
+                      },
+                      "message": "An argument for 'value' was not provided."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 51
+                },
+                "end": {
+                  "line": 1,
+                  "character": 55
+                }
+              },
+              "message": "Expected 1 arguments, but got 0. Did you forget to include 'void' in your type argument to 'Promise'?",
+              "severity": 1,
+              "code": 2794,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "goya-lib:///lib.es2015.promise.d.ts",
+                    "range": {
+                      "start": {
+                        "line": 28,
+                        "character": 33
+                      },
+                      "end": {
+                        "line": 28,
+                        "character": 58
+                      }
+                    }
+                  },
+                  "message": "An argument for 'value' was not provided."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 39
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 39
+                      }
+                    },
+                    "newText": " | void"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add 'void' to all Promises resolved without a value",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "addVoidToPromise"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 46
+                },
+                "end": {
+                  "line": 0,
+                  "character": 53
+                }
+              },
+              "message": "Expected 1 arguments, but got 0. Did you forget to include 'void' in your type argument to 'Promise'?",
+              "severity": 1,
+              "code": 2794,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "goya-lib:///lib.es2015.promise.d.ts",
+                    "range": {
+                      "start": {
+                        "line": 28,
+                        "character": 33
+                      },
+                      "end": {
+                        "line": 28,
+                        "character": 58
+                      }
+                    }
+                  },
+                  "message": "An argument for 'value' was not provided."
+                }
+              ]
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeAction/resolve",
+      "params": {},
+      "params_from_code_action": {
+        "step": 1,
+        "index": 1
+      },
+      "expected": {
+        "title": "Add 'void' to Promise resolved without a value",
+        "kind": "quickfix",
+        "command": {
+          "command": "_typescript.applyCodeActionCommand",
+          "arguments": [
+            {
+              "action": {
+                "fixName": "addVoidToPromise",
+                "description": "Add 'void' to Promise resolved without a value",
+                "changes": [
+                  {
+                    "fileName": "{{ROOT_PATH}}/main.ts",
+                    "textChanges": [
+                      {
+                        "start": {
+                          "line": 2,
+                          "offset": 40
+                        },
+                        "end": {
+                          "line": 2,
+                          "offset": 40
+                        },
+                        "newText": " | void"
+                      }
+                    ]
+                  }
+                ],
+                "fixId": "addVoidToPromise",
+                "fixAllDescription": "Add 'void' to all Promises resolved without a value"
+              },
+              "diagnostic": {
+                "range": {
+                  "start": {
+                    "line": 1,
+                    "character": 51
+                  },
+                  "end": {
+                    "line": 1,
+                    "character": 55
+                  }
+                },
+                "message": "Expected 1 arguments, but got 0. Did you forget to include 'void' in your type argument to 'Promise'?",
+                "severity": 1,
+                "code": 2794,
+                "source": "typescript",
+                "relatedInformation": [
+                  {
+                    "location": {
+                      "uri": "goya-lib:///lib.es2015.promise.d.ts",
+                      "range": {
+                        "start": {
+                          "line": 28,
+                          "character": 33
+                        },
+                        "end": {
+                          "line": 28,
+                          "character": 58
+                        }
+                      }
+                    },
+                    "message": "An argument for 'value' was not provided."
+                  }
+                ]
+              },
+              "documentUri": "{{ROOT_URI}}/main.ts"
+            }
+          ],
+          "title": ""
+        },
+        "diagnostics": [
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 51
+              },
+              "end": {
+                "line": 1,
+                "character": 55
+              }
+            },
+            "message": "Expected 1 arguments, but got 0. Did you forget to include 'void' in your type argument to 'Promise'?",
+            "severity": 1,
+            "code": 2794,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "goya-lib:///lib.es2015.promise.d.ts",
+                  "range": {
+                    "start": {
+                      "line": 28,
+                      "character": 33
+                    },
+                    "end": {
+                      "line": 28,
+                      "character": 58
+                    }
+                  }
+                },
+                "message": "An argument for 'value' was not provided."
+              }
+            ]
+          }
+        ],
+        "edit": {
+          "documentChanges": [
+            {
+              "textDocument": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "version": 2
+              },
+              "edits": [
+                {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 39
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 39
+                    }
+                  },
+                  "newText": " | void"
+                }
+              ]
+            }
+          ]
+        },
+        "isPreferred": false
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

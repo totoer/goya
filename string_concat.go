@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"hash/maphash"
@@ -7,8 +7,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/dop251/goja/parser"
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/parser"
+	"github.com/totoer/goya/unistring"
 )
 
 const concatThreshold = 32

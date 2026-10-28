@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "name": "preference-implicit-function-false",
+  "project": {
+    "files": {
+      "/main.ts": "class Animal { name = \"x\"; }\nclass Dog extends Animal { bark() {} }\nlet handler: (animal: Animal) => void;\nconst dogHandler = (dog: Dog) => {};\nhandler = dogHandler;\nexport { handler };\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {},
+    "oracle_inferred_project": true
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "class Animal { name = \"x\"; }\nclass Dog extends Animal { bark() {} }\nlet handler: (animal: Animal) => void;\nconst dogHandler = (dog: Dog) => {};\nhandler = dogHandler;\nexport { handler };\n"
+        }
+      }
+    },
+    {
+      "method": "workspace/didChangeConfiguration",
+      "notification": true,
+      "params": {
+        "settings": {
+          "implicitProjectConfiguration": {
+            "strict": false,
+            "strictFunctionTypes": false
+          }
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 3000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 4,
+                "character": 0
+              },
+              "end": {
+                "line": 4,
+                "character": 7
+              }
+            },
+            "message": "Type '(dog: Dog) => void' is not assignable to type '(animal: Animal) => void'.\n  Types of parameters 'dog' and 'animal' are incompatible.\n    Property 'bark' is missing in type 'Animal' but required in type 'Dog'.",
+            "severity": 1,
+            "code": 2322,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 27
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 31
+                    }
+                  }
+                },
+                "message": "'bark' is declared here."
+              }
+            ]
+          },
+          {
+            "range": {
+              "start": {
+                "line": 3,
+                "character": 20
+              },
+              "end": {
+                "line": 3,
+                "character": 23
+              }
+            },
+            "message": "'dog' is declared but its value is never read.",
+            "severity": 4,
+            "code": 6133,
+            "source": "typescript"
+          }
+        ]
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

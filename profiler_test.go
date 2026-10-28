@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"sync/atomic"
@@ -15,7 +15,7 @@ func TestProfiler(t *testing.T) {
 
 	vm := New()
 	go func() {
-		_, err := vm.RunScript("test123.js", `
+		_, err := vm.runVMScript("test123.js", `
 			const a = 2 + 2;
 			function loop() {
 				for(;;) {}
@@ -73,7 +73,7 @@ func TestProfiler1(t *testing.T) {
 			go func() {
 				vm := New()
 				vm.Set("sleep", sleep)
-				_, err := vm.RunScript("test123.js", `
+				_, err := vm.runVMScript("test123.js", `
 				function loop() {
 					for (let i = 0; i < 50000; i++) {
 						const a = Math.pow(Math.Pi, Math.Pi);

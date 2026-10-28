@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "name": "diagnostics-host-ignored",
+  "project": {
+    "files": {
+      "/main.ts": "add(\"wrong\",2);\n"
+    },
+    "declarations": {
+      "/host-api.d.ts": "declare function add(a:number,b:number):number;\n"
+    },
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {
+          "relatedInformation": true,
+          "tagSupport": {
+            "valueSet": [
+              1,
+              2
+            ]
+          }
+        },
+        "diagnostic": {
+          "relatedInformation": true,
+          "tagSupport": {
+            "valueSet": [
+              1,
+              2
+            ]
+          }
+        }
+      }
+    }
+  },
+  "final_compiler_error_codes": [
+    2345
+  ],
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "add(\"wrong\",2);\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 5000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 4
+              },
+              "end": {
+                "line": 0,
+                "character": 11
+              }
+            },
+            "message": "Argument of type 'string' is not assignable to parameter of type 'number'.",
+            "severity": 1,
+            "code": 2345,
+            "source": "typescript",
+            "tags": []
+          }
+        ]
+      }
+    },
+    {
+      "method": "workspace/didChangeConfiguration",
+      "notification": true,
+      "params": {
+        "settings": {
+          "diagnostics": {
+            "ignoredCodes": [
+              2345
+            ]
+          }
+        }
+      }
+    },
+    {
+      "method": "textDocument/didChange",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "version": 2
+        },
+        "contentChanges": [
+          {
+            "text": "add(\"wrong\",2); \n"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 5000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": []
+      }
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

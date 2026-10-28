@@ -1,4 +1,4 @@
-package goja
+package goya
 
 // inspired by https://gist.github.com/orlp/3551590
 

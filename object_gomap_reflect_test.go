@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"sort"
@@ -18,7 +18,7 @@ func TestGoMapReflectGetSet(t *testing.T) {
 	}
 	vm.Set("m", m)
 
-	_, err := vm.RunString(SCRIPT)
+	_, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -40,7 +40,7 @@ func TestGoMapReflectIntKey(t *testing.T) {
 	}
 	vm.Set("m", m)
 
-	_, err := vm.RunString(SCRIPT)
+	_, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -62,7 +62,7 @@ func TestGoMapReflectDelete(t *testing.T) {
 	}
 	vm.Set("m", m)
 
-	_, err := vm.RunString(SCRIPT)
+	_, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -87,7 +87,7 @@ func TestGoMapReflectJSON(t *testing.T) {
 	m := map[string]string{
 		"t": "42",
 	}
-	_, err := vm.RunString(SCRIPT)
+	_, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -115,7 +115,7 @@ func TestGoMapReflectProto(t *testing.T) {
 		"t": "42",
 	}
 	vm.Set("m", m)
-	v, err := vm.RunString(SCRIPT)
+	v, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -140,7 +140,7 @@ func TestGoMapReflectNoMethods(t *testing.T) {
 	m := make(gomapReflect_noMethods)
 	m["t"] = 42
 	vm.Set("m", m)
-	v, err := vm.RunString(SCRIPT)
+	v, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -159,7 +159,7 @@ func TestGoMapReflectWithMethods(t *testing.T) {
 	m := make(gomapReflect_withMethods)
 	m["t"] = 42
 	vm.Set("m", m)
-	v, err := vm.RunString(SCRIPT)
+	v, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -266,7 +266,7 @@ func TestGoMapReflectUnicode(t *testing.T) {
 	}
 	vm.Set("m", m)
 	vm.Set("s", &s)
-	res, err := vm.RunString(SCRIPT)
+	res, err := vm.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -286,7 +286,7 @@ func TestGoMapReflectStruct(t *testing.T) {
 
 	vm := New()
 	vm.Set("m", m)
-	res, err := vm.RunString("m[1].Test = 2; m[1].Test")
+	res, err := vm.runVMString("m[1].Test = 2; m[1].Test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -374,7 +374,7 @@ func TestGoMapReflectNil(t *testing.T) {
 			t.Fatal(v)
 		}
 		vm.Set("mp", mp)
-		_, err := vm.RunString("mp.a = 1") // the map is created at this point
+		_, err := vm.runVMString("mp.a = 1") // the map is created at this point
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -383,7 +383,7 @@ func TestGoMapReflectNil(t *testing.T) {
 		}
 
 		m = make(map[string]int)
-		res, err := vm.RunString("mp.a")
+		res, err := vm.runVMString("mp.a")
 		if err != nil {
 			t.Fatal(err)
 		}

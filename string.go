@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"io"
@@ -6,7 +6,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 const (

@@ -1,0 +1,600 @@
+{
+  "schema_version": 1,
+  "name": "fix-missing-property-many",
+  "project": {
+    "files": {
+      "/main.ts": "export class Box { run() { this.firstMissing = 1; this.secondMissing = \"value\"; } }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export class Box { run() { this.firstMissing = 1; this.secondMissing = \"value\"; } }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Declare property 'firstMissing'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixMissingMember",
+                  "description": "Declare property 'firstMissing'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "newText": "\n    firstMissing: number;"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 83
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 83
+                          },
+                          "newText": "\n"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixMissingMember",
+                  "fixAllDescription": "Add all missing members"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 32
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 44
+                    }
+                  },
+                  "message": "Property 'firstMissing' does not exist on type 'Box'.",
+                  "severity": 1,
+                  "code": 2339,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 32
+                },
+                "end": {
+                  "line": 0,
+                  "character": 44
+                }
+              },
+              "message": "Property 'firstMissing' does not exist on type 'Box'.",
+              "severity": 1,
+              "code": 2339,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 18
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 18
+                      }
+                    },
+                    "newText": "\n    firstMissing: number;"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 82
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 82
+                      }
+                    },
+                    "newText": "\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add index signature for property 'firstMissing'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixMissingMember",
+                  "description": "Add index signature for property 'firstMissing'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "newText": "\n    [x: string]: number;"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 83
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 83
+                          },
+                          "newText": "\n"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 32
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 44
+                    }
+                  },
+                  "message": "Property 'firstMissing' does not exist on type 'Box'.",
+                  "severity": 1,
+                  "code": 2339,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 32
+                },
+                "end": {
+                  "line": 0,
+                  "character": 44
+                }
+              },
+              "message": "Property 'firstMissing' does not exist on type 'Box'.",
+              "severity": 1,
+              "code": 2339,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 18
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 18
+                      }
+                    },
+                    "newText": "\n    [x: string]: number;"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 82
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 82
+                      }
+                    },
+                    "newText": "\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Declare property 'secondMissing'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixMissingMember",
+                  "description": "Declare property 'secondMissing'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "newText": "\n    secondMissing: string;"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 83
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 83
+                          },
+                          "newText": "\n"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixMissingMember",
+                  "fixAllDescription": "Add all missing members"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 55
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 68
+                    }
+                  },
+                  "message": "Property 'secondMissing' does not exist on type 'Box'.",
+                  "severity": 1,
+                  "code": 2339,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 55
+                },
+                "end": {
+                  "line": 0,
+                  "character": 68
+                }
+              },
+              "message": "Property 'secondMissing' does not exist on type 'Box'.",
+              "severity": 1,
+              "code": 2339,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 18
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 18
+                      }
+                    },
+                    "newText": "\n    secondMissing: string;"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 82
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 82
+                      }
+                    },
+                    "newText": "\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add all missing members",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "fixMissingMember"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 32
+                },
+                "end": {
+                  "line": 0,
+                  "character": 44
+                }
+              },
+              "message": "Property 'firstMissing' does not exist on type 'Box'.",
+              "severity": 1,
+              "code": 2339,
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        },
+        {
+          "title": "Add index signature for property 'secondMissing'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixMissingMember",
+                  "description": "Add index signature for property 'secondMissing'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "newText": "\n    [x: string]: string;"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 83
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 83
+                          },
+                          "newText": "\n"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 55
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 68
+                    }
+                  },
+                  "message": "Property 'secondMissing' does not exist on type 'Box'.",
+                  "severity": 1,
+                  "code": 2339,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 55
+                },
+                "end": {
+                  "line": 0,
+                  "character": 68
+                }
+              },
+              "message": "Property 'secondMissing' does not exist on type 'Box'.",
+              "severity": 1,
+              "code": 2339,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 18
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 18
+                      }
+                    },
+                    "newText": "\n    [x: string]: string;"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 82
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 82
+                      }
+                    },
+                    "newText": "\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

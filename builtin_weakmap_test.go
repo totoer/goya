@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"runtime"
@@ -11,7 +11,7 @@ import (
 
 func TestWeakMap(t *testing.T) {
 	vm := New()
-	_, err := vm.RunString(`
+	_, err := vm.runVMString(`
 	var m = new WeakMap();
 	var m1 = new WeakMap();
 	var key = {};
@@ -234,7 +234,7 @@ func TestWeakMapWellKnownSymbolKeyConcurrent(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			vm := New()
-			_, err := vm.RunString(`
+			_, err := vm.runVMString(`
 			for (var i = 0; i < 100; i++) {
 				var m = new WeakMap();
 				m.set(Symbol.iterator, i);

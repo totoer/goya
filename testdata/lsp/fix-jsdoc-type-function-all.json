@@ -1,0 +1,432 @@
+{
+  "schema_version": 1,
+  "name": "fix-jsdoc-type-function-all",
+  "project": {
+    "files": {
+      "/main.ts": "export function value(input: ?string): !string { return input ?? \"\"; }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export function value(input: ?string): !string { return input ?? \"\"; }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Change '?string' to 'string | null | undefined'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "jdocTypes",
+                  "description": "Change '?string' to 'string | null | undefined'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 30
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 37
+                          },
+                          "newText": "string | null | undefined"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixJSDocTypes_nullable",
+                  "fixAllDescription": "Change all jsdoc-style types to TypeScript (and add '| undefined' to nullable types)"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 29
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 36
+                    }
+                  },
+                  "message": "'?' at the start of a type is not valid TypeScript syntax. Did you mean to write 'string | null | undefined'?",
+                  "severity": 1,
+                  "code": 17020,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 29
+                },
+                "end": {
+                  "line": 0,
+                  "character": 36
+                }
+              },
+              "message": "'?' at the start of a type is not valid TypeScript syntax. Did you mean to write 'string | null | undefined'?",
+              "severity": 1,
+              "code": 17020,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 29
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 36
+                      }
+                    },
+                    "newText": "string | null | undefined"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Change all jsdoc-style types to TypeScript (and add '| undefined' to nullable types)",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "jdocTypes"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 29
+                },
+                "end": {
+                  "line": 0,
+                  "character": 36
+                }
+              },
+              "message": "'?' at the start of a type is not valid TypeScript syntax. Did you mean to write 'string | null | undefined'?",
+              "severity": 1,
+              "code": 17020,
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        },
+        {
+          "title": "Change '!string' to 'string'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "jdocTypes",
+                  "description": "Change '!string' to 'string'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 40
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 47
+                          },
+                          "newText": "string"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixJSDocTypes_plain",
+                  "fixAllDescription": "Change all jsdoc-style types to TypeScript"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 39
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 46
+                    }
+                  },
+                  "message": "'!' at the start of a type is not valid TypeScript syntax. Did you mean to write 'string'?",
+                  "severity": 1,
+                  "code": 17020,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 39
+                },
+                "end": {
+                  "line": 0,
+                  "character": 46
+                }
+              },
+              "message": "'!' at the start of a type is not valid TypeScript syntax. Did you mean to write 'string'?",
+              "severity": 1,
+              "code": 17020,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 39
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 46
+                      }
+                    },
+                    "newText": "string"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Change all jsdoc-style types to TypeScript",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "jdocTypes"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 29
+                },
+                "end": {
+                  "line": 0,
+                  "character": 36
+                }
+              },
+              "message": "'?' at the start of a type is not valid TypeScript syntax. Did you mean to write 'string | null | undefined'?",
+              "severity": 1,
+              "code": 17020,
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 2,
+            "providerId": 2
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeAction/resolve",
+      "params": {},
+      "params_from_code_action": {
+        "step": 1,
+        "index": 3
+      },
+      "expected": {
+        "title": "Change all jsdoc-style types to TypeScript",
+        "kind": "quickfix",
+        "command": {
+          "command": "_typescript.applyFixAllCodeAction",
+          "arguments": [
+            {
+              "tsActionId": "jdocTypes"
+            }
+          ],
+          "title": ""
+        },
+        "diagnostics": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 29
+              },
+              "end": {
+                "line": 0,
+                "character": 36
+              }
+            },
+            "message": "'?' at the start of a type is not valid TypeScript syntax. Did you mean to write 'string | null | undefined'?",
+            "severity": 1,
+            "code": 17020,
+            "source": "typescript"
+          }
+        ],
+        "isPreferred": false,
+        "data": {
+          "globalId": 2,
+          "providerId": 2
+        },
+        "edit": {
+          "documentChanges": [
+            {
+              "textDocument": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "version": 2
+              },
+              "edits": [
+                {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 29
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 36
+                    }
+                  },
+                  "newText": "string | null | undefined"
+                },
+                {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 39
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 46
+                    }
+                  },
+                  "newText": "string"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

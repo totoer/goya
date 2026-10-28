@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"strings"
@@ -21,7 +21,7 @@ func TestImportedString(t *testing.T) {
 	vm := New()
 
 	testUnaryOp := func(a, expr string, result interface{}, t *testing.T) {
-		v, err := vm.RunString("a => " + expr)
+		v, err := vm.runVMString("a => " + expr)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -42,7 +42,7 @@ func TestImportedString(t *testing.T) {
 	}
 
 	testBinaryOp := func(a, b, expr string, result interface{}, t *testing.T) {
-		v, err := vm.RunString("(a, b) => " + expr)
+		v, err := vm.runVMString("(a, b) => " + expr)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -220,7 +220,7 @@ func TestUnicodeRepeat(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			vm := New()
-			v, err := vm.RunString(tc.script)
+			v, err := vm.runVMString(tc.script)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -255,7 +255,7 @@ func TestImportedStringToIntegerAndFloat(t *testing.T) {
 
 func TestConcatStringEqualsIntegerAndFloat(t *testing.T) {
 	vm := New()
-	s, err := vm.RunString(`"\u00a0".repeat(64)+1`)
+	s, err := vm.runVMString(`"\u00a0".repeat(64)+1`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -366,7 +366,7 @@ func TestStringCaseConversionLoneSurrogates(t *testing.T) {
 			`"ABC\uD800def".toUpperCase() === "ABC\uD800DEF"`,
 		}
 		for _, script := range scripts {
-			v, err := vm.RunString(script)
+			v, err := vm.runVMString(script)
 			if err != nil {
 				t.Fatalf("script %q failed: %v", script, err)
 			}
@@ -433,7 +433,7 @@ func BenchmarkASCIIConcat(b *testing.B) {
 	b.ResetTimer()
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
-		_, err := vm.RunString(`{let result = "ab";
+		_, err := vm.runVMString(`{let result = "ab";
 		for (let i = 0 ; i < 10;i++) {
 			result += result;
 		}}`)

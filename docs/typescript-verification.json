@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-10-26",
+  "typescript_version": "7.0.2",
+  "toolchain": "go1.27.2",
+  "platform": "darwin/arm64",
+  "status": "release-candidate; not published",
+  "runtime_profile": {
+    "standard_library": "es2025",
+    "strict_default": true,
+    "external_capabilities": "explicit Go registry only",
+    "unavailable_optional_standard_globals": [
+      "Temporal"
+    ]
+  },
+  "passed_checks": [
+    "CGO_ENABLED=0 go test ./... -count=1",
+    "race: parallel Program/module/host and standard library isolation, Atomics/shared buffers, frontend reuse, immutable data",
+    "six compiler and data reproduction checks",
+    "all seven embedding examples",
+    "CLI checking/execution and invalid-source rejection",
+    "CGO_ENABLED=0 standalone with absent PATH and OS restrictions on network/fork/exec/source reads",
+    "12 dependency module license sets matched byte-for-byte",
+    "OpenSpec strict validation",
+    "git diff --check and Go formatting"
+  ],
+  "coverage": {
+    "runtime_projects_executed": 43,
+    "optional_profile_compilation_rejections": 1,
+    "syntax_kinds": 351,
+    "syntax_features": 13,
+    "standard_library_members_or_signatures": 1317,
+    "unicode_break_cases": 3222,
+    "binary16_representations": 65536,
+    "rgi_emoji_sequences": 3953
+  },
+  "artifact_sha256": {
+    "go.mod": "53c6262d5e729b80091bb9bc9bd6abc953bf15772d5057108d7515db00e71598",
+    "go.sum": "3d9b70924ae8f62a80de4e9d25bc78555c31f8b1fc1b613bd624204f03abef7f",
+    "internal/tsfrontend/manifest.json": "076b41f9b0d05671767dfb54510f08ef661a287e67917747df448e73a7148cbf",
+    "internal/tsfrontend/upstream/files.lock.json": "fb11e5ef3c94482bc5c5c8876eb1f4b0ad4a7a20bb1de559b89fe8ec96ef5e5e",
+    "internal/cldrdata/manifest.json": "69566f127f743ec218977ce237e11ae29cef666349d0daed4350f64b602c15b6",
+    "internal/cldrdata/data.json.gz": "8c21b970c5e20dd3c162863c8cbe9b4f165e1623160ebb2c072673e3adc6c16a",
+    "internal/tzdata/manifest.json": "025338cff38ef2028b4eeff0451f2bde326b56d92dc1b87eed57049ac632c0af",
+    "internal/unicode17/manifest.json": "ea016d780c172d6c743db966ea4dc5f26018cb14e7edd8f2a4879f12c1fb9dcd",
+    "internal/unicode17/emoji-manifest.json": "e2f8c617cec20389ef78c7439e74f6b8d5aa17afceb27cbb61f8a74aa518b905",
+    "docs/typescript-library-inventory.json": "f33e1dca1b0b75496511932e12417e92d58430df7ad280bd0245036bd502dc33",
+    "docs/typescript-dependency-notices.json": "de6c392fc8a29c23293335f4cd88e1a1cc698bc9a690b5f1c2eda67a38064039",
+    "testdata/typescript/types.json": "8fba5c92b4cf151aafd24395907b21e18e0822bb17984da2a0b1c28ab2c29509",
+    "testdata/typescript/runtime.json": "798b025e005ac5a43a0d5b9a425a3138155e538cf952c136efa3ef814e6f2a43"
+  }
+}

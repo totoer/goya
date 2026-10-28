@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "name": "fix-missing-jsx-attributes-many",
+  "project": {
+    "files": {
+      "/jsx.d.ts": "declare namespace JSX { interface Element {} interface IntrinsicElements { box: { title: string; count: number; enabled: boolean; optional?: string; \"data-value\": number; }; } }\n",
+      "/main.tsx": "export const first = <box />;\nexport const second = <box title=\"value\" />;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.tsx"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "jsx": "preserve"
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx",
+          "languageId": "typescriptreact",
+          "version": 2,
+          "text": "export const first = <box />;\nexport const second = <box title=\"value\" />;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Add missing attributes",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixMissingAttributes",
+                  "description": "Add missing attributes",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.tsx",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 26
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 26
+                          },
+                          "newText": " title={\"\"} count={0} enabled={false} data-value={0}"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixMissingAttributes",
+                  "fixAllDescription": "Add all missing attributes"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 22
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 25
+                    }
+                  },
+                  "message": "Type '{}' is missing the following properties from type '{ title: string; count: number; enabled: boolean; optional?: string | undefined; \"data-value\": number; }': title, count, enabled, \"data-value\"",
+                  "severity": 1,
+                  "code": 2739,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.tsx"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 22
+                },
+                "end": {
+                  "line": 0,
+                  "character": 25
+                }
+              },
+              "message": "Type '{}' is missing the following properties from type '{ title: string; count: number; enabled: boolean; optional?: string | undefined; \"data-value\": number; }': title, count, enabled, \"data-value\"",
+              "severity": 1,
+              "code": 2739,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.tsx",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 25
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 25
+                      }
+                    },
+                    "newText": " title={\"\"} count={0} enabled={false} data-value={0}"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add missing attributes",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixMissingAttributes",
+                  "description": "Add missing attributes",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.tsx",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 28
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 41
+                          },
+                          "newText": "title=\"value\" count={0} enabled={false} data-value={0}"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixMissingAttributes",
+                  "fixAllDescription": "Add all missing attributes"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 23
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 26
+                    }
+                  },
+                  "message": "Type '{ title: string; }' is missing the following properties from type '{ title: string; count: number; enabled: boolean; optional?: string | undefined; \"data-value\": number; }': count, enabled, \"data-value\"",
+                  "severity": 1,
+                  "code": 2739,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.tsx"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 23
+                },
+                "end": {
+                  "line": 1,
+                  "character": 26
+                }
+              },
+              "message": "Type '{ title: string; }' is missing the following properties from type '{ title: string; count: number; enabled: boolean; optional?: string | undefined; \"data-value\": number; }': count, enabled, \"data-value\"",
+              "severity": 1,
+              "code": 2739,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.tsx",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 27
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 40
+                      }
+                    },
+                    "newText": "title=\"value\" count={0} enabled={false} data-value={0}"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add all missing attributes",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "fixMissingAttributes"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 22
+                },
+                "end": {
+                  "line": 0,
+                  "character": 25
+                }
+              },
+              "message": "Type '{}' is missing the following properties from type '{ title: string; count: number; enabled: boolean; optional?: string | undefined; \"data-value\": number; }': title, count, enabled, \"data-value\"",
+              "severity": 1,
+              "code": 2739,
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

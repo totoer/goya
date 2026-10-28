@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"strconv"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 type arrayIterObject struct {
@@ -21,10 +21,13 @@ func (ai *arrayIterObject) nextResult(_ Value) (Value, bool) {
 	if ai.obj == nil {
 		return _undefined, false
 	}
+	var l int64
 	if ta, ok := ai.obj.self.(*typedArrayObject); ok {
-		ta.viewedArrayBuf.ensureNotDetached(true)
+		ta.ensureInBounds(true)
+		l = int64(ta.lengthValue())
+	} else {
+		l = toLength(ai.obj.self.getStr("length", nil))
 	}
-	l := toLength(ai.obj.self.getStr("length", nil))
 	index := ai.nextIdx
 	if index >= l {
 		ai.obj = nil

@@ -1,0 +1,324 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "const payload = host({total:1});\npayload.total;\nMath.max(1,2);\n"
+    },
+    "declarations": {
+      "/.goya/host-api.d.ts": "// Generated host declarations. No runtime implementation is implied.\ndeclare const host: (value: HostPayload) => HostPayload;\n",
+      "/host.d.ts": "interface HostPayload { total:number; }\n"
+    },
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "navigation-host-library",
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "definition": {
+          "linkSupport": true
+        },
+        "typeDefinition": {
+          "linkSupport": true
+        },
+        "implementation": {
+          "linkSupport": true
+        }
+      }
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "const payload = host({total:1});\npayload.total;\nMath.max(1,2);\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/definition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 18
+        }
+      },
+      "expected": [
+        {
+          "originSelectionRange": {
+            "start": {
+              "line": 0,
+              "character": 16
+            },
+            "end": {
+              "line": 0,
+              "character": 20
+            }
+          },
+          "targetRange": {
+            "start": {
+              "line": 1,
+              "character": 0
+            },
+            "end": {
+              "line": 1,
+              "character": 56
+            }
+          },
+          "targetUri": "{{ROOT_URI}}/.goya/host-api.d.ts",
+          "targetSelectionRange": {
+            "start": {
+              "line": 1,
+              "character": 14
+            },
+            "end": {
+              "line": 1,
+              "character": 18
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/typeDefinition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 1,
+          "character": 2
+        }
+      },
+      "expected": [
+        {
+          "uri": "{{ROOT_URI}}/host.d.ts",
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 10
+            },
+            "end": {
+              "line": 0,
+              "character": 21
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/definition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 1,
+          "character": 10
+        }
+      },
+      "expected": [
+        {
+          "originSelectionRange": {
+            "start": {
+              "line": 1,
+              "character": 8
+            },
+            "end": {
+              "line": 1,
+              "character": 13
+            }
+          },
+          "targetRange": {
+            "start": {
+              "line": 0,
+              "character": 24
+            },
+            "end": {
+              "line": 0,
+              "character": 37
+            }
+          },
+          "targetUri": "{{ROOT_URI}}/host.d.ts",
+          "targetSelectionRange": {
+            "start": {
+              "line": 0,
+              "character": 24
+            },
+            "end": {
+              "line": 0,
+              "character": 29
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/definition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 2,
+          "character": 6
+        }
+      },
+      "expected": [
+        {
+          "originSelectionRange": {
+            "start": {
+              "line": 2,
+              "character": 5
+            },
+            "end": {
+              "line": 2,
+              "character": 8
+            }
+          },
+          "targetRange": {
+            "start": {
+              "line": 730,
+              "character": 4
+            },
+            "end": {
+              "line": 730,
+              "character": 37
+            }
+          },
+          "targetUri": "goya-lib:///lib.es5.d.ts",
+          "targetSelectionRange": {
+            "start": {
+              "line": 730,
+              "character": 4
+            },
+            "end": {
+              "line": 730,
+              "character": 7
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/typeDefinition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 2,
+          "character": 2
+        }
+      },
+      "expected": [
+        {
+          "uri": "goya-lib:///lib.es5.d.ts",
+          "range": {
+            "start": {
+              "line": 657,
+              "character": 10
+            },
+            "end": {
+              "line": 657,
+              "character": 14
+            }
+          }
+        },
+        {
+          "uri": "goya-lib:///lib.es5.d.ts",
+          "range": {
+            "start": {
+              "line": 766,
+              "character": 12
+            },
+            "end": {
+              "line": 766,
+              "character": 16
+            }
+          }
+        },
+        {
+          "uri": "goya-lib:///lib.es2015.core.d.ts",
+          "range": {
+            "start": {
+              "line": 97,
+              "character": 10
+            },
+            "end": {
+              "line": 97,
+              "character": 14
+            }
+          }
+        },
+        {
+          "uri": "goya-lib:///lib.es2015.symbol.wellknown.d.ts",
+          "range": {
+            "start": {
+              "line": 168,
+              "character": 10
+            },
+            "end": {
+              "line": 168,
+              "character": 14
+            }
+          }
+        },
+        {
+          "uri": "goya-lib:///lib.es2025.float16.d.ts",
+          "range": {
+            "start": {
+              "line": 418,
+              "character": 10
+            },
+            "end": {
+              "line": 418,
+              "character": 14
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "workspace/executeCommand",
+      "params": {
+        "command": "_typescript.goToSourceDefinition",
+        "arguments": [
+          "{{ROOT_URI}}/main.ts",
+          {
+            "line": 0,
+            "character": 18
+          }
+        ]
+      },
+      "expected": []
+    }
+  ],
+  "final_compiler_error_codes": [],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

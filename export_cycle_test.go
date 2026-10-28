@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"reflect"
@@ -16,7 +16,7 @@ func TestExportSelfContainingMapSet(t *testing.T) {
 	}
 
 	t.Run("set contains itself", func(t *testing.T) {
-		v, err := New().RunString(`var s = new Set(); s.add(s); s`)
+		v, err := New().runVMString(`var s = new Set(); s.add(s); s`)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -30,7 +30,7 @@ func TestExportSelfContainingMapSet(t *testing.T) {
 	})
 
 	t.Run("map contains itself", func(t *testing.T) {
-		v, err := New().RunString(`var m = new Map(); m.set("a", m); m`)
+		v, err := New().runVMString(`var m = new Map(); m.set("a", m); m`)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -44,7 +44,7 @@ func TestExportSelfContainingMapSet(t *testing.T) {
 	})
 
 	t.Run("map cycle through an object", func(t *testing.T) {
-		v, err := New().RunString(`var m = new Map(); var o = {m: m}; m.set("o", o); o`)
+		v, err := New().runVMString(`var m = new Map(); var o = {m: m}; m.set("o", o); o`)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -59,7 +59,7 @@ func TestExportSelfContainingMapSet(t *testing.T) {
 	})
 
 	t.Run("set cycle through an array", func(t *testing.T) {
-		v, err := New().RunString(`var s = new Set(); s.add([s]); s`)
+		v, err := New().runVMString(`var s = new Set(); s.add([s]); s`)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -71,7 +71,7 @@ func TestExportSelfContainingMapSet(t *testing.T) {
 	})
 
 	t.Run("set inside an array", func(t *testing.T) {
-		v, err := New().RunString(`var s = new Set(); s.add(s); [s]`)
+		v, err := New().runVMString(`var s = new Set(); s.add(s); [s]`)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -87,7 +87,7 @@ func TestExportSelfContainingMapSet(t *testing.T) {
 		r := New()
 		var target rec
 		_ = r.Set("r", &target)
-		if _, err := r.RunString(`var s = new Set(); s.add(s); r.After = {s: s}`); err != nil {
+		if _, err := r.runVMString(`var s = new Set(); s.add(s); r.After = {s: s}`); err != nil {
 			t.Fatal(err)
 		}
 		if target.After == nil {

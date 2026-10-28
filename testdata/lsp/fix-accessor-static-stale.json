@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "name": "fix-accessor-static-stale",
+  "project": {
+    "files": {
+      "/main.ts": "export class Box { static value = 1; }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export class Box { static value = 1; }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": []
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 26
+                },
+                "end": {
+                  "line": 0,
+                  "character": 31
+                }
+              },
+              "severity": 1,
+              "code": 2610,
+              "message": "stale diagnostic"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Generate 'get' and 'set' accessors",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixPropertyOverrideAccessor",
+                  "description": "Generate 'get' and 'set' accessors",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 20
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 37
+                          },
+                          "newText": "private static _value = 1;"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 37
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 37
+                          },
+                          "newText": "public static get value() {\n    return Box._value;\n}\n"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 37
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 37
+                          },
+                          "newText": "public static set value(value) {\n    Box._value = value;\n}\n"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 26
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 31
+                    }
+                  },
+                  "severity": 1,
+                  "code": 2610,
+                  "message": "stale diagnostic"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 26
+                },
+                "end": {
+                  "line": 0,
+                  "character": 31
+                }
+              },
+              "severity": 1,
+              "code": 2610,
+              "message": "stale diagnostic"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 19
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 36
+                      }
+                    },
+                    "newText": "private static _value = 1;"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 36
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 36
+                      }
+                    },
+                    "newText": "public static get value() {\n    return Box._value;\n}\n"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 36
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 36
+                      }
+                    },
+                    "newText": "public static set value(value) {\n    Box._value = value;\n}\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

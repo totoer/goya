@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"fmt"
@@ -187,7 +187,7 @@ func TestExportCircular(t *testing.T) {
 		t.Fatal("Unexpected type")
 	}
 
-	res, err := vm.RunString(`var a = []; a[0] = a;`)
+	res, err := vm.runVMString(`var a = []; a[0] = a;`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -228,7 +228,7 @@ func TestExportToCircular(t *testing.T) {
 
 	type A []A
 	var a A
-	res, err := vm.RunString("var a = []; a[0] = a;")
+	res, err := vm.runVMString("var a = []; a[0] = a;")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -352,7 +352,7 @@ func TestExportToSliceNonIterable(t *testing.T) {
 
 func ExampleRuntime_ExportTo_iterableToSlice() {
 	vm := New()
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 	function reverseIterator() {
 	    const arr = this;
 	    let idx = arr.length;
@@ -380,7 +380,7 @@ func ExampleRuntime_ExportTo_iterableToSlice() {
 
 func TestRuntime_ExportTo_proxiedIterableToSlice(t *testing.T) {
 	vm := New()
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 	function reverseIterator() {
 	    const arr = this;
 	    let idx = arr.length;
@@ -408,7 +408,7 @@ func TestRuntime_ExportTo_proxiedIterableToSlice(t *testing.T) {
 
 func ExampleRuntime_ExportTo_arrayLikeToSlice() {
 	vm := New()
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 	({
 		length: 3,
 		0: 1,
@@ -445,7 +445,7 @@ func TestExportArrayToArrayMismatchedLengths(t *testing.T) {
 
 func TestExportIterableToArrayMismatchedLengths(t *testing.T) {
 	vm := New()
-	a, err := vm.RunString(`
+	a, err := vm.runVMString(`
 		new Map([[1, true], [2, true]]);
 	`)
 	if err != nil {
@@ -464,7 +464,7 @@ func TestExportIterableToArrayMismatchedLengths(t *testing.T) {
 
 func TestExportArrayLikeToArrayMismatchedLengths(t *testing.T) {
 	vm := New()
-	a, err := vm.RunString(`
+	a, err := vm.runVMString(`
 		({
 			length: 2,
 			0: true,

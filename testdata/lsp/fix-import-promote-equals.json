@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "name": "fix-import-promote-equals",
+  "project": {
+    "files": {
+      "/main.ts": "import type tools = require(\"./helper\");\ntools.first;\n",
+      "/helper.ts": "export const first = 1;\nexport const second = 2;\nexport default class Box {}\nexport interface Shape { value: number; }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts",
+      "/helper.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "import type tools = require(\"./helper\");\ntools.first;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 6000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 0
+              },
+              "end": {
+                "line": 1,
+                "character": 5
+              }
+            },
+            "message": "'tools' cannot be used as a value because it was imported using 'import type'.",
+            "severity": 1,
+            "code": 1361,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 40
+                    }
+                  }
+                },
+                "message": "'tools' was imported here."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 0
+                },
+                "end": {
+                  "line": 1,
+                  "character": 5
+                }
+              },
+              "severity": 1,
+              "code": 1361,
+              "message": "'tools' cannot be used as a value because it was imported using 'import type'.",
+              "source": "typescript"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Remove 'type' from import declaration from \"./helper\"",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "import",
+                  "description": "Remove 'type' from import declaration from \"./helper\"",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 7
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 12
+                          },
+                          "newText": ""
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 5
+                    }
+                  },
+                  "severity": 1,
+                  "code": 1361,
+                  "message": "'tools' cannot be used as a value because it was imported using 'import type'.",
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 0
+                },
+                "end": {
+                  "line": 1,
+                  "character": 5
+                }
+              },
+              "severity": 1,
+              "code": 1361,
+              "message": "'tools' cannot be used as a value because it was imported using 'import type'.",
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 6
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 11
+                      }
+                    },
+                    "newText": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": true
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    5108
+  ],
+  "edited_compiler_error_reason": "TypeScript 6.0.3 independently reports [5107] after this exact TLS 6.0.2 proposal: Option 'moduleResolution=node10' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '\"ignoreDeprecations\": \"6.0\"' to silence this error.\n  Visit https://aka.ms/ts6 for migration information. The ordinary pinned TypeScript 7 compiler reports one removed-option error 5108 for each TypeScript 6 deprecation 5107 and stops at its configuration gate before semantic checking. This fixture preserves that existing Check contract and the exact editor proposal."
+}

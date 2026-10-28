@@ -1,10 +1,10 @@
-package goja
+package goya
 
 import (
 	"math"
 	"sync"
 
-	"github.com/dop251/goja/ftoa"
+	"github.com/totoer/goya/ftoa"
 )
 
 func (r *Runtime) toNumber(v Value) Value {
@@ -29,6 +29,12 @@ func (r *Runtime) toNumber(v Value) Value {
 
 func (r *Runtime) numberproto_valueOf(call FunctionCall) Value {
 	return r.toNumber(call.This)
+}
+
+func (r *Runtime) numberproto_toLocaleString(call FunctionCall) Value {
+	value := r.toNumber(call.This)
+	formatter := r.newIntlNumberFormat([]Value{call.Argument(0), call.Argument(1)}, r.getIntlNumberFormat()).self.(*intlNumberFormatObject)
+	return newStringValue(intlPartsText(formatter.formatParts(r.intlMathematicalValue(value))))
 }
 
 func (r *Runtime) numberproto_toString(call FunctionCall) Value {
@@ -206,7 +212,7 @@ func createNumberProtoTemplate() *objectTemplate {
 
 	t.putStr("toExponential", func(r *Runtime) Value { return r.methodProp(r.numberproto_toExponential, "toExponential", 1) })
 	t.putStr("toFixed", func(r *Runtime) Value { return r.methodProp(r.numberproto_toFixed, "toFixed", 1) })
-	t.putStr("toLocaleString", func(r *Runtime) Value { return r.methodProp(r.numberproto_toString, "toLocaleString", 0) })
+	t.putStr("toLocaleString", func(r *Runtime) Value { return r.methodProp(r.numberproto_toLocaleString, "toLocaleString", 0) })
 	t.putStr("toPrecision", func(r *Runtime) Value { return r.methodProp(r.numberproto_toPrecision, "toPrecision", 1) })
 	t.putStr("toString", func(r *Runtime) Value { return r.methodProp(r.numberproto_toString, "toString", 1) })
 	t.putStr("valueOf", func(r *Runtime) Value { return r.methodProp(r.numberproto_valueOf, "valueOf", 0) })

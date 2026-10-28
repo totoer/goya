@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"unsafe"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 type byteOrder bool
@@ -29,8 +29,11 @@ type typedArrayObjectCtor func(buf *arrayBufferObject, offset, length int, proto
 
 type arrayBufferObject struct {
 	baseObject
-	detached bool
-	data     []byte
+	detached      bool
+	data          []byte
+	resizable     bool
+	maxByteLength int
+	shared        *sharedArrayStorage
 }
 
 // ArrayBuffer is a Go wrapper around ECMAScript ArrayBuffer. Calling Runtime.ToValue() on it
@@ -44,6 +47,7 @@ type dataViewObject struct {
 	baseObject
 	viewedArrayBuf      *arrayBufferObject
 	byteLen, byteOffset int
+	autoLength          bool
 }
 
 type typedArray interface {
@@ -82,6 +86,7 @@ type typedArrayObject struct {
 	viewedArrayBuf *arrayBufferObject
 	defaultCtor    *Object
 	length, offset int
+	autoLength     bool
 	elemSize       int
 	typedArray     typedArray
 }
@@ -978,8 +983,8 @@ func (a *bigUint64Array) exportType() reflect.Type {
 }
 
 func (a *typedArrayObject) _getIdx(idx int) Value {
-	if 0 <= idx && idx < a.length {
-		if !a.viewedArrayBuf.ensureNotDetached(false) {
+	if 0 <= idx && idx < a.lengthValue() {
+		if !a.ensureInBounds(false) {
 			return nil
 		}
 		return a.typedArray.get(idx + a.offset)
@@ -1050,8 +1055,8 @@ func (a *typedArrayObject) getIdx(idx valueInt, receiver Value) Value {
 }
 
 func (a *typedArrayObject) isValidIntegerIndex(idx int) bool {
-	if a.viewedArrayBuf.ensureNotDetached(false) {
-		if idx >= 0 && idx < a.length {
+	if a.ensureInBounds(false) {
+		if idx >= 0 && idx < a.lengthValue() {
 			return true
 		}
 	}
@@ -1059,10 +1064,9 @@ func (a *typedArrayObject) isValidIntegerIndex(idx int) bool {
 }
 
 func (a *typedArrayObject) _putIdx(idx int, v Value) {
-	switch a.typedArray.(type) {
-	case *bigInt64Array, *bigUint64Array:
+	if typedArrayContainsBigInt(a.typedArray) {
 		v = toBigInt(v)
-	default:
+	} else {
 		v = v.ToNumber()
 	}
 	if a.isValidIntegerIndex(idx) {
@@ -1165,7 +1169,7 @@ func (a *typedArrayObject) defineOwnPropertyStr(name unistring.String, desc Prop
 		return a._defineIdxProperty(idx, desc, throw)
 	}
 	if idx == 0 {
-		a.viewedArrayBuf.ensureNotDetached(throw)
+		a.ensureInBounds(throw)
 		a.val.runtime.typeErrorResult(throw, "Invalid typed array index")
 		return false
 	}
@@ -1192,7 +1196,7 @@ func (a *typedArrayObject) deleteStr(name unistring.String, throw bool) bool {
 }
 
 func (a *typedArrayObject) deleteIdx(idx valueInt, throw bool) bool {
-	if a.viewedArrayBuf.ensureNotDetached(false) && idx >= 0 && int64(idx) < int64(a.length) {
+	if a.ensureInBounds(false) && idx >= 0 && int64(idx) < int64(a.lengthValue()) {
 		a.val.runtime.typeErrorResult(throw, "Cannot delete property '%d' of %s", idx, a.val.String())
 		return false
 	}
@@ -1201,10 +1205,11 @@ func (a *typedArrayObject) deleteIdx(idx valueInt, throw bool) bool {
 }
 
 func (a *typedArrayObject) stringKeys(all bool, accum []Value) []Value {
+	length := a.lengthValue()
 	if accum == nil {
-		accum = make([]Value, 0, a.length)
+		accum = make([]Value, 0, length)
 	}
-	for i := 0; i < a.length; i++ {
+	for i := 0; i < length; i++ {
 		accum = append(accum, asciiString(strconv.Itoa(i)))
 	}
 	return a.baseObject.stringKeys(all, accum)
@@ -1216,7 +1221,7 @@ type typedArrayPropIter struct {
 }
 
 func (i *typedArrayPropIter) next() (propIterItem, iterNextFunc) {
-	if i.idx < i.a.length {
+	if i.idx < i.a.lengthValue() {
 		name := strconv.Itoa(i.idx)
 		prop := i.a._getIdx(i.idx)
 		i.idx++
@@ -1233,15 +1238,21 @@ func (a *typedArrayObject) iterateStringKeys() iterNextFunc {
 }
 
 func (a *typedArrayObject) exportToArrayOrSlice(dst reflect.Value, typ reflect.Type, ctx *objectExportCtx) error {
+	a.ensureInBounds(true)
 	if typ == typeBytes {
-		dst.Set(reflect.ValueOf(a.viewedArrayBuf.data[a.offset*a.elemSize : (a.offset+a.length)*a.elemSize]))
+		if a.viewedArrayBuf.shared != nil {
+			dst.Set(reflect.ValueOf(a.viewedArrayBuf.readBytes(a.offset*a.elemSize, a.lengthValue()*a.elemSize)))
+		} else {
+			dst.Set(reflect.ValueOf(a.viewedArrayBuf.data[a.offset*a.elemSize : (a.offset+a.lengthValue())*a.elemSize]))
+		}
 		return nil
 	}
 	return a.baseObject.exportToArrayOrSlice(dst, typ, ctx)
 }
 
 func (a *typedArrayObject) export(_ *objectExportCtx) interface{} {
-	return a.typedArray.export(a.offset, a.length)
+	a.ensureInBounds(true)
+	return a.typedArray.export(a.offset, a.lengthValue())
 }
 
 func (a *typedArrayObject) exportType() reflect.Type {
@@ -1249,14 +1260,22 @@ func (a *typedArrayObject) exportType() reflect.Type {
 }
 
 func (o *dataViewObject) exportToArrayOrSlice(dst reflect.Value, typ reflect.Type, ctx *objectExportCtx) error {
+	o.ensureInBounds()
 	if typ == typeBytes {
-		dst.Set(reflect.ValueOf(o.viewedArrayBuf.data[o.byteOffset : o.byteOffset+o.byteLen]))
+		if o.viewedArrayBuf.shared != nil {
+			dst.Set(reflect.ValueOf(o.viewedArrayBuf.readBytes(o.byteOffset, o.lengthValue())))
+		} else {
+			dst.Set(reflect.ValueOf(o.viewedArrayBuf.data[o.byteOffset : o.byteOffset+o.lengthValue()]))
+		}
 		return nil
 	}
 	return o.baseObject.exportToArrayOrSlice(dst, typ, ctx)
 }
 
 func (r *Runtime) _newTypedArrayObject(buf *arrayBufferObject, offset, length, elemSize int, defCtor *Object, arr typedArray, proto *Object) *typedArrayObject {
+	if buf.shared != nil {
+		arr = &sharedTypedArray{inner: arr, buffer: buf, size: elemSize, name: typedArrayElementName(arr)}
+	}
 	o := &Object{runtime: r}
 	a := &typedArrayObject{
 		baseObject: baseObject{
@@ -1325,8 +1344,8 @@ func (r *Runtime) newBigUint64ArrayObject(buf *arrayBufferObject, offset, length
 }
 
 func (o *dataViewObject) getIdxAndByteOrder(getIdx int, littleEndianVal Value, size int) (int, byteOrder) {
-	o.viewedArrayBuf.ensureNotDetached(true)
-	if getIdx+size > o.byteLen {
+	o.ensureInBounds()
+	if getIdx > o.lengthValue()-size {
 		panic(o.val.runtime.newErrorf(o.val.runtime.getRangeError(), "Index %d is out of bounds", getIdx))
 	}
 	getIdx += o.byteOffset
@@ -1368,6 +1387,9 @@ func (o *arrayBufferObject) setFloat64(idx int, val float64, byteOrder byteOrder
 }
 
 func (o *arrayBufferObject) getUint64(idx int, byteOrder byteOrder) uint64 {
+	if o.shared != nil {
+		return uint64(o.sharedInteger(idx, 8, byteOrder))
+	}
 	var b []byte
 	if byteOrder == nativeEndian {
 		b = o.data[idx : idx+8]
@@ -1380,6 +1402,10 @@ func (o *arrayBufferObject) getUint64(idx int, byteOrder byteOrder) uint64 {
 }
 
 func (o *arrayBufferObject) setUint64(idx int, val uint64, byteOrder byteOrder) {
+	if o.shared != nil {
+		o.setSharedInteger(idx, 8, uint64(val), byteOrder)
+		return
+	}
 	if byteOrder == nativeEndian {
 		*(*uint64)(unsafe.Pointer(&o.data[idx])) = val
 	} else {
@@ -1390,6 +1416,9 @@ func (o *arrayBufferObject) setUint64(idx int, val uint64, byteOrder byteOrder) 
 }
 
 func (o *arrayBufferObject) getUint32(idx int, byteOrder byteOrder) uint32 {
+	if o.shared != nil {
+		return uint32(o.sharedInteger(idx, 4, byteOrder))
+	}
 	var b []byte
 	if byteOrder == nativeEndian {
 		b = o.data[idx : idx+4]
@@ -1402,6 +1431,10 @@ func (o *arrayBufferObject) getUint32(idx int, byteOrder byteOrder) uint32 {
 }
 
 func (o *arrayBufferObject) setUint32(idx int, val uint32, byteOrder byteOrder) {
+	if o.shared != nil {
+		o.setSharedInteger(idx, 4, uint64(val), byteOrder)
+		return
+	}
 	o.ensureNotDetached(true)
 	if byteOrder == nativeEndian {
 		*(*uint32)(unsafe.Pointer(&o.data[idx])) = val
@@ -1413,6 +1446,9 @@ func (o *arrayBufferObject) setUint32(idx int, val uint32, byteOrder byteOrder) 
 }
 
 func (o *arrayBufferObject) getBigInt64(idx int, byteOrder byteOrder) *big.Int {
+	if o.shared != nil {
+		return new(big.Int).SetInt64(int64(o.getUint64(idx, byteOrder)))
+	}
 	var b []byte
 	if byteOrder == nativeEndian {
 		b = o.data[idx : idx+8]
@@ -1425,6 +1461,9 @@ func (o *arrayBufferObject) getBigInt64(idx int, byteOrder byteOrder) *big.Int {
 }
 
 func (o *arrayBufferObject) getBigUint64(idx int, byteOrder byteOrder) *big.Int {
+	if o.shared != nil {
+		return new(big.Int).SetUint64(o.getUint64(idx, byteOrder))
+	}
 	var b []byte
 	if byteOrder == nativeEndian {
 		b = o.data[idx : idx+8]
@@ -1437,6 +1476,10 @@ func (o *arrayBufferObject) getBigUint64(idx int, byteOrder byteOrder) *big.Int 
 }
 
 func (o *arrayBufferObject) setBigInt64(idx int, val *big.Int, byteOrder byteOrder) {
+	if o.shared != nil {
+		o.setUint64(idx, uint64(val.Int64()), byteOrder)
+		return
+	}
 	if byteOrder == nativeEndian {
 		*(*int64)(unsafe.Pointer(&o.data[idx])) = val.Int64()
 	} else {
@@ -1448,6 +1491,10 @@ func (o *arrayBufferObject) setBigInt64(idx int, val *big.Int, byteOrder byteOrd
 }
 
 func (o *arrayBufferObject) setBigUint64(idx int, val *big.Int, byteOrder byteOrder) {
+	if o.shared != nil {
+		o.setUint64(idx, val.Uint64(), byteOrder)
+		return
+	}
 	if byteOrder == nativeEndian {
 		*(*uint64)(unsafe.Pointer(&o.data[idx])) = val.Uint64()
 	} else {
@@ -1459,6 +1506,9 @@ func (o *arrayBufferObject) setBigUint64(idx int, val *big.Int, byteOrder byteOr
 }
 
 func (o *arrayBufferObject) getUint16(idx int, byteOrder byteOrder) uint16 {
+	if o.shared != nil {
+		return uint16(o.sharedInteger(idx, 2, byteOrder))
+	}
 	var b []byte
 	if byteOrder == nativeEndian {
 		b = o.data[idx : idx+2]
@@ -1471,6 +1521,10 @@ func (o *arrayBufferObject) getUint16(idx int, byteOrder byteOrder) uint16 {
 }
 
 func (o *arrayBufferObject) setUint16(idx int, val uint16, byteOrder byteOrder) {
+	if o.shared != nil {
+		o.setSharedInteger(idx, 2, uint64(val), byteOrder)
+		return
+	}
 	if byteOrder == nativeEndian {
 		*(*uint16)(unsafe.Pointer(&o.data[idx])) = val
 	} else {
@@ -1481,10 +1535,17 @@ func (o *arrayBufferObject) setUint16(idx int, val uint16, byteOrder byteOrder) 
 }
 
 func (o *arrayBufferObject) getUint8(idx int) uint8 {
+	if o.shared != nil {
+		return uint8(o.shared.load(idx, 1))
+	}
 	return o.data[idx]
 }
 
 func (o *arrayBufferObject) setUint8(idx int, val uint8) {
+	if o.shared != nil {
+		o.shared.store(idx, 1, uint64(val))
+		return
+	}
 	o.data[idx] = val
 }
 
@@ -1505,7 +1566,7 @@ func (o *arrayBufferObject) setInt16(idx int, val int16, byteOrder byteOrder) {
 }
 
 func (o *arrayBufferObject) getInt8(idx int) int8 {
-	return int8(o.data[idx])
+	return int8(o.getUint8(idx))
 }
 
 func (o *arrayBufferObject) setInt8(idx int, val int8) {
@@ -1518,10 +1579,16 @@ func (o *arrayBufferObject) detach() {
 }
 
 func (o *arrayBufferObject) exportType() reflect.Type {
+	if o.shared != nil {
+		return sharedArrayBufferType
+	}
 	return arrayBufferType
 }
 
 func (o *arrayBufferObject) export(*objectExportCtx) interface{} {
+	if o.shared != nil {
+		return SharedArrayBuffer{storage: o.shared}
+	}
 	return ArrayBuffer{
 		buf: o,
 	}
@@ -1529,7 +1596,11 @@ func (o *arrayBufferObject) export(*objectExportCtx) interface{} {
 
 func (o *arrayBufferObject) exportToArrayOrSlice(dst reflect.Value, typ reflect.Type, ctx *objectExportCtx) error {
 	if typ == typeBytes {
-		dst.Set(reflect.ValueOf(o.data))
+		if o.shared != nil {
+			dst.Set(reflect.ValueOf(o.readBytes(0, o.byteLength())))
+		} else {
+			dst.Set(reflect.ValueOf(o.data))
+		}
 		return nil
 	}
 	return o.baseObject.exportToArrayOrSlice(dst, typ, ctx)

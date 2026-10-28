@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "import {makeValue} from \"library\";\nconst value = makeValue();\nvalue.count;\n",
+      "/node_modules/library/package.json": "{\"name\": \"library\", \"types\": \"./dist/value.d.ts\", \"main\": \"./dist/value.js\"}",
+      "/node_modules/library/dist/value.d.ts.map": "{\"version\":3,\"file\":\"value.d.ts\",\"sourceRoot\":\"\",\"sources\":[\"../src/value.ts\"],\"names\":[],\"mappings\":\"AAAA,yBAAyB;AACzB,MAAM,WAAW,KAAK;IAAG,KAAK,EAAE,MAAM,CAAC;CAAE;AACzC,sBAAsB;AACtB,wBAAgB,SAAS,IAAI,KAAK,CAAuB\"}",
+      "/node_modules/library/dist/value.d.ts": "/** Unicode 😀 source. */\nexport interface Value {\n    count: number;\n}\n/** Builds a value. */\nexport declare function makeValue(): Value;\n//# sourceMappingURL=value.d.ts.map",
+      "/tsconfig.json": "{\"compilerOptions\": {\"strict\": true, \"target\": \"es2025\", \"module\": \"esnext\", \"moduleResolution\": \"bundler\", \"lib\": [\"es2025\"], \"types\": [], \"noEmit\": true}, \"files\": [\"main.ts\"]}"
+    },
+    "declarations": {},
+    "entry_points": [],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    },
+    "config_file": "/tsconfig.json"
+  },
+  "name": "navigation-declaration-map-missing-source",
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "definition": {
+          "linkSupport": true
+        },
+        "typeDefinition": {
+          "linkSupport": true
+        },
+        "implementation": {
+          "linkSupport": true
+        }
+      }
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "import {makeValue} from \"library\";\nconst value = makeValue();\nvalue.count;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/definition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 1,
+          "character": 17
+        }
+      },
+      "expected": [
+        {
+          "originSelectionRange": {
+            "start": {
+              "line": 1,
+              "character": 14
+            },
+            "end": {
+              "line": 1,
+              "character": 23
+            }
+          },
+          "targetRange": {
+            "start": {
+              "line": 5,
+              "character": 0
+            },
+            "end": {
+              "line": 5,
+              "character": 43
+            }
+          },
+          "targetUri": "{{ROOT_URI}}/node_modules/library/dist/value.d.ts",
+          "targetSelectionRange": {
+            "start": {
+              "line": 5,
+              "character": 24
+            },
+            "end": {
+              "line": 5,
+              "character": 33
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/typeDefinition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 2,
+          "character": 2
+        }
+      },
+      "expected": [
+        {
+          "uri": "{{ROOT_URI}}/node_modules/library/dist/value.d.ts",
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 17
+            },
+            "end": {
+              "line": 1,
+              "character": 22
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/definition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 2,
+          "character": 8
+        }
+      },
+      "expected": [
+        {
+          "originSelectionRange": {
+            "start": {
+              "line": 2,
+              "character": 6
+            },
+            "end": {
+              "line": 2,
+              "character": 11
+            }
+          },
+          "targetRange": {
+            "start": {
+              "line": 2,
+              "character": 4
+            },
+            "end": {
+              "line": 2,
+              "character": 18
+            }
+          },
+          "targetUri": "{{ROOT_URI}}/node_modules/library/dist/value.d.ts",
+          "targetSelectionRange": {
+            "start": {
+              "line": 2,
+              "character": 4
+            },
+            "end": {
+              "line": 2,
+              "character": 9
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "workspace/executeCommand",
+      "params": {
+        "command": "_typescript.goToSourceDefinition",
+        "arguments": [
+          "{{ROOT_URI}}/main.ts",
+          {
+            "line": 1,
+            "character": 17
+          }
+        ]
+      },
+      "expected": []
+    }
+  ],
+  "final_compiler_error_codes": [],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

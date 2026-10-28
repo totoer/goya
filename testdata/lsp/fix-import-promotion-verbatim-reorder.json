@@ -1,0 +1,376 @@
+{
+  "schema_version": 1,
+  "name": "fix-import-promotion-verbatim-reorder",
+  "project": {
+    "files": {
+      "/main.ts": "import type { Alpha, Box, Zulu } from \"./helper\";\nlet a: Alpha; let z: Zulu; new Box();\n",
+      "/helper.ts": "export class Alpha {} export class Box {} export class Zulu {}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts",
+      "/helper.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "verbatimModuleSyntax": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "import type { Alpha, Box, Zulu } from \"./helper\";\nlet a: Alpha; let z: Zulu; new Box();\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 6000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 31
+              },
+              "end": {
+                "line": 1,
+                "character": 34
+              }
+            },
+            "message": "'Box' cannot be used as a value because it was imported using 'import type'.",
+            "severity": 1,
+            "code": 1361,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 21
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 24
+                    }
+                  }
+                },
+                "message": "'Box' was imported here."
+              }
+            ]
+          },
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 4
+              },
+              "end": {
+                "line": 1,
+                "character": 5
+              }
+            },
+            "message": "'a' is declared but its value is never read.",
+            "severity": 4,
+            "code": 6133,
+            "source": "typescript"
+          },
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 18
+              },
+              "end": {
+                "line": 1,
+                "character": 19
+              }
+            },
+            "message": "'z' is declared but its value is never read.",
+            "severity": 4,
+            "code": 6133,
+            "source": "typescript"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 31
+                },
+                "end": {
+                  "line": 1,
+                  "character": 34
+                }
+              },
+              "severity": 1,
+              "code": 1361,
+              "message": "'Box' cannot be used as a value because it was imported using 'import type'.",
+              "source": "typescript"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Remove 'type' from import declaration from \"./helper\"",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "import",
+                  "description": "Remove 'type' from import declaration from \"./helper\"",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 7
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 12
+                          },
+                          "newText": ""
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 15
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 15
+                          },
+                          "newText": "Box, "
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 15
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 15
+                          },
+                          "newText": "type "
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 22
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 27
+                          },
+                          "newText": ""
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 27
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 27
+                          },
+                          "newText": "type "
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 31
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 34
+                    }
+                  },
+                  "severity": 1,
+                  "code": 1361,
+                  "message": "'Box' cannot be used as a value because it was imported using 'import type'.",
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 31
+                },
+                "end": {
+                  "line": 1,
+                  "character": 34
+                }
+              },
+              "severity": 1,
+              "code": 1361,
+              "message": "'Box' cannot be used as a value because it was imported using 'import type'.",
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 6
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 11
+                      }
+                    },
+                    "newText": ""
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 14
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 14
+                      }
+                    },
+                    "newText": "Box, "
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 14
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 14
+                      }
+                    },
+                    "newText": "type "
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 21
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 26
+                      }
+                    },
+                    "newText": ""
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 26
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 26
+                      }
+                    },
+                    "newText": "type "
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": true
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

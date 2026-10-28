@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/app/main.ts": "import {Contract} from \"../base/src/index\";\nimport {Impl} from \"../impl/src/index\";\nconst thing: Contract = new Impl();\nthing.run();\n",
+      "/base/src/index.ts": "export interface Contract { run(): number; }\n",
+      "/impl/src/index.ts": "import type {Contract} from \"../../base/src/index\";\nexport class Impl implements Contract { run(): number { return 42; } }\n",
+      "/base/tsconfig.json": "{\"compilerOptions\": {\"strict\": true, \"target\": \"es2025\", \"module\": \"esnext\", \"moduleResolution\": \"bundler\", \"lib\": [\"es2025\"], \"types\": [], \"composite\": true, \"rootDir\": \"src\", \"outDir\": \"dist\"}, \"files\": [\"src/index.ts\"], \"references\": []}",
+      "/impl/tsconfig.json": "{\"compilerOptions\": {\"strict\": true, \"target\": \"es2025\", \"module\": \"esnext\", \"moduleResolution\": \"bundler\", \"lib\": [\"es2025\"], \"types\": [], \"composite\": true, \"rootDir\": \"src\", \"outDir\": \"dist\"}, \"files\": [\"src/index.ts\"], \"references\": [{\"path\": \"../base\"}]}",
+      "/app/tsconfig.json": "{\"compilerOptions\": {\"strict\": true, \"target\": \"es2025\", \"module\": \"esnext\", \"moduleResolution\": \"bundler\", \"lib\": [\"es2025\"], \"types\": [], \"composite\": true, \"rootDir\": \".\", \"outDir\": \"dist\"}, \"files\": [\"main.ts\"], \"references\": [{\"path\": \"../base\"}, {\"path\": \"../impl\"}]}",
+      "/tsconfig.json": "{\"files\": [], \"references\": [{\"path\": \"./base\"}, {\"path\": \"./impl\"}, {\"path\": \"./app\"}]}"
+    },
+    "declarations": {},
+    "entry_points": [],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": []
+    },
+    "config_file": "/app/tsconfig.json"
+  },
+  "name": "rename-projects-overlay",
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "definition": {
+          "linkSupport": true
+        },
+        "typeDefinition": {
+          "linkSupport": true
+        },
+        "implementation": {
+          "linkSupport": true
+        }
+      }
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/app/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "import {Contract} from \"../base/src/index\";\nimport {Impl} from \"../impl/src/index\";\nconst thing: Contract = new Impl();\nthing.run();\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/base/src/index.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "export interface Contract { run(): number; }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/impl/src/index.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "import type {Contract} from \"../../base/src/index\";\nexport class Impl implements Contract { run(): number { return 42; } }\nexport class Second implements Contract { run(): number { return 7; } }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/prepareRename",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/base/src/index.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 20
+        }
+      },
+      "expected": {
+        "start": {
+          "line": 0,
+          "character": 17
+        },
+        "end": {
+          "line": 0,
+          "character": 25
+        }
+      }
+    },
+    {
+      "method": "textDocument/rename",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/base/src/index.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 20
+        },
+        "newName": "Renamed"
+      },
+      "expected": {
+        "changes": {
+          "{{ROOT_URI}}/base/src/index.ts": [
+            {
+              "newText": "Renamed",
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 17
+                },
+                "end": {
+                  "line": 0,
+                  "character": 25
+                }
+              }
+            }
+          ],
+          "{{ROOT_URI}}/impl/src/index.ts": [
+            {
+              "newText": "Renamed",
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 13
+                },
+                "end": {
+                  "line": 0,
+                  "character": 21
+                }
+              }
+            },
+            {
+              "newText": "Renamed",
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 29
+                },
+                "end": {
+                  "line": 1,
+                  "character": 37
+                }
+              }
+            },
+            {
+              "newText": "Renamed",
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 31
+                },
+                "end": {
+                  "line": 2,
+                  "character": 39
+                }
+              }
+            }
+          ],
+          "{{ROOT_URI}}/app/main.ts": [
+            {
+              "newText": "Renamed",
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 8
+                },
+                "end": {
+                  "line": 0,
+                  "character": 16
+                }
+              }
+            },
+            {
+              "newText": "Renamed",
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 13
+                },
+                "end": {
+                  "line": 2,
+                  "character": 21
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

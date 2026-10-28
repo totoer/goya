@@ -1,9 +1,9 @@
-package goja
+package goya
 
 import (
 	"reflect"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 type PromiseState int
@@ -188,7 +188,7 @@ func (r *Runtime) newPromiseResolveThenableJob(p *Promise, thenable Value, then 
 }
 
 func (r *Runtime) enqueuePromiseJob(job func()) {
-	r.jobQueue = append(r.jobQueue, job)
+	r.jobQueue.push(runtimeJob{run: job})
 }
 
 func (r *Runtime) triggerPromiseReactions(reactions []*promiseReaction, argument Value) {
@@ -635,18 +635,18 @@ func (r *Runtime) wrapPromiseReaction(fObj *Object) func(interface{}) error {
 // Exceptions are handled through [PromiseRejectionTracker].
 //
 // WARNING: The returned values are not goroutine-safe and must not be called in parallel with VM running.
-// In order to make use of this method you need an event loop such as the one in goja_nodejs (https://github.com/dop251/goja_nodejs)
+// In order to make use of this method you need an event loop such as the one in goya_nodejs (https://github.com/totoer/goya_nodejs)
 // where it can be used like this:
 //
 //	loop := NewEventLoop()
 //	loop.Start()
 //	defer loop.Stop()
-//	loop.RunOnLoop(func(vm *goja.Runtime) {
+//	loop.RunOnLoop(func(vm *goya.Runtime) {
 //	    p, resolve, _ := vm.NewPromise()
 //	    vm.Set("p", p)
 //	    go func() {
 //	        time.Sleep(500 * time.Millisecond)   // or perform any other blocking operation
-//	        loop.RunOnLoop(func(*goja.Runtime) { // resolve() must be called on the loop, cannot call it here
+//	        loop.RunOnLoop(func(*goya.Runtime) { // resolve() must be called on the loop, cannot call it here
 //	            err := resolve(result)
 //	            // Handle uncatchable errors (e.g. by stopping the loop, panicking or setting a flag)
 //	        })

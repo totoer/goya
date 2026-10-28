@@ -1,0 +1,422 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "export function add(a:number,b:number){if(a>b){return a+b}else{return b+a}}\nconst obj={left:1,right:[1,2]};\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "format-document-tabs",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "export function add(a:number,b:number){if(a>b){return a+b}else{return b+a}}\nconst obj={left:1,right:[1,2]};\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/formatting",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "options": {
+          "tabSize": 4,
+          "insertSpaces": false
+        }
+      },
+      "expected": [
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 22
+            },
+            "end": {
+              "line": 0,
+              "character": 22
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 29
+            },
+            "end": {
+              "line": 0,
+              "character": 29
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 31
+            },
+            "end": {
+              "line": 0,
+              "character": 31
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 38
+            },
+            "end": {
+              "line": 0,
+              "character": 38
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 39
+            },
+            "end": {
+              "line": 0,
+              "character": 39
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 41
+            },
+            "end": {
+              "line": 0,
+              "character": 41
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 43
+            },
+            "end": {
+              "line": 0,
+              "character": 43
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 44
+            },
+            "end": {
+              "line": 0,
+              "character": 44
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 46
+            },
+            "end": {
+              "line": 0,
+              "character": 46
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 47
+            },
+            "end": {
+              "line": 0,
+              "character": 47
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 55
+            },
+            "end": {
+              "line": 0,
+              "character": 55
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 56
+            },
+            "end": {
+              "line": 0,
+              "character": 56
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 57
+            },
+            "end": {
+              "line": 0,
+              "character": 57
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 58
+            },
+            "end": {
+              "line": 0,
+              "character": 58
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 62
+            },
+            "end": {
+              "line": 0,
+              "character": 62
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 63
+            },
+            "end": {
+              "line": 0,
+              "character": 63
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 71
+            },
+            "end": {
+              "line": 0,
+              "character": 71
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 72
+            },
+            "end": {
+              "line": 0,
+              "character": 72
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 73
+            },
+            "end": {
+              "line": 0,
+              "character": 73
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 74
+            },
+            "end": {
+              "line": 0,
+              "character": 74
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 9
+            },
+            "end": {
+              "line": 1,
+              "character": 9
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 10
+            },
+            "end": {
+              "line": 1,
+              "character": 10
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 11
+            },
+            "end": {
+              "line": 1,
+              "character": 11
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 16
+            },
+            "end": {
+              "line": 1,
+              "character": 16
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 18
+            },
+            "end": {
+              "line": 1,
+              "character": 18
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 24
+            },
+            "end": {
+              "line": 1,
+              "character": 24
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 27
+            },
+            "end": {
+              "line": 1,
+              "character": 27
+            }
+          },
+          "newText": " "
+        },
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 29
+            },
+            "end": {
+              "line": 1,
+              "character": 29
+            }
+          },
+          "newText": " "
+        }
+      ]
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

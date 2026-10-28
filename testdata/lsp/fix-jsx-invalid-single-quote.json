@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "name": "fix-jsx-invalid-single-quote",
+  "project": {
+    "files": {
+      "/main.tsx": "declare namespace JSX { interface IntrinsicElements { div: {}; } }\nconst element = <div> > </div>;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.tsx"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "jsx": "preserve"
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx",
+          "languageId": "typescriptreact",
+          "version": 2,
+          "text": "declare namespace JSX { interface IntrinsicElements { div: {}; } }\nconst element = <div> > </div>;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Wrap invalid character in an expression container",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixInvalidJsxCharacters_expression",
+                  "description": "Wrap invalid character in an expression container",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.tsx",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 23
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 24
+                          },
+                          "newText": "{'>'}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 22
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 23
+                    }
+                  },
+                  "message": "Unexpected token. Did you mean `{'>'}` or `&gt;`?",
+                  "severity": 1,
+                  "code": 1382,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.tsx"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 22
+                },
+                "end": {
+                  "line": 1,
+                  "character": 23
+                }
+              },
+              "message": "Unexpected token. Did you mean `{'>'}` or `&gt;`?",
+              "severity": 1,
+              "code": 1382,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.tsx",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 22
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 23
+                      }
+                    },
+                    "newText": "{'>'}"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Convert invalid character to its html entity code",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixInvalidJsxCharacters_htmlEntity",
+                  "description": "Convert invalid character to its html entity code",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.tsx",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 23
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 24
+                          },
+                          "newText": "&gt;"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 22
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 23
+                    }
+                  },
+                  "message": "Unexpected token. Did you mean `{'>'}` or `&gt;`?",
+                  "severity": 1,
+                  "code": 1382,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.tsx"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 22
+                },
+                "end": {
+                  "line": 1,
+                  "character": 23
+                }
+              },
+              "message": "Unexpected token. Did you mean `{'>'}` or `&gt;`?",
+              "severity": 1,
+              "code": 1382,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.tsx",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 22
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 23
+                      }
+                    },
+                    "newText": "&gt;"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    },
+    "options": {
+      "preferences": {
+        "quotePreference": "single"
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

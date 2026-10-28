@@ -1,14 +1,14 @@
-package goja
+package goya
 
 import (
 	"fmt"
 	"sort"
 
-	"github.com/dop251/goja/token"
+	"github.com/totoer/goya/token"
 
-	"github.com/dop251/goja/ast"
-	"github.com/dop251/goja/file"
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/ast"
+	"github.com/totoer/goya/file"
+	"github.com/totoer/goya/unistring"
 )
 
 type blockType int
@@ -70,22 +70,24 @@ type srcMapItem struct {
 type Program struct {
 	code []instruction
 
-	funcName unistring.String
-	src      *file.File
-	srcMap   []srcMapItem
+	funcName   unistring.String
+	src        *file.File
+	srcMap     []srcMapItem
+	typescript *typeScriptProgram
+	checking   *typeScriptProgram
 }
 
 type compiler struct {
-	p     *Program
-	scope *scope
-	block *block
+	checking *typeScriptProgram
+	p        *Program
+	scope    *scope
+	block    *block
 
 	classScope *classScope
 
 	enumGetExpr compiledEnumGetExpr
 
 	evalVM *vm // VM used to evaluate constant expressions
-	ctxVM  *vm // VM in which an eval() code is compiled
 
 	codeScratchpad []instruction
 
@@ -295,21 +297,20 @@ type scope struct {
 
 	// in strict mode
 	strict bool
-	// eval top-level scope
-	eval bool
-	// at least one inner scope has direct eval() which can lookup names dynamically (by name)
+	// at least one inner scope performs dynamic name lookup
 	dynLookup bool
 	// at least one binding has been marked for placement in stash
 	needStash bool
 
 	// is a variable environment, i.e. the target for dynamically created var bindings
 	variable bool
-	// a function scope that has at least one direct eval() and non-strict, so the variables can be added dynamically
+	// a scope whose bindings are resolved by name
 	dynamic bool
 	// arguments have been marked for placement in stash (functions only)
 	argsInStash bool
 	// need 'arguments' object (functions only)
 	argsNeeded bool
+	module     bool
 }
 
 type block struct {
@@ -495,12 +496,15 @@ func (s *scope) lookupName(name unistring.String) (binding *binding, noDynamics 
 		if curScope.dynamic {
 			noDynamics = false
 		}
-		if name == "arguments" && curScope.funcType != funcNone && curScope.funcType != funcArrow {
+		if name == "arguments" && !curScope.module && curScope.funcType != funcNone && curScope.funcType != funcArrow {
 			if curScope.funcType == funcClsInit {
 				s.c.throwSyntaxError(0, "'arguments' is not allowed in class field initializer or static initialization block")
 			}
 			curScope.argsNeeded = true
 			binding, _ = curScope.bindName(name)
+			if toStash && !binding.inStash {
+				binding.moveToStash()
+			}
 			return
 		}
 		if curScope.isFunction() {
@@ -509,25 +513,20 @@ func (s *scope) lookupName(name unistring.String) (binding *binding, noDynamics 
 	}
 }
 
-func (s *scope) lookupThis() (*binding, bool) {
+func (s *scope) lookupThis() *binding {
 	toStash := false
 	for curScope := s; curScope != nil; curScope = curScope.outer {
-		if curScope.outer == nil {
-			if curScope.eval {
-				return nil, true
-			}
-		}
 		if b, exists := curScope.boundNames[thisBindingName]; exists {
 			if toStash && !b.inStash {
 				b.moveToStash()
 			}
-			return b, false
+			return b
 		}
 		if curScope.isFunction() {
 			toStash = true
 		}
 	}
-	return nil, false
+	return nil
 }
 
 func (s *scope) ensureBoundNamesCreated() {
@@ -605,7 +604,7 @@ func (s *scope) nearestFunction() *scope {
 
 func (s *scope) nearestThis() *scope {
 	for sc := s; sc != nil; sc = sc.outer {
-		if sc.eval || sc.isFunction() && sc.funcType != funcArrow {
+		if sc.isFunction() && sc.funcType != funcArrow {
 			return sc
 		}
 	}
@@ -895,7 +894,7 @@ func (s *scope) isDynamic() bool {
 }
 
 func (s *scope) isFunction() bool {
-	return s.funcType != funcNone && !s.eval
+	return s.funcType != funcNone
 }
 
 func (s *scope) deleteBinding(b *binding) {
@@ -915,38 +914,20 @@ found:
 	s.bindings = s.bindings[:l]
 }
 
-func (c *compiler) compile(in *ast.Program, strict, inGlobal bool, evalVm *vm) {
-	c.ctxVM = evalVm
-
-	eval := evalVm != nil
+func (c *compiler) compile(in *ast.Program, strict, inGlobal bool) {
 	c.p.src = in.File
 	c.newScope()
 	scope := c.scope
 	scope.dynamic = true
-	scope.eval = eval
 	if !strict && len(in.Body) > 0 {
 		strict = c.isStrict(in.Body) != nil
 	}
 	scope.strict = strict
-	ownVarScope := eval && strict
-	ownLexScope := !inGlobal || eval
-	if ownVarScope {
-		c.newBlockScope()
-		scope = c.scope
-		scope.variable = true
-	}
-	if eval && !inGlobal {
-		for s := evalVm.stash; s != nil; s = s.outer {
-			if ft := s.funcType; ft != funcNone && ft != funcArrow {
-				scope.funcType = ft
-				break
-			}
-		}
-	}
+	ownLexScope := !inGlobal
 	funcs := c.extractFunctions(in.Body)
 	c.createFunctionBindings(funcs)
 	numFuncs := len(scope.bindings)
-	if inGlobal && !ownVarScope {
+	if inGlobal {
 		if numFuncs == len(funcs) {
 			c.compileFunctionsGlobalAllUnique(funcs)
 		} else {
@@ -959,19 +940,18 @@ func (c *compiler) compile(in *ast.Program, strict, inGlobal bool, evalVm *vm) {
 	for i, b := range scope.bindings {
 		vars[i] = b.name
 	}
-	if len(vars) > 0 && !ownVarScope && ownLexScope {
+	if len(vars) > 0 && ownLexScope {
 		if inGlobal {
 			c.emit(&bindGlobal{
-				vars:      vars[numFuncs:],
-				funcs:     vars[:numFuncs],
-				deletable: eval,
+				vars:  vars[numFuncs:],
+				funcs: vars[:numFuncs],
 			})
 		} else {
-			c.emit(&bindVars{names: vars, deletable: eval})
+			c.emit(&bindVars{names: vars})
 		}
 	}
 	var enter *enterBlock
-	if c.compileLexicalDeclarations(in.Body, ownVarScope || !ownLexScope) {
+	if c.compileLexicalDeclarations(in.Body, !ownLexScope) {
 		if ownLexScope {
 			c.block = &block{
 				outer:      c.block,
@@ -998,7 +978,7 @@ func (c *compiler) compile(in *ast.Program, strict, inGlobal bool, evalVm *vm) {
 			consts: consts,
 		})
 	}
-	if !inGlobal || ownVarScope {
+	if !inGlobal {
 		c.compileFunctions(funcs)
 	}
 	c.compileStatements(in.Body, true)
@@ -1491,13 +1471,6 @@ func (c *compiler) resolvePrivateName(name unistring.String, offset int) (*resol
 				}, nil
 			}
 			level++
-		}
-	}
-	if c.ctxVM != nil {
-		for s := c.ctxVM.privEnv; s != nil; s = s.outer {
-			if id := s.names[name]; id != nil {
-				return nil, id
-			}
 		}
 	}
 	c.throwSyntaxErrorf(offset, "Private field '#%s' must be declared in an enclosing class", name)

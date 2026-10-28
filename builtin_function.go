@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"math"
@@ -6,38 +6,7 @@ import (
 )
 
 func (r *Runtime) functionCtor(args []Value, proto *Object, async, generator bool) *Object {
-	var sb StringBuilder
-	if async {
-		if generator {
-			sb.WriteString(asciiString("(async function* anonymous("))
-		} else {
-			sb.WriteString(asciiString("(async function anonymous("))
-		}
-	} else {
-		if generator {
-			sb.WriteString(asciiString("(function* anonymous("))
-		} else {
-			sb.WriteString(asciiString("(function anonymous("))
-		}
-	}
-	if len(args) > 1 {
-		ar := args[:len(args)-1]
-		for i, arg := range ar {
-			sb.WriteString(arg.toString())
-			if i < len(ar)-1 {
-				sb.WriteRune(',')
-			}
-		}
-	}
-	sb.WriteString(asciiString("\n) {\n"))
-	if len(args) > 0 {
-		sb.WriteString(args[len(args)-1].toString())
-	}
-	sb.WriteString(asciiString("\n})"))
-
-	ret := r.toObject(r.eval(sb.String(), false, false))
-	ret.self.setProto(proto, true)
-	return ret
+	panic(r.newError(r.getEvalError(), "compilation of source strings is not supported by this execution profile"))
 }
 
 func (r *Runtime) builtin_Function(args []Value, proto *Object) *Object {

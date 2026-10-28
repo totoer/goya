@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "name": "refactor-type-object-apply-accepted-1",
+  "project": {
+    "files": {
+      "/main.ts": "let value: { name: string; age: number };\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "let value: { name: string; age: number };\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 5000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": []
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 11
+          },
+          "end": {
+            "line": 0,
+            "character": 40
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "refactor.extract.type"
+          ],
+          "triggerKind": 1
+        }
+      },
+      "expected": [
+        {
+          "title": "Extract to type alias",
+          "kind": "refactor.extract.type",
+          "command": {
+            "title": "Extract to type alias",
+            "command": "_typescript.applyRefactoring",
+            "arguments": [
+              {
+                "file": "{{ROOT_PATH}}/main.ts",
+                "startLine": 1,
+                "startOffset": 12,
+                "endLine": 1,
+                "endOffset": 41,
+                "refactor": "Extract type",
+                "action": "Extract to type alias"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Extract to interface",
+          "kind": "refactor.extract.interface",
+          "command": {
+            "title": "Extract to interface",
+            "command": "_typescript.applyRefactoring",
+            "arguments": [
+              {
+                "file": "{{ROOT_PATH}}/main.ts",
+                "startLine": 1,
+                "startOffset": 12,
+                "endLine": 1,
+                "endOffset": 41,
+                "refactor": "Extract type",
+                "action": "Extract to interface"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "method": "workspace/executeCommand",
+      "params": {
+        "title": "Extract to interface",
+        "command": "_typescript.applyRefactoring",
+        "arguments": [
+          {
+            "file": "{{ROOT_PATH}}/main.ts",
+            "startLine": 1,
+            "startOffset": 12,
+            "endLine": 1,
+            "endOffset": 41,
+            "refactor": "Extract type",
+            "action": "Extract to interface"
+          }
+        ]
+      },
+      "record_client_requests": [
+        "workspace/applyEdit",
+        "_typescript.rename"
+      ],
+      "expected_client_requests": [
+        {
+          "method": "workspace/applyEdit",
+          "params": {
+            "edit": {
+              "changes": {
+                "{{ROOT_URI}}/main.ts": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 0
+                      }
+                    },
+                    "newText": "interface NewType {\n    name: string;\n    age: number;\n}\n\n"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 11
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 40
+                      }
+                    },
+                    "newText": "NewType"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "method": "_typescript.rename",
+          "params": {
+            "textDocument": {
+              "uri": "{{ROOT_URI}}/main.ts"
+            },
+            "position": {
+              "line": 0,
+              "character": 10
+            }
+          }
+        }
+      ],
+      "expected": null
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          },
+          "disabledSupport": true
+        }
+      },
+      "workspace": {
+        "applyEdit": true
+      }
+    },
+    "client_responses": {
+      "workspace/applyEdit": {
+        "applied": true
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

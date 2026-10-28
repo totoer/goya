@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "name": "fix-missing-constraint",
+  "project": {
+    "files": {
+      "/main.ts": "export function value<T>(input: T): string { return input; }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export function value<T>(input: T): string { return input; }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Add `extends` constraint.",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "addMissingConstraint",
+                  "description": "Add `extends` constraint.",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 23
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 24
+                          },
+                          "newText": "T extends any"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 45
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 51
+                    }
+                  },
+                  "message": "Type 'T' is not assignable to type 'string'.",
+                  "severity": 1,
+                  "code": 2322,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 22
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 23
+                          }
+                        }
+                      },
+                      "message": "This type parameter might need an `extends string` constraint."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 45
+                },
+                "end": {
+                  "line": 0,
+                  "character": 51
+                }
+              },
+              "message": "Type 'T' is not assignable to type 'string'.",
+              "severity": 1,
+              "code": 2322,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 22
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 23
+                      }
+                    }
+                  },
+                  "message": "This type parameter might need an `extends string` constraint."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 22
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 23
+                      }
+                    },
+                    "newText": "T extends any"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    2322
+  ],
+  "edited_compiler_error_reason": "The pinned provider selects the return keyword for this diagnostic span and proposes extends any, leaving the original return assignability error. Local-assignment/type-argument fixtures verify useful constraints with clean Check results."
+}

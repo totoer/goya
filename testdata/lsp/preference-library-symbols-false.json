@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "name": "preference-library-symbols-false",
+  "project": {
+    "files": {
+      "/main.ts": "export const local = 1;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export const local = 1;\n"
+        }
+      }
+    },
+    {
+      "method": "workspace/symbol",
+      "params": {
+        "query": "ReadonlyArray"
+      },
+      "expected": [
+        {
+          "location": {
+            "uri": "goya-lib:///lib.es5.d.ts",
+            "range": {
+              "start": {
+                "line": 1188,
+                "character": 0
+              },
+              "end": {
+                "line": 1313,
+                "character": 1
+              }
+            }
+          },
+          "kind": 11,
+          "name": "ReadonlyArray"
+        },
+        {
+          "location": {
+            "uri": "goya-lib:///lib.es2015.core.d.ts",
+            "range": {
+              "start": {
+                "line": 339,
+                "character": 0
+              },
+              "end": {
+                "line": 364,
+                "character": 1
+              }
+            }
+          },
+          "kind": 11,
+          "name": "ReadonlyArray"
+        },
+        {
+          "location": {
+            "uri": "goya-lib:///lib.es2015.iterable.d.ts",
+            "range": {
+              "start": {
+                "line": 109,
+                "character": 0
+              },
+              "end": {
+                "line": 127,
+                "character": 1
+              }
+            }
+          },
+          "kind": 11,
+          "name": "ReadonlyArray"
+        },
+        {
+          "location": {
+            "uri": "goya-lib:///lib.es2015.symbol.wellknown.d.ts",
+            "range": {
+              "start": {
+                "line": 99,
+                "character": 0
+              },
+              "end": {
+                "line": 107,
+                "character": 1
+              }
+            }
+          },
+          "kind": 11,
+          "name": "ReadonlyArray"
+        },
+        {
+          "location": {
+            "uri": "goya-lib:///lib.es2016.array.include.d.ts",
+            "range": {
+              "start": {
+                "line": 25,
+                "character": 0
+              },
+              "end": {
+                "line": 32,
+                "character": 1
+              }
+            }
+          },
+          "kind": 11,
+          "name": "ReadonlyArray"
+        },
+        {
+          "location": {
+            "uri": "goya-lib:///lib.es2019.array.d.ts",
+            "range": {
+              "start": {
+                "line": 22,
+                "character": 0
+              },
+              "end": {
+                "line": 48,
+                "character": 1
+              }
+            }
+          },
+          "kind": 11,
+          "name": "ReadonlyArray"
+        },
+        {
+          "location": {
+            "uri": "goya-lib:///lib.es2022.array.d.ts",
+            "range": {
+              "start": {
+                "line": 24,
+                "character": 0
+              },
+              "end": {
+                "line": 30,
+                "character": 1
+              }
+            }
+          },
+          "kind": 11,
+          "name": "ReadonlyArray"
+        },
+        {
+          "location": {
+            "uri": "goya-lib:///lib.es2023.array.d.ts",
+            "range": {
+              "start": {
+                "line": 85,
+                "character": 0
+              },
+              "end": {
+                "line": 161,
+                "character": 1
+              }
+            }
+          },
+          "kind": 11,
+          "name": "ReadonlyArray"
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    },
+    "options": {
+      "preferences": {
+        "excludeLibrarySymbolsInNavTo": false
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

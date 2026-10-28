@@ -1,4 +1,4 @@
-package goja
+package goya
 
 type weakSetObject struct {
 	baseObject

@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "name": "fix-type-only-export-alias",
+  "project": {
+    "files": {
+      "/main.ts": "export { Shape as Renamed, Other as Also, value } from \"./helper\";\n",
+      "/helper.ts": "export interface Shape { value: number; }\nexport interface Other {}\nexport const value = 1;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "isolatedModules": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export { Shape as Renamed, Other as Also, value } from \"./helper\";\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Convert to type-only export",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "convertToTypeOnlyExport",
+                  "description": "Convert to type-only export",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 67
+                          },
+                          "newText": "export { value } from \"./helper\";"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 68
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 68
+                          },
+                          "newText": "export type { Shape as Renamed, Other as Also } from \"./helper\";\n"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "convertToTypeOnlyExport",
+                  "fixAllDescription": "Convert all re-exported types to type-only exports"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 27
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 40
+                    }
+                  },
+                  "message": "Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.",
+                  "severity": 1,
+                  "code": 1205,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 27
+                },
+                "end": {
+                  "line": 0,
+                  "character": 40
+                }
+              },
+              "message": "Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.",
+              "severity": 1,
+              "code": 1205,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 66
+                      }
+                    },
+                    "newText": "export { value } from \"./helper\";"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 67
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 67
+                      }
+                    },
+                    "newText": "export type { Shape as Renamed, Other as Also } from \"./helper\";\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Convert all re-exported types to type-only exports",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "convertToTypeOnlyExport"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 9
+                },
+                "end": {
+                  "line": 0,
+                  "character": 25
+                }
+              },
+              "message": "Re-exporting a type when 'isolatedModules' is enabled requires using 'export type'.",
+              "severity": 1,
+              "code": 1205,
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ],
+      "source_eof": {
+        "code_action_edits": [
+          {
+            "action": 0,
+            "document_change": 0,
+            "edit": 1,
+            "uri": "{{ROOT_URI}}/main.ts",
+            "start": 67,
+            "length": 0,
+            "source_sha256": "01723b93392bf737c4157b7e11ee943cf677a1377fe0b652a38ac6c900850cb8",
+            "command_file": 0
+          }
+        ]
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

@@ -1,0 +1,1728 @@
+{
+  "schema_version": 1,
+  "typescript_language_server": {
+    "version": "6.0.2",
+    "commit": "7b28f104e741feba092045550738e8549e4ccb11",
+    "archive_sha256": "d3eea925798806bd2b9037d21742c5dea1de9a11d7d7ac2ef0f0b975fb32a5a1"
+  },
+  "oracle_typescript": {
+    "version": "6.0.3",
+    "commit": "050880ce59e30b356b686bd3144efe24f875ebc8",
+    "archive_sha256": "c26953b79c1197e02f5666a0b612d5b9707339557aa9744097e7d5719de1a117"
+  },
+  "native_typescript": {
+    "version": "7.0.2",
+    "commit": "2bd066d87f5bafd315be9f40889d0a60b9e58e0b",
+    "archive_sha256": "5ccb47dbb3f68cd0da58b71e6f445eee36a50bd3e9f9f330cc23a97b88500119"
+  },
+  "items": [
+    {
+      "id": "action-kind/quickfix",
+      "category": "action-kind",
+      "source": "tls:src/utils/types.ts",
+      "source_sha256": "d2d0a8c514534c229480596ca98a29a59b758fb2d44da49984ce95237e79fd3c"
+    },
+    {
+      "id": "action-kind/refactor",
+      "category": "action-kind",
+      "source": "tls:src/utils/types.ts",
+      "source_sha256": "d2d0a8c514534c229480596ca98a29a59b758fb2d44da49984ce95237e79fd3c"
+    },
+    {
+      "id": "action-kind/source",
+      "category": "action-kind",
+      "source": "tls:src/utils/types.ts",
+      "source_sha256": "d2d0a8c514534c229480596ca98a29a59b758fb2d44da49984ce95237e79fd3c"
+    },
+    {
+      "id": "action-kind/source.addMissingImports.ts",
+      "category": "action-kind",
+      "source": "tls:src/utils/types.ts",
+      "source_sha256": "d2d0a8c514534c229480596ca98a29a59b758fb2d44da49984ce95237e79fd3c"
+    },
+    {
+      "id": "action-kind/source.fixAll",
+      "category": "action-kind",
+      "source": "tls:src/utils/types.ts",
+      "source_sha256": "d2d0a8c514534c229480596ca98a29a59b758fb2d44da49984ce95237e79fd3c"
+    },
+    {
+      "id": "action-kind/source.fixAll.ts",
+      "category": "action-kind",
+      "source": "tls:src/utils/types.ts",
+      "source_sha256": "d2d0a8c514534c229480596ca98a29a59b758fb2d44da49984ce95237e79fd3c"
+    },
+    {
+      "id": "action-kind/source.organizeImports",
+      "category": "action-kind",
+      "source": "tls:src/utils/types.ts",
+      "source_sha256": "d2d0a8c514534c229480596ca98a29a59b758fb2d44da49984ce95237e79fd3c"
+    },
+    {
+      "id": "action-kind/source.organizeImports.ts",
+      "category": "action-kind",
+      "source": "tls:src/utils/types.ts",
+      "source_sha256": "d2d0a8c514534c229480596ca98a29a59b758fb2d44da49984ce95237e79fd3c"
+    },
+    {
+      "id": "action-kind/source.removeUnused.ts",
+      "category": "action-kind",
+      "source": "tls:src/utils/types.ts",
+      "source_sha256": "d2d0a8c514534c229480596ca98a29a59b758fb2d44da49984ce95237e79fd3c"
+    },
+    {
+      "id": "action-kind/source.removeUnusedImports.ts",
+      "category": "action-kind",
+      "source": "tls:src/utils/types.ts",
+      "source_sha256": "d2d0a8c514534c229480596ca98a29a59b758fb2d44da49984ce95237e79fd3c"
+    },
+    {
+      "id": "action-kind/source.sortImports.ts",
+      "category": "action-kind",
+      "source": "tls:src/utils/types.ts",
+      "source_sha256": "d2d0a8c514534c229480596ca98a29a59b758fb2d44da49984ce95237e79fd3c"
+    },
+    {
+      "id": "client-command/editor.action.showReferences",
+      "category": "client-command",
+      "source": "tls:src/features/code-lens/referencesCodeLens.ts",
+      "source_sha256": "1195c11ca4640b5644d030fb0439898e8c0425c6e04983c1be9ee751859b9a13"
+    },
+    {
+      "id": "client-request/_typescript.rename",
+      "category": "client-request",
+      "source": "tls:src/ts-protocol.ts",
+      "source_sha256": "e79574580a06da9ea7f015589eedfe08a724783ac8f7374e01bddaf82e10f89a"
+    },
+    {
+      "id": "command/$/typescriptVersion",
+      "category": "command",
+      "source": "tls:src/commands.ts",
+      "source_sha256": "08450c46e2ffd3f5ad792658d280174f9282e3aad10f4ee798fd9efd56cec166"
+    },
+    {
+      "id": "command/_typescript.applyCodeActionCommand",
+      "category": "command",
+      "source": "tls:src/features/codeActions/quickFix.ts",
+      "source_sha256": "6bbc8a04401197d4aaf34ce598b64760274217b22a08d8fae28784ed8d5e2db2"
+    },
+    {
+      "id": "command/_typescript.applyCompletionCodeAction",
+      "category": "command",
+      "source": "tls:src/commands.ts",
+      "source_sha256": "08450c46e2ffd3f5ad792658d280174f9282e3aad10f4ee798fd9efd56cec166"
+    },
+    {
+      "id": "command/_typescript.applyFixAllCodeAction",
+      "category": "command",
+      "source": "tls:src/features/codeActions/quickFix.ts",
+      "source_sha256": "6bbc8a04401197d4aaf34ce598b64760274217b22a08d8fae28784ed8d5e2db2"
+    },
+    {
+      "id": "command/_typescript.applyRefactoring",
+      "category": "command",
+      "source": "tls:src/commands.ts",
+      "source_sha256": "08450c46e2ffd3f5ad792658d280174f9282e3aad10f4ee798fd9efd56cec166"
+    },
+    {
+      "id": "command/_typescript.applyRenameFile",
+      "category": "command",
+      "source": "tls:src/commands.ts",
+      "source_sha256": "08450c46e2ffd3f5ad792658d280174f9282e3aad10f4ee798fd9efd56cec166"
+    },
+    {
+      "id": "command/_typescript.configurePlugin",
+      "category": "command",
+      "source": "tls:src/commands.ts",
+      "source_sha256": "08450c46e2ffd3f5ad792658d280174f9282e3aad10f4ee798fd9efd56cec166",
+      "exclusion": "Node.js tsserver/plugin infrastructure is outside TS/TSX editor parity"
+    },
+    {
+      "id": "command/_typescript.goToSourceDefinition",
+      "category": "command",
+      "source": "tls:src/features/source-definition.ts",
+      "source_sha256": "1d04b279ff7be6d0a03e487ac05389946f879b8d133256754968fd2b2f7b86b5"
+    },
+    {
+      "id": "command/_typescript.organizeImports",
+      "category": "command",
+      "source": "tls:src/commands.ts",
+      "source_sha256": "08450c46e2ffd3f5ad792658d280174f9282e3aad10f4ee798fd9efd56cec166"
+    },
+    {
+      "id": "command/_typescript.selectRefactoring",
+      "category": "command",
+      "source": "tls:src/commands.ts",
+      "source_sha256": "08450c46e2ffd3f5ad792658d280174f9282e3aad10f4ee798fd9efd56cec166"
+    },
+    {
+      "id": "command/typescript.tsserverRequest",
+      "category": "command",
+      "source": "tls:src/commands/tsserverRequests.ts",
+      "source_sha256": "4c3a097b4a12242f1bf6bebcf5a7584ed72fb67cb995de326ee1935de2b6959a",
+      "exclusion": "Node.js tsserver/plugin infrastructure is outside TS/TSX editor parity"
+    },
+    {
+      "id": "configuration/completions.completeFunctionCalls",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/diagnostics.eagerClear",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/diagnostics.ignoredCodes",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/implicitProjectConfiguration.checkJs",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95",
+      "exclusion": "JavaScript language service is outside TS/TSX editor parity"
+    },
+    {
+      "id": "configuration/implicitProjectConfiguration.experimentalDecorators",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/implicitProjectConfiguration.module",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/implicitProjectConfiguration.strictFunctionTypes",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/implicitProjectConfiguration.strictNullChecks",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/implicitProjectConfiguration.target",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.baseIndentSize",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.convertTabsToSpaces",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.indentMultiLineObjectLiteralBeginningOnBlankLine",
+      "category": "configuration",
+      "source": "typescript:src/services/types.ts",
+      "source_sha256": "7b9f919240901802291cf15f8eede8de9a6b9194e24676fd4bd45102e78ca431"
+    },
+    {
+      "id": "configuration/typescript.format.indentSize",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.indentStyle",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.indentSwitchCase",
+      "category": "configuration",
+      "source": "typescript:src/services/types.ts",
+      "source_sha256": "7b9f919240901802291cf15f8eede8de9a6b9194e24676fd4bd45102e78ca431"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceAfterCommaDelimiter",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceAfterConstructor",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceAfterKeywordsInControlFlowStatements",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceAfterSemicolonInForStatements",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceAfterTypeAssertion",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceBeforeAndAfterBinaryOperators",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceBeforeFunctionParenthesis",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.insertSpaceBeforeTypeAnnotation",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.newLineCharacter",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.placeOpenBraceOnNewLineForControlBlocks",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.placeOpenBraceOnNewLineForFunctions",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.semicolons",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.tabSize",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.format.trimTrailingWhitespace",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.implementationsCodeLens.enabled",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.inlayHints.includeInlayEnumMemberValueHints",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.inlayHints.includeInlayFunctionLikeReturnTypeHints",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.inlayHints.includeInlayFunctionParameterTypeHints",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.inlayHints.includeInlayParameterNameHints",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.inlayHints.includeInlayParameterNameHintsWhenArgumentMatchesName",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.inlayHints.includeInlayPropertyDeclarationTypeHints",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.inlayHints.includeInlayVariableTypeHints",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.inlayHints.includeInlayVariableTypeHintsWhenTypeMatchesName",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.referencesCodeLens.enabled",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "configuration/typescript.referencesCodeLens.showOnAllFunctions",
+      "category": "configuration",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "handler/languages.callHierarchy.onIncomingCalls",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/languages.callHierarchy.onOutgoingCalls",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/languages.callHierarchy.onPrepare",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/languages.inlayHint.on",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/languages.onLinkedEditingRange",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/languages.semanticTokens.on",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/languages.semanticTokens.onRange",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onCodeAction",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onCodeActionResolve",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onCodeLens",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onCodeLensResolve",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onCompletion",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onCompletionResolve",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onDefinition",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onDidChangeConfiguration",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onDidChangeTextDocument",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onDidChangeWatchedFiles",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onDidCloseTextDocument",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onDidOpenTextDocument",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onDidSaveTextDocument",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onDocumentFormatting",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onDocumentHighlight",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onDocumentRangeFormatting",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onDocumentSymbol",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onExecuteCommand",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onFoldingRanges",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onHover",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onImplementation",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onInitialize",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onInitialized",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onPrepareRename",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onReferences",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onRenameRequest",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onSelectionRanges",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onSignatureHelp",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onTypeDefinition",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/onWorkspaceSymbol",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "handler/workspace.onWillRenameFiles",
+      "category": "handler",
+      "source": "tls:src/lsp-connection.ts",
+      "source_sha256": "97630bafd1c5adca3b2746ff0584996bce220eb3e82a6af45f3739eabe48c99a"
+    },
+    {
+      "id": "initialization/completionDisableFilterText",
+      "category": "initialization",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "initialization/disableAutomaticTypingAcquisition",
+      "category": "initialization",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95",
+      "exclusion": "Node.js tsserver/plugin infrastructure is outside TS/TSX editor parity"
+    },
+    {
+      "id": "initialization/hostInfo",
+      "category": "initialization",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "initialization/locale",
+      "category": "initialization",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "initialization/maxTsServerMemory",
+      "category": "initialization",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95",
+      "exclusion": "Node.js tsserver/plugin infrastructure is outside TS/TSX editor parity"
+    },
+    {
+      "id": "initialization/npmLocation",
+      "category": "initialization",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95",
+      "exclusion": "Node.js tsserver/plugin infrastructure is outside TS/TSX editor parity"
+    },
+    {
+      "id": "initialization/plugins",
+      "category": "initialization",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95",
+      "exclusion": "Node.js tsserver/plugin infrastructure is outside TS/TSX editor parity"
+    },
+    {
+      "id": "initialization/preferences",
+      "category": "initialization",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "initialization/supportsHoverVerbosity",
+      "category": "initialization",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "initialization/supportsMoveToFileCodeAction",
+      "category": "initialization",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95"
+    },
+    {
+      "id": "initialization/tsserver",
+      "category": "initialization",
+      "source": "tls:docs/configuration.md",
+      "source_sha256": "95830a00656d048d92671da77d4fb8950694f042a13fedcb01f54921b5eeaa95",
+      "exclusion": "Node.js tsserver/plugin infrastructure is outside TS/TSX editor parity"
+    },
+    {
+      "id": "preference/allowIncompleteCompletions",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/allowRenameOfImportPath",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/allowTextChangesInNewFiles",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/autoImportFileExcludePatterns",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/autoImportSpecifierExcludeRegexes",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/disableLineTextInReferences",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/disableSuggestions",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/displayPartsForJSDoc",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/excludeLibrarySymbolsInNavTo",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/generateReturnInDocTemplate",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/importModuleSpecifierEnding",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/importModuleSpecifierPreference",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeAutomaticOptionalChainCompletions",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeCompletionsForImportStatements",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeCompletionsForModuleExports",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeCompletionsWithClassMemberSnippets",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeCompletionsWithInsertText",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeCompletionsWithObjectLiteralMethodSnippets",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeCompletionsWithSnippetText",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeInlayEnumMemberValueHints",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeInlayFunctionLikeReturnTypeHints",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeInlayFunctionParameterTypeHints",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeInlayParameterNameHints",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeInlayParameterNameHintsWhenArgumentMatchesName",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeInlayPropertyDeclarationTypeHints",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeInlayVariableTypeHints",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includeInlayVariableTypeHintsWhenTypeMatchesName",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/includePackageJsonAutoImports",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/interactiveInlayHints",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/jsxAttributeCompletionStyle",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/lazyConfiguredProjectsFromExternalProject",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/maximumHoverLength",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/organizeImportsAccentCollation",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/organizeImportsCaseFirst",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/organizeImportsCollation",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/organizeImportsIgnoreCase",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/organizeImportsLocale",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/organizeImportsNumericCollation",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/organizeImportsTypeOrder",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/preferTypeOnlyAutoImports",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/providePrefixAndSuffixTextForRename",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/provideRefactorNotApplicableReason",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/quotePreference",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "preference/useLabelDetailsInCompletionEntries",
+      "category": "preference",
+      "source": "tls:src/features/fileConfigurationManager.ts",
+      "source_sha256": "cfb467e9667949afff83671fd1a82c6928d04c82b1114aa803763dee576fd400"
+    },
+    {
+      "id": "quick-fix-provider/addConvertToUnknownForNonOverlappingTypes/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/addConvertToUnknownForNonOverlappingTypes.ts",
+      "source_sha256": "37c3e3d25d30baea65526918c78c524d7e3aa9d5fdcbebdb147047b9f0c45154"
+    },
+    {
+      "id": "quick-fix-provider/addEmptyExportDeclaration/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/addEmptyExportDeclaration.ts",
+      "source_sha256": "c5ca4c785a58f287608e575509fcb607be32475a7358a9a5a9dbfbbe86264f35"
+    },
+    {
+      "id": "quick-fix-provider/addMissingAsync/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/addMissingAsync.ts",
+      "source_sha256": "9d80983743c5121ac6fd536b3c92b850c1cbc46f6187861790f185a7456915f7"
+    },
+    {
+      "id": "quick-fix-provider/addMissingAwait/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/addMissingAwait.ts",
+      "source_sha256": "c4c6dfe3183c396f0fcba8a1da228b28890dc1704d3681b41f3adc8ed97fefa6"
+    },
+    {
+      "id": "quick-fix-provider/addMissingConst/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/addMissingConst.ts",
+      "source_sha256": "157982192c3f1cdb94ed0de60e3d8cd11e20b65efc080901223abd99ec87330f"
+    },
+    {
+      "id": "quick-fix-provider/addMissingDeclareProperty/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/addMissingDeclareProperty.ts",
+      "source_sha256": "87045cbffbab42527553587630712ebe4a13e262008497bf5ebb455ec9cc326b"
+    },
+    {
+      "id": "quick-fix-provider/addMissingInvocationForDecorator/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/addMissingInvocationForDecorator.ts",
+      "source_sha256": "381facf05703fb52b1dc60a0ba08b27744227bd9b52bf55fe1cc55a3cca24b1e"
+    },
+    {
+      "id": "quick-fix-provider/addMissingResolutionModeImportAttribute/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/addMissingResolutionModeImportAttribute.ts",
+      "source_sha256": "744d9a264d9b630947eba6d46233681aefe9aac498910392c5c817d35c5bbac9"
+    },
+    {
+      "id": "quick-fix-provider/addNameToNamelessParameter/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/addNameToNamelessParameter.ts",
+      "source_sha256": "edeca87ece78b63ee818bbbd6cdc93667fa3a3f6b96dff7bf0a79deca0873c6e"
+    },
+    {
+      "id": "quick-fix-provider/addOptionalPropertyUndefined/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/addOptionalPropertyUndefined.ts",
+      "source_sha256": "ef4707d101639b1ae14966be9c7a56b2223328a797f716ee12362fc089f423f6"
+    },
+    {
+      "id": "quick-fix-provider/annotateWithTypeFromJSDoc/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/annotateWithTypeFromJSDoc.ts",
+      "source_sha256": "58a6f6c22881f34ac535b496e2715c00d03bc1146e25bb00d4bb232c7f7dd395"
+    },
+    {
+      "id": "quick-fix-provider/convertConstToLet/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/convertConstToLet.ts",
+      "source_sha256": "63a154a01a39987191884d052e9de48e6c829aa075d6851dd77f0b453453852c"
+    },
+    {
+      "id": "quick-fix-provider/convertFunctionToEs6Class/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/convertFunctionToEs6Class.ts",
+      "source_sha256": "3a1706c57c427ff99b9e9ed581359881b339b7e768098481b9b43324a19ad83b"
+    },
+    {
+      "id": "quick-fix-provider/convertLiteralTypeToMappedType/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/convertLiteralTypeToMappedType.ts",
+      "source_sha256": "082c811f3fa5ab098f36e77a2224ac8ee9bbd1cd39226fe876d209fb2acb0404"
+    },
+    {
+      "id": "quick-fix-provider/convertToAsyncFunction/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/convertToAsyncFunction.ts",
+      "source_sha256": "4c167ebbb0da45586e9664d68d22a6fd526eb1c27c2b8eaf56f397ab0fb01658"
+    },
+    {
+      "id": "quick-fix-provider/convertToEsModule/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/convertToEsModule.ts",
+      "source_sha256": "846c853838c8b481224b972af71369938301cd7955bee98d3a549f3dfcbfce4f"
+    },
+    {
+      "id": "quick-fix-provider/convertToMappedObjectType/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/convertToMappedObjectType.ts",
+      "source_sha256": "07b94c0026abd5d3392a73dde830813a769e3aae2e434171be50650b30149de3"
+    },
+    {
+      "id": "quick-fix-provider/convertToTypeOnlyExport/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/convertToTypeOnlyExport.ts",
+      "source_sha256": "a17568fa579d9cde2964cc14c19fea4d48546cca6a6364cda71415d92fabde67"
+    },
+    {
+      "id": "quick-fix-provider/convertToTypeOnlyImport/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/convertToTypeOnlyImport.ts",
+      "source_sha256": "2edd3c734c90cd25f0ecb079d35072c7ea7eff929e88474613c63a8f588a8b44"
+    },
+    {
+      "id": "quick-fix-provider/convertTypedefToType/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/convertTypedefToType.ts",
+      "source_sha256": "6197df4182302deab81be4a6dddae93b568254dab65aa07d9557aa6bc90991c8"
+    },
+    {
+      "id": "quick-fix-provider/correctQualifiedNameToIndexedAccessType/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/correctQualifiedNameToIndexedAccessType.ts",
+      "source_sha256": "8656babb232c9ae895c2cf5cdcf64dcd90690d5c24e557750d382dbb5fc5838a"
+    },
+    {
+      "id": "quick-fix-provider/disableJsDiagnostics/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/disableJsDiagnostics.ts",
+      "source_sha256": "8e6a26ea35f848b4ca8b167b4bf65e435c88ef9ecbaa9c1eca8732fc54b7f735",
+      "exclusion": "JavaScript language service is outside TS/TSX editor parity"
+    },
+    {
+      "id": "quick-fix-provider/fixAddMissingConstraint/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixAddMissingConstraint.ts",
+      "source_sha256": "18ba5a2b3644b82951cd9b9472d7cd011e7516c68c0ced6c16259d7267dabe81"
+    },
+    {
+      "id": "quick-fix-provider/fixAddMissingMember/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixAddMissingMember.ts",
+      "source_sha256": "d5314e3b2170329e879060f949b3a47adecf38feb663fa1b72164296503fe8a9"
+    },
+    {
+      "id": "quick-fix-provider/fixAddMissingNewOperator/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixAddMissingNewOperator.ts",
+      "source_sha256": "0c62e7f8f94b68f88937cc4770c311669022d7279b3fabf3e69dfa107d6ede6e"
+    },
+    {
+      "id": "quick-fix-provider/fixAddMissingParam/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixAddMissingParam.ts",
+      "source_sha256": "fcf7bfcf8939a4891d2fd5831a21d75e90e94dbfedc19e0dc16359795dce8e54"
+    },
+    {
+      "id": "quick-fix-provider/fixAddModuleReferTypeMissingTypeof/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixAddModuleReferTypeMissingTypeof.ts",
+      "source_sha256": "a210f721fb260d4af5c82f383f633a12315356e89be40cc16ed6faea17f85ee2"
+    },
+    {
+      "id": "quick-fix-provider/fixAddVoidToPromise/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixAddVoidToPromise.ts",
+      "source_sha256": "68379ace865b5050f85ee8414bacd1cf35a5a435271404f9b3b860128be5f50d"
+    },
+    {
+      "id": "quick-fix-provider/fixAwaitInSyncFunction/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixAwaitInSyncFunction.ts",
+      "source_sha256": "0a6c6e0c43807d51e034f91862934316ee656179551d723f135e999c4e69e848"
+    },
+    {
+      "id": "quick-fix-provider/fixCannotFindModule/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixCannotFindModule.ts",
+      "source_sha256": "e793f18f9b3cd2dffd9f97390ffeef2f34d8f4b34875a36b1136d574d1c8ab81",
+      "exclusion": "npm/automatic typing acquisition is outside embedded TS/TSX editor parity"
+    },
+    {
+      "id": "quick-fix-provider/fixClassDoesntImplementInheritedAbstractMember/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixClassDoesntImplementInheritedAbstractMember.ts",
+      "source_sha256": "84e3e17c6e8d1cad10abb3862563e618cb144207c4067d9d83d8e99ede61f846"
+    },
+    {
+      "id": "quick-fix-provider/fixClassIncorrectlyImplementsInterface/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixClassIncorrectlyImplementsInterface.ts",
+      "source_sha256": "d75adbaf45bbfe3f1054d97a634d80fb627b9b242c1b108687a80d63899eed30"
+    },
+    {
+      "id": "quick-fix-provider/fixClassSuperMustPrecedeThisAccess/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixClassSuperMustPrecedeThisAccess.ts",
+      "source_sha256": "602e871483539af04ff2c480de29ddd4780bad82e8fadf2a3ced1ac90a2d208c"
+    },
+    {
+      "id": "quick-fix-provider/fixConstructorForDerivedNeedSuperCall/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixConstructorForDerivedNeedSuperCall.ts",
+      "source_sha256": "43280aecfe8d22a8f14ffd355aa1638dfa701d845a2fe637ad68417e74d3253f"
+    },
+    {
+      "id": "quick-fix-provider/fixEnableJsxFlag/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixEnableJsxFlag.ts",
+      "source_sha256": "20f253025ba0af7a98008ec7adbe7e33d457d801f1583209615aa519b4d41277"
+    },
+    {
+      "id": "quick-fix-provider/fixExpectedComma/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixExpectedComma.ts",
+      "source_sha256": "74b752751bbc0d9441c6a32c2c06e2f3a7e30c1e9a995dc6abcd5f9dc3e6c482"
+    },
+    {
+      "id": "quick-fix-provider/fixExtendsInterfaceBecomesImplements/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixExtendsInterfaceBecomesImplements.ts",
+      "source_sha256": "5e0ba84153ae827c76c1ea3a76b50dd9b938448869ba38d939ccf61cb73fd36d"
+    },
+    {
+      "id": "quick-fix-provider/fixForgottenThisPropertyAccess/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixForgottenThisPropertyAccess.ts",
+      "source_sha256": "1e450de8745d2630888281d694830731260472443e1ab5a3452afc948b4b93e8"
+    },
+    {
+      "id": "quick-fix-provider/fixImplicitThis/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixImplicitThis.ts",
+      "source_sha256": "e9cc96c583d28f304f374f28a85f3409307a2d2b813b5d0f26cb340ce69b3b31"
+    },
+    {
+      "id": "quick-fix-provider/fixImportNonExportedMember/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixImportNonExportedMember.ts",
+      "source_sha256": "27ea6c0df3c5753448360b86b9afc67dcc0d3ed7b05a1340eac19b138fb1eb04"
+    },
+    {
+      "id": "quick-fix-provider/fixIncorrectNamedTupleSyntax/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixIncorrectNamedTupleSyntax.ts",
+      "source_sha256": "0e9060d31c8c7f45f4b1ba03588c5c9349117d911b09bbb498259de8243e5255"
+    },
+    {
+      "id": "quick-fix-provider/fixInvalidImportSyntax/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixInvalidImportSyntax.ts",
+      "source_sha256": "4d6161d035ea1c25b6feef3f8969dd03affdd36d247a8c1fe5b8f850dda731e0"
+    },
+    {
+      "id": "quick-fix-provider/fixInvalidImportSyntax/2",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixInvalidImportSyntax.ts",
+      "source_sha256": "4d6161d035ea1c25b6feef3f8969dd03affdd36d247a8c1fe5b8f850dda731e0"
+    },
+    {
+      "id": "quick-fix-provider/fixInvalidJsxCharacters/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixInvalidJsxCharacters.ts",
+      "source_sha256": "6a860606e97687175667a677bba43bfd3e16863b22f3ff6179dc091e7b85eb4e"
+    },
+    {
+      "id": "quick-fix-provider/fixJSDocTypes/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixJSDocTypes.ts",
+      "source_sha256": "bb3684be1753f3a489d0b2c58c0806a8496bd83989e55ed958c7bf190a308b7d"
+    },
+    {
+      "id": "quick-fix-provider/fixMissingCallParentheses/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixMissingCallParentheses.ts",
+      "source_sha256": "cd0ad8ae18e3796c0cf59cfb69c8ab1524e3b78b54ae476c23e13aee93bf9dce"
+    },
+    {
+      "id": "quick-fix-provider/fixMissingTypeAnnotationOnExports/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixMissingTypeAnnotationOnExports.ts",
+      "source_sha256": "2c64921a71ad0a427177ca67451bfea68aae2b20f75857a403a7906427e4a017"
+    },
+    {
+      "id": "quick-fix-provider/fixModuleAndTargetOptions/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixModuleAndTargetOptions.ts",
+      "source_sha256": "d7efbfdd3a01bbce88e1a7b624a314b7b0a33f065e9e5b07fd05962bb37a07cc"
+    },
+    {
+      "id": "quick-fix-provider/fixNaNEquality/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixNaNEquality.ts",
+      "source_sha256": "d6b53a8631fa3d1be859aeafcb2f47ebe1c3c2dbeb679559cd68790d08b3e89e"
+    },
+    {
+      "id": "quick-fix-provider/fixNoPropertyAccessFromIndexSignature/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixNoPropertyAccessFromIndexSignature.ts",
+      "source_sha256": "50e602f202252c066e5ea2e0f46539307bc384ae6cff336ea5d3d1c4385844b1"
+    },
+    {
+      "id": "quick-fix-provider/fixOverrideModifier/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixOverrideModifier.ts",
+      "source_sha256": "d50c0e6e3e32cf25b6bdeca388f633a6d64f62cbecd28d943802e950f0783709"
+    },
+    {
+      "id": "quick-fix-provider/fixPropertyAssignment/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixPropertyAssignment.ts",
+      "source_sha256": "4292c46e00529b1f8f9319b263286288ea9568177d3b0af17a28234dffc0232d"
+    },
+    {
+      "id": "quick-fix-provider/fixPropertyOverrideAccessor/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixPropertyOverrideAccessor.ts",
+      "source_sha256": "22bd41dbe61c52e9bb13f530a5e03bceefe907a767cff74d9f6194b686128751"
+    },
+    {
+      "id": "quick-fix-provider/fixReturnTypeInAsyncFunction/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixReturnTypeInAsyncFunction.ts",
+      "source_sha256": "6d75798f6431eda69c90fd28e93f47c69f435f3b20be662ecbcfaf93eeb14384"
+    },
+    {
+      "id": "quick-fix-provider/fixSpelling/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixSpelling.ts",
+      "source_sha256": "14733f15d79faa6d1b9f2e79339eea900b12960b50aa1fb66ae55ac50b8da568"
+    },
+    {
+      "id": "quick-fix-provider/fixStrictClassInitialization/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixStrictClassInitialization.ts",
+      "source_sha256": "662512b0bc86e3d5f64ff039d628dd73aa6a8aebb05a53534a8bb54a202355dd"
+    },
+    {
+      "id": "quick-fix-provider/fixUnmatchedParameter/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixUnmatchedParameter.ts",
+      "source_sha256": "b58f6d0088259e6193cbe888b5096a29b4901dbd50f4a086fbabaef8852dcaea"
+    },
+    {
+      "id": "quick-fix-provider/fixUnreachableCode/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixUnreachableCode.ts",
+      "source_sha256": "b53d0c7766f4614953443a5bbdf520bac1d02d151b364d949dd3f733a64e3930"
+    },
+    {
+      "id": "quick-fix-provider/fixUnreferenceableDecoratorMetadata/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixUnreferenceableDecoratorMetadata.ts",
+      "source_sha256": "3873577ee8e0599f69208bca9ad427c057d90945a6af720ada868a3389d1ded2"
+    },
+    {
+      "id": "quick-fix-provider/fixUnusedIdentifier/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixUnusedIdentifier.ts",
+      "source_sha256": "a5b0e0c8a59686dc8922216d5894b58a6d885de82976d76ca7ecb2ef08ba4388"
+    },
+    {
+      "id": "quick-fix-provider/fixUnusedLabel/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/fixUnusedLabel.ts",
+      "source_sha256": "fe002ab8ca9237e5e9ad02881ff15509ffa86f749506477a904494bc73d41069"
+    },
+    {
+      "id": "quick-fix-provider/importFixes/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/importFixes.ts",
+      "source_sha256": "4166d8b757f4aeb553f5316dc13b58a6106e19b12e3aa91b2dacf4db034c099b"
+    },
+    {
+      "id": "quick-fix-provider/inferFromUsage/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/inferFromUsage.ts",
+      "source_sha256": "88985269d2bba9890bfec2d281d2481647433385fbe85a3619fc3ba3edddeab1"
+    },
+    {
+      "id": "quick-fix-provider/removeAccidentalCallParentheses/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/removeAccidentalCallParentheses.ts",
+      "source_sha256": "08d16c52a2d1a2f3152023a11ec8c927c54e7aa1de0cc0c8f12a62f509fa88e6"
+    },
+    {
+      "id": "quick-fix-provider/removeUnnecessaryAwait/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/removeUnnecessaryAwait.ts",
+      "source_sha256": "5e4e3caf38a5c15d7eebfbd26461437e0ec068e06c56385b68be2851dac6d01c"
+    },
+    {
+      "id": "quick-fix-provider/requireInTs/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/requireInTs.ts",
+      "source_sha256": "46b9de95cfb68aee595907470396f6812223756333ce0318d703de60008fd016"
+    },
+    {
+      "id": "quick-fix-provider/returnValueCorrect/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/returnValueCorrect.ts",
+      "source_sha256": "a3fb0251d318def419d5c6f2ee8c7e9c1f904e9db6e8d69fa64dfdb56949c0f2"
+    },
+    {
+      "id": "quick-fix-provider/splitTypeOnlyImport/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/splitTypeOnlyImport.ts",
+      "source_sha256": "64fee7004663098937dba4b40762c487d98cbf10dfd61ca92af426c762c9287d"
+    },
+    {
+      "id": "quick-fix-provider/useBigintLiteral/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/useBigintLiteral.ts",
+      "source_sha256": "9f1f5bc79e1acaefe62e2c1c21d4f47bf3fff5ecd1384d24ccefaf6297ce785f"
+    },
+    {
+      "id": "quick-fix-provider/useDefaultImport/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/useDefaultImport.ts",
+      "source_sha256": "4ce386f1228fdc9697cbca38dc9035564d9baf412b65e6f61a052289c518f894"
+    },
+    {
+      "id": "quick-fix-provider/wrapDecoratorInParentheses/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/wrapDecoratorInParentheses.ts",
+      "source_sha256": "36e296010551af0bfcf1c55e626546fe9e02a470825a779f05d79c772749013b"
+    },
+    {
+      "id": "quick-fix-provider/wrapJsxInFragment/1",
+      "category": "quick-fix-provider",
+      "source": "typescript:src/services/codefixes/wrapJsxInFragment.ts",
+      "source_sha256": "98e89e6005984f6e9dbe345b356db109563e74f9f4f7de918355cbf7ddcc5338"
+    },
+    {
+      "id": "refactor-kind/refactor.extract.constant",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/extractSymbol.ts",
+      "source_sha256": "9041813803303a24b6aa17db88ca45c61fc4e24e519b54a9d3954d4d35f16f73"
+    },
+    {
+      "id": "refactor-kind/refactor.extract.function",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/extractSymbol.ts",
+      "source_sha256": "9041813803303a24b6aa17db88ca45c61fc4e24e519b54a9d3954d4d35f16f73"
+    },
+    {
+      "id": "refactor-kind/refactor.extract.interface",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/extractType.ts",
+      "source_sha256": "1c9771844ea117e1414365311fb181ca3a8fc58dcea06e761abd6d47c190a93f"
+    },
+    {
+      "id": "refactor-kind/refactor.extract.type",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/extractType.ts",
+      "source_sha256": "1c9771844ea117e1414365311fb181ca3a8fc58dcea06e761abd6d47c190a93f"
+    },
+    {
+      "id": "refactor-kind/refactor.extract.typedef",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/extractType.ts",
+      "source_sha256": "1c9771844ea117e1414365311fb181ca3a8fc58dcea06e761abd6d47c190a93f"
+    },
+    {
+      "id": "refactor-kind/refactor.inline.variable",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/inlineVariable.ts",
+      "source_sha256": "ec08d57e8e89779786498a060c31f69791af6b2b6478ac6a974258715773bf59"
+    },
+    {
+      "id": "refactor-kind/refactor.move.file",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/moveToFile.ts",
+      "source_sha256": "4cc95490781a41685f38f713db468572e0f69fd3cd0b31fde7f2a2bd996e801e"
+    },
+    {
+      "id": "refactor-kind/refactor.move.newFile",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/moveToNewFile.ts",
+      "source_sha256": "e39f6b5c6594dc711bd44fd98fdf897d803806def287889d4fab262d5e199d45"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.arrow.braces.add",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/addOrRemoveBracesToArrowFunction.ts",
+      "source_sha256": "f56f582271454d26430efa73de8f623bc89bb47a2c47feac9e96c51c104349f6"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.arrow.braces.remove",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/addOrRemoveBracesToArrowFunction.ts",
+      "source_sha256": "f56f582271454d26430efa73de8f623bc89bb47a2c47feac9e96c51c104349f6"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.export.default",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/convertExport.ts",
+      "source_sha256": "0e99fdb9dfc44fffee584871f963026636ae45648ead55abe92e848c899143cc"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.export.named",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/convertExport.ts",
+      "source_sha256": "0e99fdb9dfc44fffee584871f963026636ae45648ead55abe92e848c899143cc"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.expression.optionalChain",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/convertToOptionalChainExpression.ts",
+      "source_sha256": "dab776403e46430afdffc6793dd9c835294cb89232bf77e924c822855eb0e23f"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.function.anonymous",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/convertArrowFunctionOrFunctionExpression.ts",
+      "source_sha256": "07f9fe8affce4a8b85c4f7b2bc2abf1b64574116cdf8059aa9ea7a0f4c7c2d32"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.function.arrow",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/convertArrowFunctionOrFunctionExpression.ts",
+      "source_sha256": "07f9fe8affce4a8b85c4f7b2bc2abf1b64574116cdf8059aa9ea7a0f4c7c2d32"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.function.named",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/convertArrowFunctionOrFunctionExpression.ts",
+      "source_sha256": "07f9fe8affce4a8b85c4f7b2bc2abf1b64574116cdf8059aa9ea7a0f4c7c2d32"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.function.overloadList",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/convertOverloadListToSingleSignature.ts",
+      "source_sha256": "b7486198935e2b793284176d13c7e21fd25e31efd24f37d6287d069fc1a01345"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.function.returnType",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/inferFunctionReturnType.ts",
+      "source_sha256": "3e6fa8aa0c694870e0838487ef85874dd30b9bf9ebef9ba0007651237fdbbf59"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.import.default",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/convertImport.ts",
+      "source_sha256": "7bdb364b2e5b6d2368435c5895acf230fc5557be6e4e4262b79ce9480738d2d6"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.import.named",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/convertImport.ts",
+      "source_sha256": "7bdb364b2e5b6d2368435c5895acf230fc5557be6e4e4262b79ce9480738d2d6"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.import.namespace",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/convertImport.ts",
+      "source_sha256": "7bdb364b2e5b6d2368435c5895acf230fc5557be6e4e4262b79ce9480738d2d6"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.parameters.toDestructured",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/convertParamsToDestructuredObject.ts",
+      "source_sha256": "fb766156d001b915911215e0258d4ee07e7441f33e91dbaf23dfbcb202901b74"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.property.generateAccessors",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/generateGetAccessorAndSetAccessor.ts",
+      "source_sha256": "f2ce6aca978be57e87b0aff2e55f6019d7026a51219cc90ac1362bb37fa3a0bc"
+    },
+    {
+      "id": "refactor-kind/refactor.rewrite.string",
+      "category": "refactor-kind",
+      "source": "typescript:src/services/refactors/convertStringOrTemplateLiteral.ts",
+      "source_sha256": "8df13c7e8d089222da1ab81ac90caf6642e161166e780abbafa6de0cee5a4cbc"
+    },
+    {
+      "id": "refactor-provider/addOrRemoveBracesToArrowFunction/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/addOrRemoveBracesToArrowFunction.ts",
+      "source_sha256": "f56f582271454d26430efa73de8f623bc89bb47a2c47feac9e96c51c104349f6"
+    },
+    {
+      "id": "refactor-provider/convertArrowFunctionOrFunctionExpression/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/convertArrowFunctionOrFunctionExpression.ts",
+      "source_sha256": "07f9fe8affce4a8b85c4f7b2bc2abf1b64574116cdf8059aa9ea7a0f4c7c2d32"
+    },
+    {
+      "id": "refactor-provider/convertExport/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/convertExport.ts",
+      "source_sha256": "0e99fdb9dfc44fffee584871f963026636ae45648ead55abe92e848c899143cc"
+    },
+    {
+      "id": "refactor-provider/convertImport/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/convertImport.ts",
+      "source_sha256": "7bdb364b2e5b6d2368435c5895acf230fc5557be6e4e4262b79ce9480738d2d6"
+    },
+    {
+      "id": "refactor-provider/convertOverloadListToSingleSignature/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/convertOverloadListToSingleSignature.ts",
+      "source_sha256": "b7486198935e2b793284176d13c7e21fd25e31efd24f37d6287d069fc1a01345"
+    },
+    {
+      "id": "refactor-provider/convertParamsToDestructuredObject/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/convertParamsToDestructuredObject.ts",
+      "source_sha256": "fb766156d001b915911215e0258d4ee07e7441f33e91dbaf23dfbcb202901b74"
+    },
+    {
+      "id": "refactor-provider/convertStringOrTemplateLiteral/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/convertStringOrTemplateLiteral.ts",
+      "source_sha256": "8df13c7e8d089222da1ab81ac90caf6642e161166e780abbafa6de0cee5a4cbc"
+    },
+    {
+      "id": "refactor-provider/convertToOptionalChainExpression/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/convertToOptionalChainExpression.ts",
+      "source_sha256": "dab776403e46430afdffc6793dd9c835294cb89232bf77e924c822855eb0e23f"
+    },
+    {
+      "id": "refactor-provider/extractSymbol/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/extractSymbol.ts",
+      "source_sha256": "9041813803303a24b6aa17db88ca45c61fc4e24e519b54a9d3954d4d35f16f73"
+    },
+    {
+      "id": "refactor-provider/extractType/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/extractType.ts",
+      "source_sha256": "1c9771844ea117e1414365311fb181ca3a8fc58dcea06e761abd6d47c190a93f"
+    },
+    {
+      "id": "refactor-provider/generateGetAccessorAndSetAccessor/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/generateGetAccessorAndSetAccessor.ts",
+      "source_sha256": "f2ce6aca978be57e87b0aff2e55f6019d7026a51219cc90ac1362bb37fa3a0bc"
+    },
+    {
+      "id": "refactor-provider/inferFunctionReturnType/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/inferFunctionReturnType.ts",
+      "source_sha256": "3e6fa8aa0c694870e0838487ef85874dd30b9bf9ebef9ba0007651237fdbbf59"
+    },
+    {
+      "id": "refactor-provider/inlineVariable/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/inlineVariable.ts",
+      "source_sha256": "ec08d57e8e89779786498a060c31f69791af6b2b6478ac6a974258715773bf59"
+    },
+    {
+      "id": "refactor-provider/moveToFile/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/moveToFile.ts",
+      "source_sha256": "4cc95490781a41685f38f713db468572e0f69fd3cd0b31fde7f2a2bd996e801e"
+    },
+    {
+      "id": "refactor-provider/moveToNewFile/1",
+      "category": "refactor-provider",
+      "source": "typescript:src/services/refactors/moveToNewFile.ts",
+      "source_sha256": "e39f6b5c6594dc711bd44fd98fdf897d803806def287889d4fab262d5e199d45"
+    },
+    {
+      "id": "source-action-provider/SourceAction",
+      "category": "source-action-provider",
+      "source": "tls:src/features/codeActions/fixAll.ts",
+      "source_sha256": "055eff9a363edde9a250b861398f0165016d4996213744fd93c3123d56d17292"
+    },
+    {
+      "id": "source-action-provider/SourceAddMissingImports",
+      "category": "source-action-provider",
+      "source": "tls:src/features/codeActions/fixAll.ts",
+      "source_sha256": "055eff9a363edde9a250b861398f0165016d4996213744fd93c3123d56d17292"
+    },
+    {
+      "id": "source-action-provider/SourceFixAll",
+      "category": "source-action-provider",
+      "source": "tls:src/features/codeActions/fixAll.ts",
+      "source_sha256": "055eff9a363edde9a250b861398f0165016d4996213744fd93c3123d56d17292"
+    },
+    {
+      "id": "source-action-provider/SourceRemoveUnused",
+      "category": "source-action-provider",
+      "source": "tls:src/features/codeActions/fixAll.ts",
+      "source_sha256": "055eff9a363edde9a250b861398f0165016d4996213744fd93c3123d56d17292"
+    },
+    {
+      "id": "source-action-provider/TypeScriptAutoFixProvider",
+      "category": "source-action-provider",
+      "source": "tls:src/features/codeActions/fixAll.ts",
+      "source_sha256": "055eff9a363edde9a250b861398f0165016d4996213744fd93c3123d56d17292"
+    },
+    {
+      "id": "source-action-provider/organizeImportsCommand",
+      "category": "source-action-provider",
+      "source": "tls:src/organize-imports.ts",
+      "source_sha256": "089a8f3cbd386bae8ab73218a59b801b233d6ca9e42345c4c7e78a9605655b4d"
+    },
+    {
+      "id": "source-action-provider/removeUnusedImportsCommand",
+      "category": "source-action-provider",
+      "source": "tls:src/organize-imports.ts",
+      "source_sha256": "089a8f3cbd386bae8ab73218a59b801b233d6ca9e42345c4c7e78a9605655b4d"
+    },
+    {
+      "id": "source-action-provider/sortImportsCommand",
+      "category": "source-action-provider",
+      "source": "tls:src/organize-imports.ts",
+      "source_sha256": "089a8f3cbd386bae8ab73218a59b801b233d6ca9e42345c4c7e78a9605655b4d"
+    }
+  ]
+}

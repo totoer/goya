@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "interface Shape { value: number; run(input: number): string; }\nclass Box implements Shape {}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "actions-no-result-normalized",
+  "initialization": {
+    "capabilities": {}
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "interface Shape { value: number; run(input: number): string; }\nclass Box implements Shape {}\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 1,
+            "character": 6
+          },
+          "end": {
+            "line": 1,
+            "character": 9
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Implement interface 'Shape'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixClassIncorrectlyImplementsInterface",
+                  "description": "Implement interface 'Shape'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 29
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 29
+                          },
+                          "newText": "\n    value: number;"
+                        },
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 29
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 29
+                          },
+                          "newText": "\n    run(input: number): string {\n        throw new Error(\"Method not implemented.\");\n    }"
+                        },
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 29
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 29
+                          },
+                          "newText": "\n"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 6
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 9
+                    }
+                  },
+                  "message": "Class 'Box' incorrectly implements interface 'Shape'.\n  Type 'Box' is missing the following properties from type 'Shape': value, run",
+                  "severity": 1,
+                  "code": 2420,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 6
+                },
+                "end": {
+                  "line": 1,
+                  "character": 9
+                }
+              },
+              "message": "Class 'Box' incorrectly implements interface 'Shape'.\n  Type 'Box' is missing the following properties from type 'Shape': value, run",
+              "severity": 1,
+              "code": 2420,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 1
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 28
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 28
+                      }
+                    },
+                    "newText": "\n    value: number;"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 28
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 28
+                      }
+                    },
+                    "newText": "\n    run(input: number): string {\n        throw new Error(\"Method not implemented.\");\n    }"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 28
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 28
+                      }
+                    },
+                    "newText": "\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": true
+        }
+      ]
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

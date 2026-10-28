@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "interface RecordType { \"old-name\": number; 1: string; }\nconst record: RecordType = {\"old-name\": 1, 1: \"one\"};\nrecord[\"old-name\"]; record[1];\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "rename-string-numeric-property",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "interface RecordType { \"old-name\": number; 1: string; }\nconst record: RecordType = {\"old-name\": 1, 1: \"one\"};\nrecord[\"old-name\"]; record[1];\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/prepareRename",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 26
+        }
+      },
+      "expected": {
+        "start": {
+          "line": 0,
+          "character": 24
+        },
+        "end": {
+          "line": 0,
+          "character": 32
+        }
+      }
+    },
+    {
+      "method": "textDocument/rename",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 26
+        },
+        "newName": "new-name"
+      },
+      "expected": {
+        "changes": {
+          "{{ROOT_URI}}/main.ts": [
+            {
+              "newText": "new-name",
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 24
+                },
+                "end": {
+                  "line": 0,
+                  "character": 32
+                }
+              }
+            },
+            {
+              "newText": "new-name",
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 29
+                },
+                "end": {
+                  "line": 1,
+                  "character": 37
+                }
+              }
+            },
+            {
+              "newText": "new-name",
+              "range": {
+                "start": {
+                  "line": 2,
+                  "character": 8
+                },
+                "end": {
+                  "line": 2,
+                  "character": 16
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "textDocument/rename",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 42
+        },
+        "newName": "two"
+      },
+      "expected": null
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

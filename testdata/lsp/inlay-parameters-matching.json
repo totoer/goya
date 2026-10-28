@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "interface Payload { total: number; }\nclass Person { name = \"x\"; }\nfunction makePayload(): Payload { return {total: 1}; }\nfunction makePerson(): Person { return new Person(); }\nfunction greet(message: string, times: number, ...values: number[]) {}\nconst message = \"hello\";\ngreet(message, 2, 3, 4);\nconst data = makePayload();\nlet person = makePerson();\nclass Store { value = makePayload(); flag = true; }\nfunction total() { return 42; }\nconst add = (left: number, right: number) => left + right;\n[1, 2].map((value) => value + 1);\nenum Choice { First, Second, Shift = 1 << 2, Next }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "inlay-parameters-matching",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "interface Payload { total: number; }\nclass Person { name = \"x\"; }\nfunction makePayload(): Payload { return {total: 1}; }\nfunction makePerson(): Person { return new Person(); }\nfunction greet(message: string, times: number, ...values: number[]) {}\nconst message = \"hello\";\ngreet(message, 2, 3, 4);\nconst data = makePayload();\nlet person = makePerson();\nclass Store { value = makePayload(); flag = true; }\nfunction total() { return 42; }\nconst add = (left: number, right: number) => left + right;\n[1, 2].map((value) => value + 1);\nenum Choice { First, Second, Shift = 1 << 2, Next }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/inlayHint",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 14,
+            "character": 0
+          }
+        }
+      },
+      "expected": [
+        {
+          "position": {
+            "line": 6,
+            "character": 6
+          },
+          "label": [
+            {
+              "value": "message",
+              "location": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 4,
+                    "character": 15
+                  },
+                  "end": {
+                    "line": 4,
+                    "character": 22
+                  }
+                }
+              }
+            },
+            {
+              "value": ":"
+            }
+          ],
+          "kind": 2,
+          "paddingRight": true
+        },
+        {
+          "position": {
+            "line": 6,
+            "character": 15
+          },
+          "label": [
+            {
+              "value": "times",
+              "location": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 4,
+                    "character": 32
+                  },
+                  "end": {
+                    "line": 4,
+                    "character": 37
+                  }
+                }
+              }
+            },
+            {
+              "value": ":"
+            }
+          ],
+          "kind": 2,
+          "paddingRight": true
+        },
+        {
+          "position": {
+            "line": 6,
+            "character": 18
+          },
+          "label": [
+            {
+              "value": "...values",
+              "location": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 4,
+                    "character": 50
+                  },
+                  "end": {
+                    "line": 4,
+                    "character": 56
+                  }
+                }
+              }
+            },
+            {
+              "value": ":"
+            }
+          ],
+          "kind": 2,
+          "paddingRight": true
+        },
+        {
+          "position": {
+            "line": 12,
+            "character": 11
+          },
+          "label": [
+            {
+              "value": "callbackfn",
+              "location": {
+                "uri": "goya-lib:///lib.es5.d.ts",
+                "range": {
+                  "start": {
+                    "line": 1467,
+                    "character": 11
+                  },
+                  "end": {
+                    "line": 1467,
+                    "character": 21
+                  }
+                }
+              }
+            },
+            {
+              "value": ":"
+            }
+          ],
+          "kind": 2,
+          "paddingRight": true
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "options": {
+      "preferences": {
+        "includeInlayParameterNameHints": "all",
+        "includeInlayParameterNameHintsWhenArgumentMatchesName": true
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

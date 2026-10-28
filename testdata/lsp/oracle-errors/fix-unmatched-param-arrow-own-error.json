@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "name": "fix-unmatched-param-arrow-own-error",
+  "project": {
+    "files": {
+      "/main.ts": "export const run = /** @param {number} old */ (value: number) => value;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export const run = /** @param {number} old */ (value: number) => value;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected_error": {
+        "code": 1,
+        "message": "<main> TypeScript Server Error (6.0.3)\nDebug Failure. False expression: Changes overlap\r\nVerbose Debug Information: {\"pos\":0,\"end\":45} and {\"pos\":7,\"end\":7}\nError: Debug Failure. False expression: Changes overlap\r\nVerbose Debug Information: {\"pos\":0,\"end\":45} and {\"pos\":7,\"end\":7}\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180564:15\n    at mapDefined (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:2610:22)\n    at Object.getTextChangesFromChanges (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180560:12)\n    at _ChangeTracker.getChanges (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:180457:35)\n    at _ChangeTracker.with (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:179936:20)\n    at getDeleteAction (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:162830:60)\n    at Object.getCodeActionsToFixUnmatchedParameter [as getCodeActions] (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:162805:24)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:155902:46\n    at flatMap (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:2540:17)\n    at Object.getFixes (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:155902:10)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:154165:33\n    at flatMap (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:2540:17)\n    at Object.getCodeFixesAtPosition (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:154163:12)\n    at IpcIOSession.getCodeFixes (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197272:50)\n    at getCodeFixes (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:195277:43)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197591:15\n    at IpcIOSession.executeWithRequestId (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197580:14)\n    at IpcIOSession.executeCommand (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197589:29)\n    at IpcIOSession.onMessage (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197637:68)\n    at process.<anonymous> (/private/tmp/goya-lsp-reference/ts-package/package/lib/_tsserver.js:519:14)\n    at process.emit (node:events:508:28)\n    at emit (node:internal/child_process:949:14)\n    at process.processTicksAndRejections (node:internal/process/task_queues:91:21)"
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

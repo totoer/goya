@@ -1,0 +1,477 @@
+{
+  "schema_version": 1,
+  "name": "fix-unused-delete-all",
+  "project": {
+    "files": {
+      "/main.ts": "export function run() { const first = 1; const second = 2; return 0; }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export function run() { const first = 1; const second = 2; return 0; }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 30
+              },
+              "end": {
+                "line": 0,
+                "character": 35
+              }
+            },
+            "message": "'first' is declared but its value is never read.",
+            "severity": 1,
+            "code": 6133,
+            "source": "typescript"
+          },
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 47
+              },
+              "end": {
+                "line": 0,
+                "character": 53
+              }
+            },
+            "message": "'second' is declared but its value is never read.",
+            "severity": 1,
+            "code": 6133,
+            "source": "typescript"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 30
+                },
+                "end": {
+                  "line": 0,
+                  "character": 35
+                }
+              },
+              "message": "'first' is declared but its value is never read.",
+              "severity": 1,
+              "code": 6133,
+              "source": "typescript"
+            },
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 47
+                },
+                "end": {
+                  "line": 0,
+                  "character": 53
+                }
+              },
+              "message": "'second' is declared but its value is never read.",
+              "severity": 1,
+              "code": 6133,
+              "source": "typescript"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Remove unused declaration for: 'first'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "unusedIdentifier",
+                  "description": "Remove unused declaration for: 'first'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 25
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 41
+                          },
+                          "newText": ""
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "unusedIdentifier_delete",
+                  "fixAllDescription": "Delete all unused declarations"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 30
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 35
+                    }
+                  },
+                  "message": "'first' is declared but its value is never read.",
+                  "severity": 1,
+                  "code": 6133,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 30
+                },
+                "end": {
+                  "line": 0,
+                  "character": 35
+                }
+              },
+              "message": "'first' is declared but its value is never read.",
+              "severity": 1,
+              "code": 6133,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 24
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 40
+                      }
+                    },
+                    "newText": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": true
+        },
+        {
+          "title": "Remove unused declaration for: 'second'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "unusedIdentifier",
+                  "description": "Remove unused declaration for: 'second'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 42
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 59
+                          },
+                          "newText": ""
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "unusedIdentifier_delete",
+                  "fixAllDescription": "Delete all unused declarations"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 47
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 53
+                    }
+                  },
+                  "message": "'second' is declared but its value is never read.",
+                  "severity": 1,
+                  "code": 6133,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 47
+                },
+                "end": {
+                  "line": 0,
+                  "character": 53
+                }
+              },
+              "message": "'second' is declared but its value is never read.",
+              "severity": 1,
+              "code": 6133,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 41
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 58
+                      }
+                    },
+                    "newText": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": true
+        },
+        {
+          "title": "Delete all unused declarations",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "unusedIdentifier"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 30
+                },
+                "end": {
+                  "line": 0,
+                  "character": 35
+                }
+              },
+              "message": "'first' is declared but its value is never read.",
+              "severity": 1,
+              "code": 6133,
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeAction/resolve",
+      "params": {},
+      "params_from_code_action": {
+        "step": 2,
+        "index": 2
+      },
+      "expected": {
+        "title": "Delete all unused declarations",
+        "kind": "quickfix",
+        "command": {
+          "command": "_typescript.applyFixAllCodeAction",
+          "arguments": [
+            {
+              "tsActionId": "unusedIdentifier"
+            }
+          ],
+          "title": ""
+        },
+        "diagnostics": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 30
+              },
+              "end": {
+                "line": 0,
+                "character": 35
+              }
+            },
+            "message": "'first' is declared but its value is never read.",
+            "severity": 1,
+            "code": 6133,
+            "source": "typescript"
+          }
+        ],
+        "isPreferred": false,
+        "data": {
+          "globalId": 1,
+          "providerId": 2
+        },
+        "edit": {
+          "documentChanges": [
+            {
+              "textDocument": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "version": 2
+              },
+              "edits": [
+                {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 24
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 40
+                    }
+                  },
+                  "newText": ""
+                },
+                {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 41
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 58
+                    }
+                  },
+                  "newText": ""
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

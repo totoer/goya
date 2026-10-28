@@ -1,0 +1,330 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.tsx": "declare namespace JSX { interface IntrinsicElements { box: {} } }\nfunction Leaf() { return <box/>; }\nfunction Parent() { return <Leaf></Leaf>; }\nconst node = <Parent/>;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.tsx"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "hierarchy-tsx-tags",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx",
+          "languageId": "typescriptreact",
+          "version": 1,
+          "text": "declare namespace JSX { interface IntrinsicElements { box: {} } }\nfunction Leaf() { return <box/>; }\nfunction Parent() { return <Leaf></Leaf>; }\nconst node = <Parent/>;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/prepareCallHierarchy",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        },
+        "position": {
+          "line": 1,
+          "character": 11
+        }
+      },
+      "expected": [
+        {
+          "kind": 12,
+          "name": "Leaf",
+          "detail": "",
+          "uri": "{{ROOT_URI}}/main.tsx",
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 0
+            },
+            "end": {
+              "line": 1,
+              "character": 34
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 1,
+              "character": 9
+            },
+            "end": {
+              "line": 1,
+              "character": 13
+            }
+          }
+        }
+      ],
+      "source_eof": {}
+    },
+    {
+      "method": "callHierarchy/incomingCalls",
+      "params": {},
+      "params_from_call_hierarchy": {
+        "step": 1,
+        "index": 0
+      },
+      "expected": [
+        {
+          "from": {
+            "kind": 12,
+            "name": "Parent",
+            "detail": "",
+            "uri": "{{ROOT_URI}}/main.tsx",
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 0
+              },
+              "end": {
+                "line": 2,
+                "character": 43
+              }
+            },
+            "selectionRange": {
+              "start": {
+                "line": 2,
+                "character": 9
+              },
+              "end": {
+                "line": 2,
+                "character": 15
+              }
+            }
+          },
+          "fromRanges": [
+            {
+              "start": {
+                "line": 2,
+                "character": 28
+              },
+              "end": {
+                "line": 2,
+                "character": 32
+              }
+            }
+          ]
+        }
+      ],
+      "source_eof": {}
+    },
+    {
+      "method": "callHierarchy/outgoingCalls",
+      "params": {},
+      "params_from_call_hierarchy": {
+        "step": 2,
+        "index": 0
+      },
+      "expected": [
+        {
+          "to": {
+            "kind": 12,
+            "name": "Leaf",
+            "detail": "",
+            "uri": "{{ROOT_URI}}/main.tsx",
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 0
+              },
+              "end": {
+                "line": 1,
+                "character": 34
+              }
+            },
+            "selectionRange": {
+              "start": {
+                "line": 1,
+                "character": 9
+              },
+              "end": {
+                "line": 1,
+                "character": 13
+              }
+            }
+          },
+          "fromRanges": [
+            {
+              "start": {
+                "line": 2,
+                "character": 28
+              },
+              "end": {
+                "line": 2,
+                "character": 32
+              }
+            }
+          ]
+        }
+      ],
+      "source_eof": {}
+    },
+    {
+      "method": "textDocument/prepareCallHierarchy",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        },
+        "position": {
+          "line": 3,
+          "character": 16
+        }
+      },
+      "expected": [
+        {
+          "kind": 12,
+          "name": "Parent",
+          "detail": "",
+          "uri": "{{ROOT_URI}}/main.tsx",
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 0
+            },
+            "end": {
+              "line": 2,
+              "character": 43
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 2,
+              "character": 9
+            },
+            "end": {
+              "line": 2,
+              "character": 15
+            }
+          }
+        }
+      ],
+      "source_eof": {}
+    },
+    {
+      "method": "callHierarchy/incomingCalls",
+      "params": {},
+      "params_from_call_hierarchy": {
+        "step": 4,
+        "index": 0
+      },
+      "expected": [
+        {
+          "from": {
+            "kind": 13,
+            "name": "main.tsx",
+            "detail": "",
+            "uri": "{{ROOT_URI}}/main.tsx",
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 0
+              },
+              "end": {
+                "line": 3,
+                "character": 24
+              }
+            },
+            "selectionRange": {
+              "start": {
+                "line": 0,
+                "character": 0
+              },
+              "end": {
+                "line": 0,
+                "character": 0
+              }
+            }
+          },
+          "fromRanges": [
+            {
+              "start": {
+                "line": 3,
+                "character": 14
+              },
+              "end": {
+                "line": 3,
+                "character": 20
+              }
+            }
+          ]
+        }
+      ],
+      "source_eof": {}
+    },
+    {
+      "method": "callHierarchy/outgoingCalls",
+      "params": {},
+      "params_from_call_hierarchy": {
+        "step": 4,
+        "index": 0
+      },
+      "expected": [
+        {
+          "to": {
+            "kind": 12,
+            "name": "Leaf",
+            "detail": "",
+            "uri": "{{ROOT_URI}}/main.tsx",
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 0
+              },
+              "end": {
+                "line": 1,
+                "character": 34
+              }
+            },
+            "selectionRange": {
+              "start": {
+                "line": 1,
+                "character": 9
+              },
+              "end": {
+                "line": 1,
+                "character": 13
+              }
+            }
+          },
+          "fromRanges": [
+            {
+              "start": {
+                "line": 2,
+                "character": 28
+              },
+              "end": {
+                "line": 2,
+                "character": 32
+              }
+            }
+          ]
+        }
+      ],
+      "source_eof": {}
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

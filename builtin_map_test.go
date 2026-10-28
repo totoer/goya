@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"fmt"
@@ -65,7 +65,7 @@ func TestMapEvilIterator(t *testing.T) {
 func TestMapExportToNilMap(t *testing.T) {
 	vm := New()
 	var m map[int]interface{}
-	res, err := vm.RunString("new Map([[1, true]])")
+	res, err := vm.runVMString("new Map([[1, true]])")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -86,7 +86,7 @@ func TestMapExportToNonNilMap(t *testing.T) {
 	m := map[int]interface{}{
 		2: true,
 	}
-	res, err := vm.RunString("new Map([[1, true]])")
+	res, err := vm.runVMString("new Map([[1, true]])")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -142,7 +142,7 @@ func TestMapGetAdderGetIteratorOrder(t *testing.T) {
 
 func ExampleObject_Export_map() {
 	vm := New()
-	m, err := vm.RunString(`
+	m, err := vm.runVMString(`
 	new Map([[1, true], [2, false]]);
 	`)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleObject_Export_map() {
 
 func ExampleRuntime_ExportTo_mapToMap() {
 	vm := New()
-	m, err := vm.RunString(`
+	m, err := vm.runVMString(`
 	new Map([[1, true], [2, false]]);
 	`)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleRuntime_ExportTo_mapToMap() {
 
 func ExampleRuntime_ExportTo_mapToSlice() {
 	vm := New()
-	m, err := vm.RunString(`
+	m, err := vm.runVMString(`
 	new Map([[1, true], [2, false]]);
 	`)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleRuntime_ExportTo_mapToSlice() {
 
 func ExampleRuntime_ExportTo_mapToTypedSlice() {
 	vm := New()
-	m, err := vm.RunString(`
+	m, err := vm.runVMString(`
 	new Map([[1, true], [2, false]]);
 	`)
 	if err != nil {
@@ -220,7 +220,7 @@ func BenchmarkMapDelete(b *testing.B) {
 }
 
 func BenchmarkMapDeleteJS(b *testing.B) {
-	prg, err := Compile("test.js", `
+	prg, err := compileVMFixture("test.js", `
 	var m = new Map([['a',1], ['b', 2]]);
 	
 	var result = m.delete('a');
@@ -236,7 +236,7 @@ func BenchmarkMapDeleteJS(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		vm := New()
-		_, err := vm.RunProgram(prg)
+		_, err := vm.runVMProgram(prg)
 		if err != nil {
 			b.Fatal(err)
 		}

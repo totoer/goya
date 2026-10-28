@@ -1,13 +1,13 @@
-package goja
+package goya
 
 import (
 	"math/big"
 	"strings"
 
-	"github.com/dop251/goja/ast"
-	"github.com/dop251/goja/file"
-	"github.com/dop251/goja/token"
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/ast"
+	"github.com/totoer/goya/file"
+	"github.com/totoer/goya/token"
+	"github.com/totoer/goya/unistring"
 )
 
 type compiledExpr interface {
@@ -116,6 +116,7 @@ const (
 type compiledFunctionLiteral struct {
 	baseCompiledExpr
 	name            *ast.Identifier
+	nameHint        unistring.String
 	parameterList   *ast.ParameterList
 	body            []ast.Statement
 	source          string
@@ -126,7 +127,10 @@ type compiledFunctionLiteral struct {
 	typ             funcType
 	isExpr          bool
 
-	isAsync, isGenerator bool
+	isAsync, isGenerator       bool
+	isNormalizedAsyncGenerator bool
+	isNormalizedAsync          bool
+	isModule                   bool
 }
 
 type compiledBracketExpr struct {
@@ -1323,13 +1327,15 @@ func (e *compiledFunctionLiteral) compile() (prg *Program, name unistring.String
 	savedPrg := e.c.p
 	preambleLen := 8 // enter, boxThis, loadStack(0), initThis, createArgs, set, loadCallee, init
 	e.c.p = &Program{
-		src:    e.c.p.src,
-		code:   e.c.newCode(preambleLen, 16),
-		srcMap: []srcMapItem{{srcPos: e.offset}},
+		src:      e.c.p.src,
+		checking: e.c.checking,
+		code:     e.c.newCode(preambleLen, 16),
+		srcMap:   []srcMapItem{{srcPos: e.offset}},
 	}
 	e.c.newScope()
 	s := e.c.scope
 	s.funcType = e.typ
+	s.module = e.isModule
 
 	if e.name != nil {
 		name = e.name.Name
@@ -1338,6 +1344,10 @@ func (e *compiledFunctionLiteral) compile() (prg *Program, name unistring.String
 	}
 
 	if name != "" {
+		e.c.p.funcName = name
+	}
+	if e.nameHint != "" {
+		name = e.nameHint
 		e.c.p.funcName = name
 	}
 	savedBlock := e.c.block
@@ -1399,6 +1409,9 @@ func (e *compiledFunctionLiteral) compile() (prg *Program, name unistring.String
 	}
 
 	var thisBinding *binding
+	if e.isModule {
+		s.moveArgsToStash()
+	}
 	if e.typ != funcArrow {
 		thisBinding = s.createThisBinding()
 	}
@@ -1557,7 +1570,7 @@ func (e *compiledFunctionLiteral) compile() (prg *Program, name unistring.String
 		s.moveArgsToStash()
 	}
 
-	if s.argsNeeded || s.isDynamic() && e.typ != funcArrow && e.typ != funcClsInit {
+	if !s.module && (s.argsNeeded || s.isDynamic() && e.typ != funcArrow && e.typ != funcClsInit) {
 		if e.typ == funcClsInit {
 			e.c.throwSyntaxError(e.offset, "'arguments' is not allowed in class field initializer or static initialization block")
 		}
@@ -1703,6 +1716,25 @@ func (e *compiledFunctionLiteral) compile() (prg *Program, name unistring.String
 
 func (e *compiledFunctionLiteral) emitGetter(putOnStack bool) {
 	p, name, length, strict := e.compile()
+	if e.isNormalizedAsyncGenerator {
+		e.c.emit(&newTSAsyncGeneratorFunction{newMethod: newMethod{newFunc: newFunc{prg: p, length: length, name: name, source: e.source, strict: strict}, homeObjOffset: e.homeObjOffset}})
+		if !putOnStack {
+			e.c.emit(pop)
+		}
+		return
+	}
+	if e.isNormalizedAsync {
+		n := newFunc{prg: p, length: length, name: name, source: e.source, strict: strict}
+		if e.typ == funcArrow {
+			e.c.emit(&newTSNormalizedAsyncArrow{newArrowFunc{newFunc: n}})
+		} else {
+			e.c.emit(&newTSNormalizedAsyncFunction{newMethod{newFunc: n, homeObjOffset: e.homeObjOffset}})
+		}
+		if !putOnStack {
+			e.c.emit(pop)
+		}
+		return
+	}
 	switch e.typ {
 	case funcArrow:
 		if e.isAsync {
@@ -1748,16 +1780,20 @@ func (c *compiler) compileFunctionLiteral(v *ast.FunctionLiteral, isExpr bool) *
 		c.throwSyntaxError(int(v.Function)-1, "Async generators are not supported yet")
 	}
 	r := &compiledFunctionLiteral{
-		name:            v.Name,
-		parameterList:   v.ParameterList,
-		body:            v.Body.List,
-		source:          v.Source,
-		declarationList: v.DeclarationList,
-		isExpr:          isExpr,
-		typ:             funcRegular,
-		strict:          strictBody,
-		isAsync:         v.Async,
-		isGenerator:     v.Generator,
+		name:                       v.Name,
+		nameHint:                   v.NameHint,
+		parameterList:              v.ParameterList,
+		body:                       v.Body.List,
+		source:                     v.Source,
+		declarationList:            v.DeclarationList,
+		isExpr:                     isExpr,
+		typ:                        funcRegular,
+		strict:                     strictBody,
+		isAsync:                    v.Async,
+		isGenerator:                v.Generator,
+		isNormalizedAsyncGenerator: v.NormalizedAsyncGenerator,
+		isNormalizedAsync:          v.NormalizedAsync,
+		isModule:                   v.Module,
 	}
 	r.init(c, v.Idx0())
 	return r
@@ -1766,6 +1802,7 @@ func (c *compiler) compileFunctionLiteral(v *ast.FunctionLiteral, isExpr bool) *
 type compiledClassLiteral struct {
 	baseCompiledExpr
 	name       *ast.Identifier
+	nameHint   unistring.String
 	superClass compiledExpr
 	body       []ast.ClassElement
 	lhsName    unistring.String
@@ -1823,6 +1860,9 @@ func (e *compiledClassLiteral) emitGetter(putOnStack bool) {
 		clsBinding = e.c.createLexicalIdBinding(clsName, true, int(name.Idx)-1)
 	} else {
 		clsName = e.lhsName
+	}
+	if e.nameHint != "" {
+		clsName = e.nameHint
 	}
 
 	var ctorMethod *ast.MethodDefinition
@@ -2152,6 +2192,7 @@ func (e *compiledClassLiteral) compileFieldsAndStaticBlocks(elements []clsElemen
 
 	e.c.p = &Program{
 		src:      savedPrg.src,
+		checking: e.c.checking,
 		funcName: funcName,
 		code:     e.c.newCode(2, 16),
 	}
@@ -2228,6 +2269,7 @@ func (c *compiler) compileClassLiteral(v *ast.ClassLiteral, isExpr bool) *compil
 	}
 	r := &compiledClassLiteral{
 		name:       v.Name,
+		nameHint:   v.NameHint,
 		superClass: c.compileExpression(v.SuperClass),
 		body:       v.Body,
 		source:     v.Source,
@@ -2265,29 +2307,27 @@ func (c *compiler) compileArrowFunctionLiteral(v *ast.ArrowFunctionLiteral) *com
 		c.throwSyntaxErrorf(int(b.Idx0())-1, "Unsupported ConciseBody type: %T", b)
 	}
 	r := &compiledFunctionLiteral{
-		parameterList:   v.ParameterList,
-		body:            body,
-		source:          v.Source,
-		declarationList: v.DeclarationList,
-		isExpr:          true,
-		typ:             funcArrow,
-		strict:          strictBody,
-		isAsync:         v.Async,
+		parameterList:     v.ParameterList,
+		nameHint:          v.NameHint,
+		body:              body,
+		source:            v.Source,
+		declarationList:   v.DeclarationList,
+		isExpr:            true,
+		typ:               funcArrow,
+		strict:            strictBody,
+		isAsync:           v.Async,
+		isNormalizedAsync: v.NormalizedAsync,
 	}
 	r.init(c, v.Idx0())
 	return r
 }
 
 func (c *compiler) emitLoadThis() {
-	b, eval := c.scope.lookupThis()
+	b := c.scope.lookupThis()
 	if b != nil {
 		b.emitGet()
 	} else {
-		if eval {
-			c.emit(getThisDynamic{})
-		} else {
-			c.emit(loadGlobalObject)
-		}
+		c.emit(loadGlobalObject)
 	}
 }
 
@@ -3047,7 +3087,7 @@ func (e *compiledCallExpr) emitGetter(putOnStack bool) {
 	if e.isVariadic {
 		e.c.emit(startVariadic)
 	}
-	calleeName := e.c.emitCallee(e.callee)
+	e.c.emitCallee(e.callee)
 
 	for _, expr := range e.args {
 		expr.emitGetter(true)
@@ -3055,43 +3095,14 @@ func (e *compiledCallExpr) emitGetter(putOnStack bool) {
 
 	e.addSrcMap()
 	if _, ok := e.callee.(*compiledSuperExpr); ok {
-		b, eval := e.c.scope.lookupThis()
-		e.c.assert(eval || b != nil, e.offset, "super call, but no 'this' binding")
-		if eval {
-			e.c.emit(resolveThisDynamic{})
-		} else {
-			b.markAccessPoint()
-			e.c.emit(resolveThisStack{})
-		}
+		b := e.c.scope.lookupThis()
+		e.c.assert(b != nil, e.offset, "super call, but no 'this' binding")
+		b.markAccessPoint()
+		e.c.emit(resolveThisStack{})
 		if e.isVariadic {
 			e.c.emit(superCallVariadic)
 		} else {
 			e.c.emit(superCall(len(e.args)))
-		}
-	} else if calleeName == "eval" {
-		foundVar := false
-		for sc := e.c.scope; sc != nil; sc = sc.outer {
-			if !foundVar && (sc.variable || sc.isFunction()) {
-				foundVar = true
-				if !sc.strict {
-					sc.dynamic = true
-				}
-			}
-			sc.dynLookup = true
-		}
-
-		if e.c.scope.strict {
-			if e.isVariadic {
-				e.c.emit(callEvalVariadicStrict)
-			} else {
-				e.c.emit(callEvalStrict(len(e.args)))
-			}
-		} else {
-			if e.isVariadic {
-				e.c.emit(callEvalVariadic)
-			} else {
-				e.c.emit(callEval(len(e.args)))
-			}
 		}
 	} else {
 		if e.isVariadic {
@@ -3160,6 +3171,17 @@ func (c *compiler) compileCallExpression(v *ast.CallExpression) compiledExpr {
 }
 
 func (c *compiler) compileIdentifierExpression(v *ast.Identifier) compiledExpr {
+	if v.Name == "\x00goya.dynamicImport" || v.Name == "\x00goya.dynamicImport.defer" {
+		return c.compileEmitterExpr(func() {
+			c.emit(&loadDynamicImport{info: c.checking, from: c.p.src.Name(), deferred: v.Name == "\x00goya.dynamicImport.defer"})
+		}, v.Idx)
+	}
+	if strings.HasPrefix(string(v.Name), "\x00goya.helper.") {
+		return c.compileEmitterExpr(func() { c.emit(loadTypeScriptHelper(strings.TrimPrefix(string(v.Name), "\x00goya.helper."))) }, v.Idx)
+	}
+	if v.Name == "\x00goya.currentCallee" {
+		return c.compileEmitterExpr(func() { c.emit(loadCallee) }, v.Idx)
+	}
 	if c.scope.strict {
 		c.checkIdentifierName(v.Name, int(v.Idx)-1)
 	}

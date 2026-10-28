@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "import {value as imported} from \"./helper\";\n/** @deprecated */\nexport class Zoo {\n constructor(public count: number) {}\n #secret = 1;\n zebra() { const local = 1; return local; }\n get alpha() { return this.count; }\n set alpha(v: number) { this.count = v; }\n}\nexport function beta(x: string): string;\nexport function beta(x: any) { return x; }\nnamespace Named { export interface Shape { size: number; run(): void } }\nconst item = {z: 1, a() { return imported; }};\nconst {z: local, ...rest} = item;\nexport {imported};\n",
+      "/helper.ts": "export const value = 1;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "symbols-document-hierarchical",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "import {value as imported} from \"./helper\";\n/** @deprecated */\nexport class Zoo {\n constructor(public count: number) {}\n #secret = 1;\n zebra() { const local = 1; return local; }\n get alpha() { return this.count; }\n set alpha(v: number) { this.count = v; }\n}\nexport function beta(x: string): string;\nexport function beta(x: any) { return x; }\nnamespace Named { export interface Shape { size: number; run(): void } }\nconst item = {z: 1, a() { return imported; }};\nconst {z: local, ...rest} = item;\nexport {imported};\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/documentSymbol",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": [
+        {
+          "name": "beta",
+          "detail": "",
+          "kind": 12,
+          "range": {
+            "start": {
+              "line": 9,
+              "character": 0
+            },
+            "end": {
+              "line": 9,
+              "character": 40
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 9,
+              "character": 16
+            },
+            "end": {
+              "line": 9,
+              "character": 20
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "beta",
+          "detail": "",
+          "kind": 12,
+          "range": {
+            "start": {
+              "line": 10,
+              "character": 0
+            },
+            "end": {
+              "line": 10,
+              "character": 42
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 10,
+              "character": 0
+            },
+            "end": {
+              "line": 10,
+              "character": 42
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "item",
+          "detail": "",
+          "kind": 14,
+          "range": {
+            "start": {
+              "line": 12,
+              "character": 6
+            },
+            "end": {
+              "line": 12,
+              "character": 45
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 12,
+              "character": 6
+            },
+            "end": {
+              "line": 12,
+              "character": 10
+            }
+          },
+          "children": [
+            {
+              "name": "a",
+              "detail": "",
+              "kind": 6,
+              "range": {
+                "start": {
+                  "line": 12,
+                  "character": 20
+                },
+                "end": {
+                  "line": 12,
+                  "character": 44
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 12,
+                  "character": 20
+                },
+                "end": {
+                  "line": 12,
+                  "character": 21
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "z",
+              "detail": "",
+              "kind": 7,
+              "range": {
+                "start": {
+                  "line": 12,
+                  "character": 14
+                },
+                "end": {
+                  "line": 12,
+                  "character": 18
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 12,
+                  "character": 14
+                },
+                "end": {
+                  "line": 12,
+                  "character": 15
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "local",
+          "detail": "",
+          "kind": 14,
+          "range": {
+            "start": {
+              "line": 13,
+              "character": 7
+            },
+            "end": {
+              "line": 13,
+              "character": 15
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 13,
+              "character": 10
+            },
+            "end": {
+              "line": 13,
+              "character": 15
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "Named",
+          "detail": "",
+          "kind": 2,
+          "range": {
+            "start": {
+              "line": 11,
+              "character": 0
+            },
+            "end": {
+              "line": 11,
+              "character": 72
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 11,
+              "character": 10
+            },
+            "end": {
+              "line": 11,
+              "character": 15
+            }
+          },
+          "children": [
+            {
+              "name": "Shape",
+              "detail": "",
+              "kind": 11,
+              "range": {
+                "start": {
+                  "line": 11,
+                  "character": 18
+                },
+                "end": {
+                  "line": 11,
+                  "character": 70
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 11,
+                  "character": 35
+                },
+                "end": {
+                  "line": 11,
+                  "character": 40
+                }
+              },
+              "children": [
+                {
+                  "name": "run",
+                  "detail": "",
+                  "kind": 6,
+                  "range": {
+                    "start": {
+                      "line": 11,
+                      "character": 57
+                    },
+                    "end": {
+                      "line": 11,
+                      "character": 68
+                    }
+                  },
+                  "selectionRange": {
+                    "start": {
+                      "line": 11,
+                      "character": 57
+                    },
+                    "end": {
+                      "line": 11,
+                      "character": 60
+                    }
+                  },
+                  "children": []
+                },
+                {
+                  "name": "size",
+                  "detail": "",
+                  "kind": 7,
+                  "range": {
+                    "start": {
+                      "line": 11,
+                      "character": 43
+                    },
+                    "end": {
+                      "line": 11,
+                      "character": 56
+                    }
+                  },
+                  "selectionRange": {
+                    "start": {
+                      "line": 11,
+                      "character": 43
+                    },
+                    "end": {
+                      "line": 11,
+                      "character": 47
+                    }
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "rest",
+          "detail": "",
+          "kind": 14,
+          "range": {
+            "start": {
+              "line": 13,
+              "character": 17
+            },
+            "end": {
+              "line": 13,
+              "character": 24
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 13,
+              "character": 20
+            },
+            "end": {
+              "line": 13,
+              "character": 24
+            }
+          },
+          "children": []
+        },
+        {
+          "name": "Zoo",
+          "detail": "",
+          "kind": 5,
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 0
+            },
+            "end": {
+              "line": 8,
+              "character": 1
+            }
+          },
+          "selectionRange": {
+            "start": {
+              "line": 2,
+              "character": 13
+            },
+            "end": {
+              "line": 2,
+              "character": 16
+            }
+          },
+          "children": [
+            {
+              "name": "constructor",
+              "detail": "",
+              "kind": 9,
+              "range": {
+                "start": {
+                  "line": 3,
+                  "character": 1
+                },
+                "end": {
+                  "line": 3,
+                  "character": 37
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 3,
+                  "character": 1
+                },
+                "end": {
+                  "line": 3,
+                  "character": 37
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "#secret",
+              "detail": "",
+              "kind": 7,
+              "range": {
+                "start": {
+                  "line": 4,
+                  "character": 1
+                },
+                "end": {
+                  "line": 4,
+                  "character": 13
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 4,
+                  "character": 1
+                },
+                "end": {
+                  "line": 4,
+                  "character": 8
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "alpha",
+              "detail": "",
+              "kind": 6,
+              "range": {
+                "start": {
+                  "line": 6,
+                  "character": 1
+                },
+                "end": {
+                  "line": 6,
+                  "character": 35
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 6,
+                  "character": 5
+                },
+                "end": {
+                  "line": 6,
+                  "character": 10
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "alpha",
+              "detail": "",
+              "kind": 6,
+              "range": {
+                "start": {
+                  "line": 7,
+                  "character": 1
+                },
+                "end": {
+                  "line": 7,
+                  "character": 41
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 7,
+                  "character": 5
+                },
+                "end": {
+                  "line": 7,
+                  "character": 10
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "count",
+              "detail": "",
+              "kind": 7,
+              "range": {
+                "start": {
+                  "line": 3,
+                  "character": 13
+                },
+                "end": {
+                  "line": 3,
+                  "character": 33
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 3,
+                  "character": 20
+                },
+                "end": {
+                  "line": 3,
+                  "character": 25
+                }
+              },
+              "children": []
+            },
+            {
+              "name": "zebra",
+              "detail": "",
+              "kind": 6,
+              "range": {
+                "start": {
+                  "line": 5,
+                  "character": 1
+                },
+                "end": {
+                  "line": 5,
+                  "character": 43
+                }
+              },
+              "selectionRange": {
+                "start": {
+                  "line": 5,
+                  "character": 1
+                },
+                "end": {
+                  "line": 5,
+                  "character": 6
+                }
+              },
+              "children": [
+                {
+                  "name": "local",
+                  "detail": "",
+                  "kind": 14,
+                  "range": {
+                    "start": {
+                      "line": 5,
+                      "character": 17
+                    },
+                    "end": {
+                      "line": 5,
+                      "character": 26
+                    }
+                  },
+                  "selectionRange": {
+                    "start": {
+                      "line": 5,
+                      "character": 17
+                    },
+                    "end": {
+                      "line": 5,
+                      "character": 22
+                    }
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "documentSymbol": {
+          "hierarchicalDocumentSymbolSupport": true
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

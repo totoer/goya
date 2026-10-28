@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "name": "file-rename-configured-moving-importer",
+  "project": {
+    "files": {
+      "/main.ts": "import { value } from \"./helper\";\nexport const result = value;\n",
+      "/helper.ts": "export const value = 1;\n",
+      "/tsconfig.json": "{\"files\": [\"main.ts\"]}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    },
+    "config_file": "/tsconfig.json"
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "import { value } from \"./helper\";\nexport const result = value;\n"
+        }
+      }
+    },
+    {
+      "method": "workspace/willRenameFiles",
+      "params": {
+        "files": [
+          {
+            "oldUri": "{{ROOT_URI}}/main.ts",
+            "newUri": "{{ROOT_URI}}/sub/main.ts"
+          }
+        ]
+      },
+      "expected": {
+        "changes": {
+          "{{ROOT_URI}}/tsconfig.json": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 12
+                },
+                "end": {
+                  "line": 0,
+                  "character": 19
+                }
+              },
+              "newText": "sub/main.ts"
+            }
+          ],
+          "{{ROOT_URI}}/main.ts": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 23
+                },
+                "end": {
+                  "line": 0,
+                  "character": 31
+                }
+              },
+              "newText": "../helper"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

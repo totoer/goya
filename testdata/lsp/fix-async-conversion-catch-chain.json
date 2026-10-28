@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "name": "fix-async-conversion-catch-chain",
+  "project": {
+    "files": {
+      "/main.ts": "export function run() { return Promise.resolve(1).catch((error: unknown) => { void error; return 0; }).then(value => value + 1); }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export function run() { return Promise.resolve(1).catch((error: unknown) => { void error; return 0; }).then(value => value + 1); }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "oracle_wait_ms": 5000,
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 16
+              },
+              "end": {
+                "line": 0,
+                "character": 19
+              }
+            },
+            "message": "This may be converted to an async function.",
+            "severity": 4,
+            "code": 80006,
+            "source": "typescript"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 16
+                },
+                "end": {
+                  "line": 0,
+                  "character": 19
+                }
+              },
+              "severity": 1,
+              "code": 80006,
+              "message": "stale diagnostic"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Convert to async function",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "convertToAsyncFunction",
+                  "description": "Convert to async function",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 8
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 8
+                          },
+                          "newText": "async "
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 25
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 129
+                          },
+                          "newText": "let value_1: never;\ntry {\n    value_1 = await Promise.resolve(1);\n} catch (error) {\n    void error;\n    value_1 = 0;\n}\nreturn value_1 + 1;"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 16
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 19
+                    }
+                  },
+                  "severity": 1,
+                  "code": 80006,
+                  "message": "stale diagnostic"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 16
+                },
+                "end": {
+                  "line": 0,
+                  "character": 19
+                }
+              },
+              "severity": 1,
+              "code": 80006,
+              "message": "stale diagnostic"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 7
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 7
+                      }
+                    },
+                    "newText": "async "
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 24
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 128
+                      }
+                    },
+                    "newText": "let value_1: never;\ntry {\n    value_1 = await Promise.resolve(1);\n} catch (error) {\n    void error;\n    value_1 = 0;\n}\nreturn value_1 + 1;"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  },
+  "edited_compiler_error_codes": [
+    2322,
+    2322
+  ],
+  "edited_compiler_error_reason": "The pinned transformation declares the shared continuation variable as never, retaining the recorded assignment errors; independently verified with TypeScript 6.0.3."
+}

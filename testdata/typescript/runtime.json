@@ -1,0 +1,518 @@
+{
+  "typescript_version": "7.0.2",
+  "status": "development; per-case execution verification is recorded where available",
+  "cases": [
+    {
+      "id": "expressions",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = (1 + 2) * 3 === 9;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "closures",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "function make(x: number) { return (y: number) => x + y; } export const result = make(40)(2) === 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "enum",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "enum Color { Red, Blue } export const result = Color[Color.Blue] === \"Blue\";"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "namespace",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "namespace Values { export const answer = 42; } export const result = Values.answer === 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "parameter-properties",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "class Box { constructor(public value: number) {} } export const result = new Box(42).value === 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "private-fields",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "class Box { #value = 42; get() { return this.#value; } } export const result = new Box().get() === 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "async",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = (await Promise.resolve(42)) === 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "generators",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "function* values() { yield 40; yield 2; } export const result = [...values()].reduce((a,b) => a+b,0) === 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "resource-management",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "const log: string[] = []; { using resource = { [Symbol.dispose]() { log.push(\"disposed\"); } }; log.push(\"body\"); } export const result = log.join(\",\") === \"body,disposed\";"
+      },
+      "options": {
+        "lib": [
+          "es2025",
+          "esnext.disposable"
+        ]
+      },
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "array",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = [1,2,3].toReversed().join(\",\") === \"3,2,1\";"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "string",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = \"\\ud800\".toWellFormed() === \"\\ufffd\";"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "collection",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "const values = new Map<string, number>(); values.set(\"answer\",42); export const result = values.get(\"answer\") === 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "set",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "const values = new Set([1,2]); export const result = values.union(new Set([2,3])).size === 3;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "iterator",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = Iterator.from([1,2,3]).map(x => x*2).toArray().join(\",\") === \"2,4,6\";"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "promise",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "const {promise,resolve} = Promise.withResolvers<number>(); resolve(42); export const result = (await promise) === 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "error",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "const error = new Error(\"outer\", {cause: new Error(\"inner\")}); export const result = (error.cause as Error).message === \"inner\";"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "object",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = Object.groupBy([1,2,3], x => x%2 ? \"odd\" : \"even\").odd?.length === 2;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "number-math",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = Number.isSafeInteger(42) && Math.imul(6,7) === 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "date",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = new Date(0).toISOString() === \"1970-01-01T00:00:00.000Z\";"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "regexp",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "const re=/(?<x>a)|(?<x>b)/dv;const match=re.exec(\"b\")!;export const result=re.unicodeSets&&!re.unicode&&match.groups!.x===\"b\"&&match.indices!.groups!.x===match.indices![2]&&/^[\\p{ASCII}&&\\p{Letter}]+$/v.test(\"abc\")&&/^\\p{RGI_Emoji}$/v.test(\"👩‍🚀\")&&/^(?i:a)(?-i:b)$/.test(\"Ab\");"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "json",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = (JSON.parse(\"{\\\"value\\\":42}\") as {value:number}).value === 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "bigint",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = 9007199254740993n + 1n === 9007199254740994n;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "typed-array",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = new Uint8Array([1,2,3]).toReversed()[0] === 3;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "float16",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = new Float16Array([1.5])[0] === 1.5;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "shared-memory",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "const buffer = new SharedArrayBuffer(4); const data = new Int32Array(buffer); Atomics.store(data,0,42); export const result = Atomics.load(data,0) === 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "weak-reference",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "const value = {}; const ref = new WeakRef(value); export const result = ref.deref() === value;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "finalization",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "const token = {}; const registry = new FinalizationRegistry(() => {}); registry.register({}, \"value\", token); export const result = registry.unregister(token);"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "intl",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "const c=new Intl.Collator(\"en\",{numeric:true});const n=new Intl.NumberFormat(\"de\");const d=new Intl.DateTimeFormat(\"en\",{timeZone:\"UTC\",year:\"numeric\"});const p=new Intl.PluralRules(\"ru\");const r=new Intl.RelativeTimeFormat(\"en\",{numeric:\"auto\"});const l=new Intl.Locale(\"sh\");const names=new Intl.DisplayNames(\"en\",{type:\"region\"});const list=new Intl.ListFormat(\"en\");const s=new Intl.Segmenter(\"en\");const duration=new Intl.DurationFormat(\"en\",{style:\"digital\"});export const result=c.compare(\"2\",\"10\")<0&&n.format(1234.5)===\"1.234,5\"&&d.format(0)===\"1970\"&&p.select(2)===\"few\"&&r.format(-1,\"day\")===\"yesterday\"&&l.baseName===\"sr-Latn\"&&names.of(\"US\")===\"United States\"&&list.format([\"A\",\"B\"])===\"A and B\"&&[...s.segment(\"😀a\")].length===2&&duration.format({minutes:2,seconds:3})===\"0:02:03\";"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "temporal",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = Temporal.Instant.fromEpochMilliseconds(0).epochMilliseconds === 0;"
+      },
+      "options": {
+        "lib": [
+          "esnext"
+        ]
+      },
+      "export": "result",
+      "expected": true,
+      "compilation_diagnostic": 1104,
+      "compilation_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "proxy-reflect",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "const target = {value:42}; const proxy = new Proxy(target,{}); export const result = Reflect.get(proxy,\"value\") === 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "symbol",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "const key = Symbol(\"value\"); const object = {[key]:42}; export const result = object[key] === 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "class-initialization",
+      "files": {
+        "main.ts": "const log: string[] = []; class Base { value = (log.push(\"base\"), 1); } class Child extends Base { value2 = (log.push(\"child\"), 2); static { log.push(\"static\"); } } new Child(); export const result = log.join(\",\") === \"static,base,child\";"
+      },
+      "entry": "main.ts",
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "standard-decorators",
+      "files": {
+        "main.ts": "function mark<T extends new (...args: any[]) => any>(value: T, context: ClassDecoratorContext<T>) { context.addInitializer(function() { (this as any).marked = true; }); } @mark class Value {} export const result = (Value as any).marked === true;"
+      },
+      "entry": "main.ts",
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "legacy-decorators",
+      "options": {
+        "experimentalDecorators": true
+      },
+      "files": {
+        "main.ts": "function mark(value: Function) { (value as any).marked = true; } @mark class Value {} export const result = (Value as any).marked === true;"
+      },
+      "entry": "main.ts",
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "jsx",
+      "entry": "main.tsx",
+      "options": {
+        "jsx": "react",
+        "jsxFactory": "h"
+      },
+      "files": {
+        "main.tsx": "function h(type: string, props: {value: number}) { return {type, props}; } export const result = (<label value={42} />).props.value === 42;",
+        "jsx.d.ts": "declare namespace JSX { interface Element { props: {value: number}; } interface IntrinsicElements { label: {value: number}; } }"
+      },
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "module-live-bindings",
+      "files": {
+        "main.ts": "import {set} from \"./a.js\"; import {read} from \"./b.js\"; set(); export const result = read() === 42;",
+        "a.ts": "import {read} from \"./b.js\"; export let value = 1; export function set() { value = 42; } export function current() { return read(); }",
+        "b.ts": "import {value} from \"./a.js\"; export function read() { return value; }"
+      },
+      "entry": "main.ts",
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "module-import-assignment",
+      "entry": "main.cts",
+      "options": {
+        "module": "nodenext",
+        "moduleResolution": "nodenext"
+      },
+      "files": {
+        "main.cts": "import moduleValue = require(\"./value.cjs\"); export const result = moduleValue.value === 42;",
+        "value.cts": "const moduleValue = {value: 42}; export = moduleValue;"
+      },
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "dynamic-import",
+      "files": {
+        "main.ts": "const {value} = await import(\"./value.js\"); export const result = value === 42;",
+        "value.ts": "export const value = 42;"
+      },
+      "entry": "main.ts",
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "eval",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = !Object.hasOwn(globalThis, \"eval\") && (globalThis as any).eval === undefined;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "function-constructor",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "const C = (globalThis as any).Function; let rejected = false; try { C(\"return 42\"); } catch (e) { rejected = e instanceof EvalError; } export const result = rejected;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "global-functions",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = encodeURIComponent(\"a b\") === \"a%20b\";"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "deferred-import",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "import {log} from \"./state.js\"; import defer * as deferred from \"./value.js\"; const before = log.length; const answer = deferred.answer; export const result = before === 0 && answer === 42 && log.join(\",\") === \"value\";",
+        "state.ts": "export const log: string[] = [];",
+        "value.ts": "import {log} from \"./state.js\"; log.push(\"value\"); export const answer = 42;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "import-attributes",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "import value from \"./value.json\" with {type: \"json\"}; export const result = value.answer === 42;",
+        "value.json": "{\"answer\":42}"
+      },
+      "options": {
+        "resolveJsonModule": true
+      },
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    },
+    {
+      "id": "import-meta",
+      "entry": "main.ts",
+      "files": {
+        "main.ts": "export const result = typeof import.meta === \"object\" && Object.getPrototypeOf(import.meta) === null;"
+      },
+      "options": {},
+      "export": "result",
+      "expected": true,
+      "execution_verification": "TestCheckedRuntimeBaselineFixtures"
+    }
+  ]
+}

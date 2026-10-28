@@ -1,0 +1,694 @@
+{
+  "schema_version": 1,
+  "name": "code-lens-cross-file",
+  "project": {
+    "files": {
+      "/main.ts": "import {target, Base} from \"./helper\";\nexport function run() { target(); }\nrun();\n",
+      "/helper.ts": "export function target() {}\nexport abstract class Base { abstract draw(): void; }\nexport class Child extends Base { draw() { target(); } }\nnew Child().draw();\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "codeLens": {}
+      }
+    }
+  },
+  "steps": [
+    {
+      "method": "workspace/didChangeConfiguration",
+      "notification": true,
+      "params": {
+        "settings": {
+          "typescript": {
+            "referencesCodeLens": {
+              "enabled": true,
+              "showOnAllFunctions": true
+            },
+            "implementationsCodeLens": {
+              "enabled": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "version": 1,
+          "languageId": "typescript",
+          "text": "import {target, Base} from \"./helper\";\nexport function run() { target(); }\nrun();\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeLens",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": [
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 16
+            },
+            "end": {
+              "line": 1,
+              "character": 19
+            }
+          },
+          "data": {
+            "uri": "{{ROOT_URI}}/main.ts",
+            "type": 0
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeLens/resolve",
+      "params": {},
+      "params_from_code_lens": {
+        "step": 2,
+        "index": 0
+      },
+      "expected": {
+        "range": {
+          "start": {
+            "line": 1,
+            "character": 16
+          },
+          "end": {
+            "line": 1,
+            "character": 19
+          }
+        },
+        "data": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "type": 0
+        },
+        "command": {
+          "title": "1 reference",
+          "command": "editor.action.showReferences",
+          "arguments": [
+            "{{ROOT_URI}}/main.ts",
+            {
+              "line": 1,
+              "character": 16
+            },
+            [
+              {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 2,
+                    "character": 0
+                  },
+                  "end": {
+                    "line": 2,
+                    "character": 3
+                  }
+                }
+              }
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/helper.ts",
+          "version": 1,
+          "languageId": "typescript",
+          "text": "export function target() {}\nexport abstract class Base { abstract draw(): void; }\nexport class Child extends Base { draw() { target(); } }\nnew Child().draw();\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeLens",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/helper.ts"
+        }
+      },
+      "expected": [
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 22
+            },
+            "end": {
+              "line": 1,
+              "character": 26
+            }
+          },
+          "data": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "type": 1
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 38
+            },
+            "end": {
+              "line": 1,
+              "character": 42
+            }
+          },
+          "data": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "type": 1
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 22
+            },
+            "end": {
+              "line": 1,
+              "character": 26
+            }
+          },
+          "data": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "type": 0
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 38
+            },
+            "end": {
+              "line": 1,
+              "character": 42
+            }
+          },
+          "data": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "type": 0
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 13
+            },
+            "end": {
+              "line": 2,
+              "character": 18
+            }
+          },
+          "data": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "type": 0
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 2,
+              "character": 34
+            },
+            "end": {
+              "line": 2,
+              "character": 38
+            }
+          },
+          "data": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "type": 0
+          }
+        },
+        {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 16
+            },
+            "end": {
+              "line": 0,
+              "character": 22
+            }
+          },
+          "data": {
+            "uri": "{{ROOT_URI}}/helper.ts",
+            "type": 0
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeLens/resolve",
+      "params": {},
+      "params_from_code_lens": {
+        "step": 5,
+        "index": 0
+      },
+      "expected": {
+        "range": {
+          "start": {
+            "line": 1,
+            "character": 22
+          },
+          "end": {
+            "line": 1,
+            "character": 26
+          }
+        },
+        "data": {
+          "uri": "{{ROOT_URI}}/helper.ts",
+          "type": 1
+        },
+        "command": {
+          "title": "1 implementation",
+          "command": "editor.action.showReferences",
+          "arguments": [
+            "{{ROOT_URI}}/helper.ts",
+            {
+              "line": 1,
+              "character": 22
+            },
+            [
+              {
+                "uri": "{{ROOT_URI}}/helper.ts",
+                "range": {
+                  "start": {
+                    "line": 2,
+                    "character": 13
+                  },
+                  "end": {
+                    "line": 2,
+                    "character": 18
+                  }
+                }
+              }
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "method": "codeLens/resolve",
+      "params": {},
+      "params_from_code_lens": {
+        "step": 5,
+        "index": 1
+      },
+      "expected": {
+        "range": {
+          "start": {
+            "line": 1,
+            "character": 38
+          },
+          "end": {
+            "line": 1,
+            "character": 42
+          }
+        },
+        "data": {
+          "uri": "{{ROOT_URI}}/helper.ts",
+          "type": 1
+        },
+        "command": {
+          "title": "1 implementation",
+          "command": "editor.action.showReferences",
+          "arguments": [
+            "{{ROOT_URI}}/helper.ts",
+            {
+              "line": 1,
+              "character": 38
+            },
+            [
+              {
+                "uri": "{{ROOT_URI}}/helper.ts",
+                "range": {
+                  "start": {
+                    "line": 2,
+                    "character": 34
+                  },
+                  "end": {
+                    "line": 2,
+                    "character": 38
+                  }
+                }
+              }
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "method": "codeLens/resolve",
+      "params": {},
+      "params_from_code_lens": {
+        "step": 5,
+        "index": 2
+      },
+      "expected": {
+        "range": {
+          "start": {
+            "line": 1,
+            "character": 22
+          },
+          "end": {
+            "line": 1,
+            "character": 26
+          }
+        },
+        "data": {
+          "uri": "{{ROOT_URI}}/helper.ts",
+          "type": 0
+        },
+        "command": {
+          "title": "2 references",
+          "command": "editor.action.showReferences",
+          "arguments": [
+            "{{ROOT_URI}}/helper.ts",
+            {
+              "line": 1,
+              "character": 22
+            },
+            [
+              {
+                "uri": "{{ROOT_URI}}/helper.ts",
+                "range": {
+                  "start": {
+                    "line": 2,
+                    "character": 27
+                  },
+                  "end": {
+                    "line": 2,
+                    "character": 31
+                  }
+                }
+              },
+              {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 0,
+                    "character": 16
+                  },
+                  "end": {
+                    "line": 0,
+                    "character": 20
+                  }
+                }
+              }
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "method": "codeLens/resolve",
+      "params": {},
+      "params_from_code_lens": {
+        "step": 5,
+        "index": 3
+      },
+      "expected": {
+        "range": {
+          "start": {
+            "line": 1,
+            "character": 38
+          },
+          "end": {
+            "line": 1,
+            "character": 42
+          }
+        },
+        "data": {
+          "uri": "{{ROOT_URI}}/helper.ts",
+          "type": 0
+        },
+        "command": {
+          "title": "2 references",
+          "command": "editor.action.showReferences",
+          "arguments": [
+            "{{ROOT_URI}}/helper.ts",
+            {
+              "line": 1,
+              "character": 38
+            },
+            [
+              {
+                "uri": "{{ROOT_URI}}/helper.ts",
+                "range": {
+                  "start": {
+                    "line": 2,
+                    "character": 34
+                  },
+                  "end": {
+                    "line": 2,
+                    "character": 38
+                  }
+                }
+              },
+              {
+                "uri": "{{ROOT_URI}}/helper.ts",
+                "range": {
+                  "start": {
+                    "line": 3,
+                    "character": 12
+                  },
+                  "end": {
+                    "line": 3,
+                    "character": 16
+                  }
+                }
+              }
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "method": "codeLens/resolve",
+      "params": {},
+      "params_from_code_lens": {
+        "step": 5,
+        "index": 4
+      },
+      "expected": {
+        "range": {
+          "start": {
+            "line": 2,
+            "character": 13
+          },
+          "end": {
+            "line": 2,
+            "character": 18
+          }
+        },
+        "data": {
+          "uri": "{{ROOT_URI}}/helper.ts",
+          "type": 0
+        },
+        "command": {
+          "title": "1 reference",
+          "command": "editor.action.showReferences",
+          "arguments": [
+            "{{ROOT_URI}}/helper.ts",
+            {
+              "line": 2,
+              "character": 13
+            },
+            [
+              {
+                "uri": "{{ROOT_URI}}/helper.ts",
+                "range": {
+                  "start": {
+                    "line": 3,
+                    "character": 4
+                  },
+                  "end": {
+                    "line": 3,
+                    "character": 9
+                  }
+                }
+              }
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "method": "codeLens/resolve",
+      "params": {},
+      "params_from_code_lens": {
+        "step": 5,
+        "index": 5
+      },
+      "expected": {
+        "range": {
+          "start": {
+            "line": 2,
+            "character": 34
+          },
+          "end": {
+            "line": 2,
+            "character": 38
+          }
+        },
+        "data": {
+          "uri": "{{ROOT_URI}}/helper.ts",
+          "type": 0
+        },
+        "command": {
+          "title": "2 references",
+          "command": "editor.action.showReferences",
+          "arguments": [
+            "{{ROOT_URI}}/helper.ts",
+            {
+              "line": 2,
+              "character": 34
+            },
+            [
+              {
+                "uri": "{{ROOT_URI}}/helper.ts",
+                "range": {
+                  "start": {
+                    "line": 1,
+                    "character": 38
+                  },
+                  "end": {
+                    "line": 1,
+                    "character": 42
+                  }
+                }
+              },
+              {
+                "uri": "{{ROOT_URI}}/helper.ts",
+                "range": {
+                  "start": {
+                    "line": 3,
+                    "character": 12
+                  },
+                  "end": {
+                    "line": 3,
+                    "character": 16
+                  }
+                }
+              }
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "method": "codeLens/resolve",
+      "params": {},
+      "params_from_code_lens": {
+        "step": 5,
+        "index": 6
+      },
+      "expected": {
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 16
+          },
+          "end": {
+            "line": 0,
+            "character": 22
+          }
+        },
+        "data": {
+          "uri": "{{ROOT_URI}}/helper.ts",
+          "type": 0
+        },
+        "command": {
+          "title": "3 references",
+          "command": "editor.action.showReferences",
+          "arguments": [
+            "{{ROOT_URI}}/helper.ts",
+            {
+              "line": 0,
+              "character": 16
+            },
+            [
+              {
+                "uri": "{{ROOT_URI}}/helper.ts",
+                "range": {
+                  "start": {
+                    "line": 2,
+                    "character": 43
+                  },
+                  "end": {
+                    "line": 2,
+                    "character": 49
+                  }
+                }
+              },
+              {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 0,
+                    "character": 8
+                  },
+                  "end": {
+                    "line": 0,
+                    "character": 14
+                  }
+                }
+              },
+              {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 1,
+                    "character": 24
+                  },
+                  "end": {
+                    "line": 1,
+                    "character": 30
+                  }
+                }
+              }
+            ]
+          ]
+        }
+      }
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

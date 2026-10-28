@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"testing"
@@ -43,7 +43,7 @@ func TestSparseArraySetLengthNonConfigurableAtNewLength(t *testing.T) {
 
 func TestSparseArraySwitch(t *testing.T) {
 	vm := New()
-	_, err := vm.RunString(`
+	_, err := vm.runVMString(`
 	var a = [];
 	a[20470] = 5; // switch to sparse`)
 	if err != nil {
@@ -53,7 +53,7 @@ func TestSparseArraySwitch(t *testing.T) {
 	if _, ok := a.self.(*sparseArrayObject); !ok {
 		t.Fatal("1: array is not sparse")
 	}
-	_, err = vm.RunString(`
+	_, err = vm.runVMString(`
 	var cutoffIdx = Math.round(20470 - 20470/8);
 	for (var i = a.length - 1; i >= cutoffIdx; i--) {
 		a[i] = i;
@@ -81,7 +81,7 @@ func TestSparseArraySwitch(t *testing.T) {
 	if _, ok := a.self.(*arrayObject); !ok {
 		t.Fatal("2: array is not normal")
 	}
-	_, err = vm.RunString(`
+	_, err = vm.runVMString(`
 	// Now try to expand. Should stay a normal array
 	a[20471] = 20471;
 	if (a.length != 20472) {
@@ -105,7 +105,7 @@ func TestSparseArraySwitch(t *testing.T) {
 	if _, ok := a.self.(*arrayObject); !ok {
 		t.Fatal("3: array is not normal")
 	}
-	_, err = vm.RunString(`
+	_, err = vm.runVMString(`
 	// Delete enough elements for it to become sparse again.
 	var cutoffIdx1 = Math.round(20472 - 20472/10);
 	for (var i = cutoffIdx; i < cutoffIdx1; i++) {
@@ -284,7 +284,7 @@ func TestSparseArrayExportToSlice(t *testing.T) {
 
 func TestSparseArrayExportToSliceInheritedHoles(t *testing.T) {
 	vm := New()
-	_, err := vm.RunString(`
+	_, err := vm.runVMString(`
 	var a = [];
 	a[100000] = 1;   // make it sparse
 	a.length = 3;     // length 3, indices 0..2 are holes

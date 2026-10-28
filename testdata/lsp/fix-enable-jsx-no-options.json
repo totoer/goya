@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "name": "fix-enable-jsx-no-options",
+  "project": {
+    "files": {
+      "/jsx.d.ts": "declare namespace JSX { interface Element {} interface IntrinsicElements { div: {}; } }\ndeclare const React: { createElement: (...args: unknown[]) => JSX.Element };\n",
+      "/tsconfig.json": "{\"files\": [\"main.tsx\", \"jsx.d.ts\"]}\n",
+      "/main.tsx": "export const value = <div />;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.tsx"
+    ],
+    "compiler_options": {},
+    "config_file": "/tsconfig.json"
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx",
+          "languageId": "typescriptreact",
+          "version": 2,
+          "text": "export const value = <div />;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.tsx"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Enable the '--jsx' flag in your configuration file",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixEnableJsxFlag",
+                  "description": "Enable the '--jsx' flag in your configuration file",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/tsconfig.json",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 2
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 2
+                          },
+                          "newText": "\n    \"compilerOptions\": {\n        \"jsx\": \"react\"\n    },"
+                        },
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 35
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 35
+                          },
+                          "newText": "\n"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 21
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 28
+                    }
+                  },
+                  "message": "Cannot use JSX unless the '--jsx' flag is provided.",
+                  "severity": 1,
+                  "code": 17004,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.tsx"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 21
+                },
+                "end": {
+                  "line": 0,
+                  "character": 28
+                }
+              },
+              "message": "Cannot use JSX unless the '--jsx' flag is provided.",
+              "severity": 1,
+              "code": 17004,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/tsconfig.json",
+                  "version": null
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 1
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 1
+                      }
+                    },
+                    "newText": "\n    \"compilerOptions\": {\n        \"jsx\": \"react\"\n    },"
+                  },
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 34
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 34
+                      }
+                    },
+                    "newText": "\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

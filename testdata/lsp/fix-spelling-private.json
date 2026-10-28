@@ -1,0 +1,441 @@
+{
+  "schema_version": 1,
+  "name": "fix-spelling-private",
+  "project": {
+    "files": {
+      "/main.ts": "export class Box { #length = 1; run() { return this.#lenght; } }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "export class Box { #length = 1; run() { return this.#lenght; } }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 1,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Change spelling to '#length'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "spelling",
+                  "description": "Change spelling to '#length'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 53
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 60
+                          },
+                          "newText": "#length"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 52
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 59
+                    }
+                  },
+                  "message": "Property '#lenght' does not exist on type 'Box'. Did you mean '#length'?",
+                  "severity": 1,
+                  "code": 2551,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 19
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 26
+                          }
+                        }
+                      },
+                      "message": "'#length' is declared here."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 52
+                },
+                "end": {
+                  "line": 0,
+                  "character": 59
+                }
+              },
+              "message": "Property '#lenght' does not exist on type 'Box'. Did you mean '#length'?",
+              "severity": 1,
+              "code": 2551,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 19
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 26
+                      }
+                    }
+                  },
+                  "message": "'#length' is declared here."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 52
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 59
+                      }
+                    },
+                    "newText": "#length"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Declare property '#lenght'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixMissingMember",
+                  "description": "Declare property '#lenght'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 32
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 32
+                          },
+                          "newText": "#lenght: any;\n"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 52
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 59
+                    }
+                  },
+                  "message": "Property '#lenght' does not exist on type 'Box'. Did you mean '#length'?",
+                  "severity": 1,
+                  "code": 2551,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/main.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 19
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 26
+                          }
+                        }
+                      },
+                      "message": "'#length' is declared here."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 52
+                },
+                "end": {
+                  "line": 0,
+                  "character": 59
+                }
+              },
+              "message": "Property '#lenght' does not exist on type 'Box'. Did you mean '#length'?",
+              "severity": 1,
+              "code": 2551,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/main.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 19
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 26
+                      }
+                    }
+                  },
+                  "message": "'#length' is declared here."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 31
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 31
+                      }
+                    },
+                    "newText": "#lenght: any;\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Remove unused declaration for: '#length'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "unusedIdentifier",
+                  "description": "Remove unused declaration for: '#length'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 1,
+                            "offset": 19
+                          },
+                          "end": {
+                            "line": 1,
+                            "offset": 32
+                          },
+                          "newText": ""
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 19
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 26
+                    }
+                  },
+                  "message": "'#length' is declared but its value is never read.",
+                  "severity": 4,
+                  "code": 6133,
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 19
+                },
+                "end": {
+                  "line": 0,
+                  "character": 26
+                }
+              },
+              "message": "'#length' is declared but its value is never read.",
+              "severity": 4,
+              "code": 6133,
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 18
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 31
+                      }
+                    },
+                    "newText": ""
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": true
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

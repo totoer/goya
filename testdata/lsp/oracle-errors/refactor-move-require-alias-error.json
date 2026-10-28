@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "name": "refactor-move-require-alias-error",
+  "project": {
+    "files": {
+      "/main.ts": "const dep = require(\"./dep\");\nexport const value = dep.first + 1;\n",
+      "/dep.ts": "export const first = 1;\n",
+      "/require.d.ts": "declare function require(path: string): any;\n",
+      "/tsconfig.json": "{\n  \"compilerOptions\": {\n    \"strict\": true,\n    \"target\": \"es2025\",\n    \"module\": \"esnext\",\n    \"moduleResolution\": \"bundler\",\n    \"lib\": [\n      \"es2025\"\n    ],\n    \"types\": [],\n    \"noEmit\": true\n  },\n  \"files\": [\n    \"main.ts\",\n    \"dep.ts\",\n    \"require.d.ts\"\n  ]\n}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts",
+      "/dep.ts",
+      "/require.d.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    },
+    "config_file": "/tsconfig.json"
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "const dep = require(\"./dep\");\nexport const value = dep.first + 1;\n"
+        }
+      }
+    },
+    {
+      "method": "workspace/executeCommand",
+      "params": {
+        "command": "_typescript.applyRefactoring",
+        "arguments": [
+          {
+            "file": "{{ROOT_PATH}}/main.ts",
+            "startLine": 2,
+            "startOffset": 1,
+            "endLine": 2,
+            "endOffset": 36,
+            "refactor": "Move to a new file",
+            "action": "Move to a new file"
+          }
+        ]
+      },
+      "expected_error": {
+        "code": 1,
+        "message": "<main> TypeScript Server Error (6.0.3)\nDebug Failure. False expression: Should only get Alias here.\nError: Debug Failure. False expression: Should only get Alias here.\n    at Object.resolveAlias [as getAliasedSymbol] (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:53752:11)\n    at Object.addImportForModuleSymbol (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:159049:34)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:148758:19\n    at Map.forEach (<anonymous>)\n    at addTargetFileImports (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:148751:17)\n    at getNewStatementsAndRemoveFromOldFile (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:147982:3)\n    at doChange4 (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:148978:3)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:148967:77\n    at _ChangeTracker.with (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:179935:5)\n    at Object.getRefactorEditsToMoveToNewFile [as getEditsForAction] (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:148967:60)\n    at Object.getEditsForRefactor (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:147072:31)\n    at Object.getEditsForRefactor2 [as getEditsForRefactor] (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:154595:32)\n    at IpcIOSession.getEditsForRefactor (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197170:49)\n    at getEditsForRefactor (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:195314:43)\n    at /private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197591:15\n    at IpcIOSession.executeWithRequestId (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197580:14)\n    at IpcIOSession.executeCommand (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197589:29)\n    at IpcIOSession.onMessage (/private/tmp/goya-lsp-reference/ts-package/package/lib/typescript.js:197637:68)\n    at process.<anonymous> (/private/tmp/goya-lsp-reference/ts-package/package/lib/_tsserver.js:519:14)\n    at process.emit (node:events:514:20)\n    at emit (node:internal/child_process:1004:14)\n    at process.processTicksAndRejections (node:internal/process/task_queues:91:21)"
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          },
+          "disabledSupport": true
+        }
+      },
+      "workspace": {
+        "applyEdit": true,
+        "workspaceEdit": {
+          "documentChanges": true,
+          "resourceOperations": [
+            "create",
+            "rename",
+            "delete"
+          ]
+        }
+      }
+    },
+    "options": {
+      "supportsMoveToFileCodeAction": true
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

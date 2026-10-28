@@ -1,0 +1,493 @@
+{
+  "schema_version": 1,
+  "name": "fix-local-export-mixed-many-all",
+  "project": {
+    "files": {
+      "/main.ts": "import { hidden, Hidden } from \"./helper\";\nexport const value: Hidden = { value: hidden };\n",
+      "/helper.ts": "const hidden = 1;\ninterface Hidden { value: number; }\nconst existing = 1;\nexport { existing };\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "isolatedModules": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "import { hidden, Hidden } from \"./helper\";\nexport const value: Hidden = { value: hidden };\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Export 'hidden' from module './helper'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixImportNonExportedMember",
+                  "description": "Export 'hidden' from module './helper'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/helper.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 4,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 4,
+                            "offset": 21
+                          },
+                          "newText": "export { existing, hidden };"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixImportNonExportedMember",
+                  "fixAllDescription": "Export all referenced locals"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 9
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 15
+                    }
+                  },
+                  "message": "Module '\"./helper\"' declares 'hidden' locally, but it is not exported.",
+                  "severity": 1,
+                  "code": 2459,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/helper.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 6
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 12
+                          }
+                        }
+                      },
+                      "message": "'hidden' is declared here."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 9
+                },
+                "end": {
+                  "line": 0,
+                  "character": 15
+                }
+              },
+              "message": "Module '\"./helper\"' declares 'hidden' locally, but it is not exported.",
+              "severity": 1,
+              "code": 2459,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/helper.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 6
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 12
+                      }
+                    }
+                  },
+                  "message": "'hidden' is declared here."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/helper.ts",
+                  "version": null
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 3,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 3,
+                        "character": 20
+                      }
+                    },
+                    "newText": "export { existing, hidden };"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Export 'Hidden' from module './helper'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixImportNonExportedMember",
+                  "description": "Export 'Hidden' from module './helper'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/helper.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 4,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 4,
+                            "offset": 21
+                          },
+                          "newText": "export { existing, type Hidden };"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixImportNonExportedMember",
+                  "fixAllDescription": "Export all referenced locals"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 17
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 23
+                    }
+                  },
+                  "message": "Module '\"./helper\"' declares 'Hidden' locally, but it is not exported.",
+                  "severity": 1,
+                  "code": 2459,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/helper.ts",
+                        "range": {
+                          "start": {
+                            "line": 1,
+                            "character": 10
+                          },
+                          "end": {
+                            "line": 1,
+                            "character": 16
+                          }
+                        }
+                      },
+                      "message": "'Hidden' is declared here."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 17
+                },
+                "end": {
+                  "line": 0,
+                  "character": 23
+                }
+              },
+              "message": "Module '\"./helper\"' declares 'Hidden' locally, but it is not exported.",
+              "severity": 1,
+              "code": 2459,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/helper.ts",
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 10
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 16
+                      }
+                    }
+                  },
+                  "message": "'Hidden' is declared here."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/helper.ts",
+                  "version": null
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 3,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 3,
+                        "character": 20
+                      }
+                    },
+                    "newText": "export { existing, type Hidden };"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Export all referenced locals",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "fixImportNonExportedMember"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 9
+                },
+                "end": {
+                  "line": 0,
+                  "character": 15
+                }
+              },
+              "message": "Module '\"./helper\"' declares 'hidden' locally, but it is not exported.",
+              "severity": 1,
+              "code": 2459,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/helper.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 6
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 12
+                      }
+                    }
+                  },
+                  "message": "'hidden' is declared here."
+                }
+              ]
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ]
+    },
+    {
+      "method": "codeAction/resolve",
+      "params": {},
+      "params_from_code_action": {
+        "step": 1,
+        "index": 2
+      },
+      "expected": {
+        "title": "Export all referenced locals",
+        "kind": "quickfix",
+        "command": {
+          "command": "_typescript.applyFixAllCodeAction",
+          "arguments": [
+            {
+              "tsActionId": "fixImportNonExportedMember"
+            }
+          ],
+          "title": ""
+        },
+        "diagnostics": [
+          {
+            "range": {
+              "start": {
+                "line": 0,
+                "character": 9
+              },
+              "end": {
+                "line": 0,
+                "character": 15
+              }
+            },
+            "message": "Module '\"./helper\"' declares 'hidden' locally, but it is not exported.",
+            "severity": 1,
+            "code": 2459,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/helper.ts",
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 6
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 12
+                    }
+                  }
+                },
+                "message": "'hidden' is declared here."
+              }
+            ]
+          }
+        ],
+        "isPreferred": false,
+        "data": {
+          "globalId": 1,
+          "providerId": 2
+        },
+        "edit": {
+          "documentChanges": [
+            {
+              "textDocument": {
+                "uri": "{{ROOT_URI}}/helper.ts",
+                "version": null
+              },
+              "edits": [
+                {
+                  "range": {
+                    "start": {
+                      "line": 3,
+                      "character": 0
+                    },
+                    "end": {
+                      "line": 3,
+                      "character": 20
+                    }
+                  },
+                  "newText": "export { existing, hidden, type Hidden };"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

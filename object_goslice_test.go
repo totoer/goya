@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"testing"
@@ -14,7 +14,7 @@ func TestGoSliceBasic(t *testing.T) {
 	`
 	r := New()
 	r.Set("a", []interface{}{1, 2, 3, 4})
-	v, err := r.RunString(SCRIPT)
+	v, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -33,7 +33,7 @@ func TestGoSliceIn(t *testing.T) {
 	`
 	r := New()
 	r.Set("a", []interface{}{1, 2, 3, 4})
-	v, err := r.RunString(SCRIPT)
+	v, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,7 +58,7 @@ func TestGoSliceExpand(t *testing.T) {
 	r := New()
 	a := []interface{}{int64(1), int64(2), int64(3), int64(4)}
 	r.Set("a", &a)
-	v, err := r.RunString(SCRIPT)
+	v, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -79,7 +79,7 @@ func TestGoSliceProtoMethod(t *testing.T) {
 	r := New()
 	a := []interface{}{1, 2, 3, 4}
 	r.Set("a", a)
-	ret, err := r.RunString(SCRIPT)
+	ret, err := r.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -92,7 +92,7 @@ func TestGoSliceSetLength(t *testing.T) {
 	r := New()
 	a := []interface{}{1, 2, 3, 4}
 	r.Set("a", &a)
-	_, err := r.RunString(`
+	_, err := r.runVMString(`
 	'use strict';
 	a.length = 3;
 	if (a.length !== 3) {
@@ -148,7 +148,7 @@ func TestGoSliceProtoProto(t *testing.T) {
 	proto := []interface{}{1, 2, 3, 4}
 	r.Set("a", &a)
 	r.Set("proto", proto)
-	_, err := r.RunString(`
+	_, err := r.runVMString(`
 	"use strict";
 	var protoproto = Object.create(null);
 	Object.defineProperty(protoproto, "3", {
@@ -170,7 +170,7 @@ func TestGoSliceDelete(t *testing.T) {
 	r := New()
 	a := []interface{}{1, nil, 3}
 	r.Set("a", a)
-	v, err := r.RunString(`
+	v, err := r.runVMString(`
 	delete a[0] && delete a[1] && delete a[3];
 	`)
 	if err != nil {
@@ -185,7 +185,7 @@ func TestGoSlicePop(t *testing.T) {
 	r := New()
 	a := []interface{}{1, nil, 3}
 	r.Set("a", &a)
-	v, err := r.RunString(`
+	v, err := r.runVMString(`
 	a.pop()
 	`)
 	if err != nil {
@@ -200,7 +200,7 @@ func TestGoSlicePopNoPtr(t *testing.T) {
 	r := New()
 	a := []interface{}{1, nil, 3}
 	r.Set("a", a)
-	v, err := r.RunString(`
+	v, err := r.runVMString(`
 	a.pop()
 	`)
 	if err != nil {
@@ -215,7 +215,7 @@ func TestGoSliceShift(t *testing.T) {
 	r := New()
 	a := []interface{}{1, nil, 3}
 	r.Set("a", &a)
-	v, err := r.RunString(`
+	v, err := r.runVMString(`
 	a.shift()
 	`)
 	if err != nil {
@@ -229,7 +229,7 @@ func TestGoSliceShift(t *testing.T) {
 func TestGoSliceLengthProperty(t *testing.T) {
 	vm := New()
 	vm.Set("s", []interface{}{2, 3, 4})
-	_, err := vm.RunString(`
+	_, err := vm.runVMString(`
 	if (!s.hasOwnProperty("length")) {
 		throw new Error("hasOwnProperty() returned false");
 	}
@@ -247,7 +247,7 @@ func TestGoSliceSort(t *testing.T) {
 	vm := New()
 	s := []interface{}{4, 2, 3}
 	vm.Set("s", &s)
-	_, err := vm.RunString(`s.sort()`)
+	_, err := vm.runVMString(`s.sort()`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -263,7 +263,7 @@ func TestGoSliceToString(t *testing.T) {
 	vm := New()
 	s := []interface{}{4, 2, 3}
 	vm.Set("s", &s)
-	res, err := vm.RunString("`${s}`")
+	res, err := vm.runVMString("`${s}`")
 	if err != nil {
 		t.Fatal(err)
 	}

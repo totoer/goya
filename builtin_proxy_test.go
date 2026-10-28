@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"strconv"
@@ -134,7 +134,7 @@ func TestProxy_native_proxy_isExtensible(t *testing.T) {
 	})
 	runtime.Set("proxy", proxy)
 
-	val, err := runtime.RunString(SCRIPT)
+	val, err := runtime.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -192,7 +192,7 @@ func TestProxy_native_proxy_preventExtensions(t *testing.T) {
 	proxy := runtime.NewProxy(target, &ProxyTrapConfig{
 		PreventExtensions: func(target *Object) (success bool) {
 			target.Set("canEvolve", false)
-			_, err := runtime.RunString("Object.preventExtensions(target)")
+			_, err := runtime.runVMString("Object.preventExtensions(target)")
 			if err != nil {
 				panic(err)
 			}
@@ -201,7 +201,7 @@ func TestProxy_native_proxy_preventExtensions(t *testing.T) {
 	})
 	runtime.Set("proxy", proxy)
 
-	val, err := runtime.RunString(SCRIPT)
+	val, err := runtime.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -305,7 +305,7 @@ func TestProxy_native_proxy_getOwnPropertyDescriptor(t *testing.T) {
 		}).proxy.val
 	}
 
-	val, err := runtime.RunString(SCRIPT)
+	val, err := runtime.runVMString(SCRIPT)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -429,7 +429,7 @@ func TestProxy_native_proxy_getOwnPropertyDescriptor_non_existing(t *testing.T) 
 		},
 	})
 	vm.Set("proxy", proxy)
-	res, err := vm.RunString(`Object.getOwnPropertyDescriptor(proxy, "foo") === undefined`)
+	res, err := vm.runVMString(`Object.getOwnPropertyDescriptor(proxy, "foo") === undefined`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -808,14 +808,14 @@ func TestProxy_native_proxy_get(t *testing.T) {
 		},
 	})
 	vm.Set("proxy", proxy)
-	res, err := vm.RunString(`JSON.stringify(proxy)`)
+	res, err := vm.runVMString(`JSON.stringify(proxy)`)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !res.SameAs(asciiString(`{"0":"idx","foo":"321tset"}`)) {
 		t.Fatalf("res: %v", res)
 	}
-	res, err = vm.RunString(`proxy[Symbol.toPrimitive]`)
+	res, err = vm.runVMString(`proxy[Symbol.toPrimitive]`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -823,7 +823,7 @@ func TestProxy_native_proxy_get(t *testing.T) {
 		t.Fatalf("res: %v", res)
 	}
 
-	res, err = vm.RunString(`proxy.hasOwnProperty(Symbol.toPrimitive)`)
+	res, err = vm.runVMString(`proxy.hasOwnProperty(Symbol.toPrimitive)`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -835,7 +835,7 @@ func TestProxy_native_proxy_get(t *testing.T) {
 		t.Fatalf("Get(symbol): %v", val)
 	}
 
-	res, err = vm.RunString(`proxy.toString()`)
+	res, err = vm.runVMString(`proxy.toString()`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1046,7 +1046,7 @@ func TestProxy_native_delete(t *testing.T) {
 		t.Fatal("sym")
 	}
 	vm.Set("proxy", proxy)
-	_, err = vm.RunString(`
+	_, err = vm.runVMString(`
 	if (delete proxy.strNeg) {
 		throw new Error("strNeg");
 	}
@@ -1275,7 +1275,7 @@ func TestProxy_Object_native_proxy_ownKeys(t *testing.T) {
 		},
 	})
 	vm.Set("headers", proxy)
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 		var keys = Object.keys(headers);
 		keys.length === 1 && keys[0] === "k0";
 		`)
@@ -1331,7 +1331,7 @@ func TestProxy_proxy_forIn(t *testing.T) {
 
 func TestProxyExport(t *testing.T) {
 	vm := New()
-	v, err := vm.RunString(`
+	v, err := vm.runVMString(`
 	new Proxy({}, {});
 	`)
 	if err != nil {
@@ -1472,7 +1472,7 @@ func TestProxy_HasAndGetTrap(t *testing.T) {
 	vm.Set("pObj", pObj)
 
 	// used as a with-env: the binding resolution must go through the combined trap
-	if _, err := vm.RunString(`
+	if _, err := vm.runVMString(`
 	var out;
 	with (pObj) { out = exists; }
 	if (out !== 1) throw new Error("got " + out);
@@ -1494,7 +1494,7 @@ func TestProxy_HasAndGetTrap(t *testing.T) {
 	}
 
 	// undefined value must be distinguished from "not found"
-	if _, err := vm.RunString(`
+	if _, err := vm.runVMString(`
 	var out;
 	with (pObj) { out = String(undef); }
 	if (out !== "undefined") throw new Error("got " + out);
@@ -1504,7 +1504,7 @@ func TestProxy_HasAndGetTrap(t *testing.T) {
 
 	// not found through the combined trap -> strict read must throw a ReferenceError
 	calls = 0
-	if _, err := vm.RunString(`
+	if _, err := vm.runVMString(`
 	var out;
 	with (pObj) {
 	  try { (function() { "use strict"; out = String(missing); })(); } catch (e) { out = e.constructor.name; }
@@ -1518,7 +1518,7 @@ func TestProxy_HasAndGetTrap(t *testing.T) {
 	}
 
 	// invariant: a non-configurable, non-writable target property must be reported with its own value
-	if _, err := vm.RunString(`
+	if _, err := vm.runVMString(`
 	var out;
 	with (pObj) { out = String(nonconfW); }
 	if (out !== "999") throw new Error("expected invariant TypeError");
@@ -1536,7 +1536,7 @@ func TestProxy_HasAndGetTrap(t *testing.T) {
 	})
 	p2Obj := vm.ToValue(p2).(*Object)
 	vm.Set("p2Obj", p2Obj)
-	if _, err := vm.RunString(`
+	if _, err := vm.runVMString(`
 	var out;
 	with (p2Obj) { out = String(nonconf); }
 	if (out !== "999") throw new Error("expected invariant TypeError");
@@ -1569,7 +1569,7 @@ func TestProxy_HasAndGetTrap(t *testing.T) {
 	// without HasAndGet the separate Has and Get traps are used. Note, per GetBindingValue(N, S)
 	// the has step is performed before the get step (on top of the HasBinding check done when
 	// resolving the binding), so a read through a with-env results in 2 has + 1 get trap calls.
-	if _, err := vm.RunString(`
+	if _, err := vm.runVMString(`
 	var out;
 	with (p3Obj) { out = data; }
 	if (out !== 7) throw new Error("got " + out);

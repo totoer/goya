@@ -1,0 +1,464 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "interface Payload { total: number; }\nclass Person { name = \"x\"; }\nfunction makePayload(): Payload { return {total: 1}; }\nfunction makePerson(): Person { return new Person(); }\nfunction greet(message: string, times: number, ...values: number[]) {}\nconst message = \"hello\";\ngreet(message, 2, 3, 4);\nconst data = makePayload();\nlet person = makePerson();\nclass Store { value = makePayload(); flag = true; }\nfunction total() { return 42; }\nconst add = (left: number, right: number) => left + right;\n[1, 2].map((value) => value + 1);\nenum Choice { First, Second, Shift = 1 << 2, Next }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "inlay-all-interactive",
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "interface Payload { total: number; }\nclass Person { name = \"x\"; }\nfunction makePayload(): Payload { return {total: 1}; }\nfunction makePerson(): Person { return new Person(); }\nfunction greet(message: string, times: number, ...values: number[]) {}\nconst message = \"hello\";\ngreet(message, 2, 3, 4);\nconst data = makePayload();\nlet person = makePerson();\nclass Store { value = makePayload(); flag = true; }\nfunction total() { return 42; }\nconst add = (left: number, right: number) => left + right;\n[1, 2].map((value) => value + 1);\nenum Choice { First, Second, Shift = 1 << 2, Next }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/inlayHint",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 14,
+            "character": 0
+          }
+        }
+      },
+      "expected": [
+        {
+          "position": {
+            "line": 1,
+            "character": 19
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "string"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 4,
+            "character": 67
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "void"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 6,
+            "character": 6
+          },
+          "label": [
+            {
+              "value": "message",
+              "location": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 4,
+                    "character": 15
+                  },
+                  "end": {
+                    "line": 4,
+                    "character": 22
+                  }
+                }
+              }
+            },
+            {
+              "value": ":"
+            }
+          ],
+          "kind": 2,
+          "paddingRight": true
+        },
+        {
+          "position": {
+            "line": 6,
+            "character": 15
+          },
+          "label": [
+            {
+              "value": "times",
+              "location": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 4,
+                    "character": 32
+                  },
+                  "end": {
+                    "line": 4,
+                    "character": 37
+                  }
+                }
+              }
+            },
+            {
+              "value": ":"
+            }
+          ],
+          "kind": 2,
+          "paddingRight": true
+        },
+        {
+          "position": {
+            "line": 6,
+            "character": 18
+          },
+          "label": [
+            {
+              "value": "...values",
+              "location": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 4,
+                    "character": 50
+                  },
+                  "end": {
+                    "line": 4,
+                    "character": 56
+                  }
+                }
+              }
+            },
+            {
+              "value": ":"
+            }
+          ],
+          "kind": 2,
+          "paddingRight": true
+        },
+        {
+          "position": {
+            "line": 7,
+            "character": 10
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "Payload",
+              "location": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 0,
+                    "character": 10
+                  },
+                  "end": {
+                    "line": 0,
+                    "character": 17
+                  }
+                }
+              }
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 8,
+            "character": 10
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "Person",
+              "location": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 1,
+                    "character": 6
+                  },
+                  "end": {
+                    "line": 1,
+                    "character": 12
+                  }
+                }
+              }
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 9,
+            "character": 19
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "Payload",
+              "location": {
+                "uri": "{{ROOT_URI}}/main.ts",
+                "range": {
+                  "start": {
+                    "line": 0,
+                    "character": 10
+                  },
+                  "end": {
+                    "line": 0,
+                    "character": 17
+                  }
+                }
+              }
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 9,
+            "character": 41
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "boolean"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 10,
+            "character": 16
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "number"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 11,
+            "character": 9
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "("
+            },
+            {
+              "value": "left"
+            },
+            {
+              "value": ": "
+            },
+            {
+              "value": "number"
+            },
+            {
+              "value": ", "
+            },
+            {
+              "value": "right"
+            },
+            {
+              "value": ": "
+            },
+            {
+              "value": "number"
+            },
+            {
+              "value": ")"
+            },
+            {
+              "value": " => "
+            },
+            {
+              "value": "number"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 11,
+            "character": 41
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "number"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 12,
+            "character": 11
+          },
+          "label": [
+            {
+              "value": "callbackfn",
+              "location": {
+                "uri": "goya-lib:///lib.es5.d.ts",
+                "range": {
+                  "start": {
+                    "line": 1467,
+                    "character": 11
+                  },
+                  "end": {
+                    "line": 1467,
+                    "character": 21
+                  }
+                }
+              }
+            },
+            {
+              "value": ":"
+            }
+          ],
+          "kind": 2,
+          "paddingRight": true
+        },
+        {
+          "position": {
+            "line": 12,
+            "character": 17
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "number"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 12,
+            "character": 18
+          },
+          "label": [
+            {
+              "value": ": "
+            },
+            {
+              "value": "number"
+            }
+          ],
+          "kind": 1,
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 13,
+            "character": 19
+          },
+          "label": "= 0",
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 13,
+            "character": 27
+          },
+          "label": "= 1",
+          "paddingLeft": true
+        },
+        {
+          "position": {
+            "line": 13,
+            "character": 49
+          },
+          "label": "= 5",
+          "paddingLeft": true
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "options": {
+      "preferences": {
+        "includeInlayParameterNameHints": "all",
+        "includeInlayParameterNameHintsWhenArgumentMatchesName": true,
+        "includeInlayFunctionParameterTypeHints": true,
+        "includeInlayVariableTypeHints": true,
+        "includeInlayVariableTypeHintsWhenTypeMatchesName": true,
+        "includeInlayPropertyDeclarationTypeHints": true,
+        "includeInlayFunctionLikeReturnTypeHints": true,
+        "includeInlayEnumMemberValueHints": true,
+        "interactiveInlayHints": true
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

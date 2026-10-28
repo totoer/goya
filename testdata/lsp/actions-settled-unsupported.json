@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "name": "actions-settled-unsupported",
+  "project": {
+    "files": {
+      "/main.ts": "interface Shape { run(input: number): string; }\nclass Box implements Shape {}\nclass Other implements Shape {}\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        },
+        "publishDiagnostics": {}
+      }
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 7,
+          "text": "interface Shape { run(input: number): string; }\nclass Box implements Shape {}\nclass Other implements Shape {}\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 6
+              },
+              "end": {
+                "line": 1,
+                "character": 9
+              }
+            },
+            "message": "Class 'Box' incorrectly implements interface 'Shape'.\n  Property 'run' is missing in type 'Box' but required in type 'Shape'.",
+            "severity": 1,
+            "code": 2420,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 18
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 45
+                    }
+                  }
+                },
+                "message": "'run' is declared here."
+              }
+            ]
+          },
+          {
+            "range": {
+              "start": {
+                "line": 2,
+                "character": 6
+              },
+              "end": {
+                "line": 2,
+                "character": 11
+              }
+            },
+            "message": "Class 'Other' incorrectly implements interface 'Shape'.\n  Property 'run' is missing in type 'Other' but required in type 'Shape'.",
+            "severity": 1,
+            "code": 2420,
+            "source": "typescript",
+            "relatedInformation": [
+              {
+                "location": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 18
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 45
+                    }
+                  }
+                },
+                "message": "'run' is declared here."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 1,
+            "character": 6
+          },
+          "end": {
+            "line": 1,
+            "character": 9
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 6
+                },
+                "end": {
+                  "line": 1,
+                  "character": 9
+                }
+              },
+              "severity": 1,
+              "code": 987654321,
+              "message": "Client supplied diagnostic",
+              "source": "custom",
+              "data": {
+                "token": 3
+              },
+              "codeDescription": {
+                "href": "https://example.invalid/2420"
+              }
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": []
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"math"
@@ -7,14 +7,11 @@ import (
 )
 
 const (
-	dateTimeLayout       = "Mon Jan 02 2006 15:04:05 GMT-0700 (MST)"
-	utcDateTimeLayout    = "Mon, 02 Jan 2006 15:04:05 GMT"
-	isoDateTimeLayout    = "2006-01-02T15:04:05.000Z"
-	dateLayout           = "Mon Jan 02 2006"
-	timeLayout           = "15:04:05 GMT-0700 (MST)"
-	datetimeLayout_en_GB = "01/02/2006, 15:04:05"
-	dateLayout_en_GB     = "01/02/2006"
-	timeLayout_en_GB     = "15:04:05"
+	dateTimeLayout    = "Mon Jan 02 2006 15:04:05 GMT-0700 (MST)"
+	utcDateTimeLayout = "Mon, 02 Jan 2006 15:04:05 GMT"
+	isoDateTimeLayout = "2006-01-02T15:04:05.000Z"
+	dateLayout        = "Mon Jan 02 2006"
+	timeLayout        = "15:04:05 GMT-0700 (MST)"
 
 	maxTime   = 8.64e15
 	timeUnset = math.MinInt64
@@ -25,7 +22,7 @@ type dateObject struct {
 	msec int64
 }
 
-func dateParse(date string) (t time.Time, ok bool) {
+func dateParse(date string, location *time.Location) (t time.Time, ok bool) {
 	d, ok := parseDateISOString(date)
 	if !ok {
 		d, ok = parseDateOtherString(date)
@@ -43,15 +40,25 @@ func dateParse(date string) (t time.Time, ok bool) {
 		ok = false
 		return
 	}
-	var loc *time.Location
+	milliseconds := dateCivilMilliseconds([7]float64{float64(d.year), float64(d.month - 1), float64(d.day), float64(d.hour), float64(d.min), float64(d.sec), float64(d.msec)})
 	if d.isLocal {
-		loc = time.Local
+		milliseconds = dateLocalToUTC(milliseconds, location)
 	} else {
-		loc = time.FixedZone("", d.timeZoneOffset*60)
+		milliseconds -= float64(d.timeZoneOffset) * 60000
 	}
-	t = time.Date(d.year, time.Month(d.month), d.day, d.hour, d.min, d.sec, d.msec*1e6, loc)
-	_, ok = timeToMsecClip(t)
-	return
+	clipped, ok := dateClip(milliseconds)
+	if !ok {
+		return time.Time{}, false
+	}
+	// Keep an explicitly written offset in Go's text-to-time conversion.
+	// Date objects store the instant and use their Runtime timezone on export.
+	if !d.isLocal {
+		location = time.UTC
+		if d.timeZoneOffset != 0 {
+			location = time.FixedZone("", d.timeZoneOffset*60)
+		}
+	}
+	return timeFromMsec(clipped).In(location), true
 }
 
 func (r *Runtime) newDateObject(t time.Time, isSet bool, proto *Object) *Object {
@@ -71,8 +78,8 @@ func (r *Runtime) newDateObject(t time.Time, isSet bool, proto *Object) *Object 
 	return v
 }
 
-func dateFormat(t time.Time) string {
-	return t.Local().Format(dateTimeLayout)
+func dateFormat(t time.Time, location *time.Location) string {
+	return t.In(location).Format(dateTimeLayout)
 }
 
 func timeFromMsec(msec int64) time.Time {
@@ -137,7 +144,7 @@ func (d *dateObject) unset() {
 }
 
 func (d *dateObject) time() time.Time {
-	return timeFromMsec(d.msec)
+	return timeFromMsec(d.msec).In(d.val.runtime.timeZone)
 }
 
 func (d *dateObject) timeUTC() time.Time {

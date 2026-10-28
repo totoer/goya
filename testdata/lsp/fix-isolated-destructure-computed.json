@@ -1,0 +1,493 @@
+{
+  "schema_version": 1,
+  "name": "fix-isolated-destructure-computed",
+  "project": {
+    "files": {
+      "/main.ts": "const key = \"first\";\nexport const { [key]: value, other } = { first: Math.random(), other: 1 };\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true,
+      "isolatedDeclarations": true,
+      "declaration": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "const key = \"first\";\nexport const { [key]: value, other } = { first: Math.random(), other: 1 };\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/diagnostic",
+      "oracle_method": "textDocument/publishDiagnostics",
+      "oracle_wait_ms": 6000,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        }
+      },
+      "expected": {
+        "kind": "full",
+        "items": [
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 22
+              },
+              "end": {
+                "line": 1,
+                "character": 27
+              }
+            },
+            "message": "Binding elements can't be exported directly with --isolatedDeclarations.",
+            "severity": 1,
+            "code": 9019,
+            "source": "typescript"
+          },
+          {
+            "range": {
+              "start": {
+                "line": 1,
+                "character": 29
+              },
+              "end": {
+                "line": 1,
+                "character": 34
+              }
+            },
+            "message": "Binding elements can't be exported directly with --isolatedDeclarations.",
+            "severity": 1,
+            "code": 9019,
+            "source": "typescript"
+          }
+        ]
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 22
+                },
+                "end": {
+                  "line": 1,
+                  "character": 27
+                }
+              },
+              "severity": 1,
+              "code": 9019,
+              "message": "Binding elements can't be exported directly with --isolatedDeclarations.",
+              "source": "typescript"
+            },
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 29
+                },
+                "end": {
+                  "line": 1,
+                  "character": 34
+                }
+              },
+              "severity": 1,
+              "code": 9019,
+              "message": "Binding elements can't be exported directly with --isolatedDeclarations.",
+              "source": "typescript"
+            }
+          ],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Extract binding expressions to variable",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "add-annotation",
+                  "description": "Extract binding expressions to variable",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 75
+                          },
+                          "newText": "const dest = { first: Math.random(), other: 1 };\nconst key_1 = key;\nexport const value: number = dest[key_1];\nexport const other: number = dest.other;"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixMissingTypeAnnotationOnExports",
+                  "fixAllDescription": "Add all missing type annotations"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 29
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 34
+                    }
+                  },
+                  "severity": 1,
+                  "code": 9019,
+                  "message": "Binding elements can't be exported directly with --isolatedDeclarations.",
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 29
+                },
+                "end": {
+                  "line": 1,
+                  "character": 34
+                }
+              },
+              "severity": 1,
+              "code": 9019,
+              "message": "Binding elements can't be exported directly with --isolatedDeclarations.",
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 74
+                      }
+                    },
+                    "newText": "const dest = { first: Math.random(), other: 1 };\nconst key_1 = key;\nexport const value: number = dest[key_1];\nexport const other: number = dest.other;"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Extract binding expressions to variable",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "add-annotation",
+                  "description": "Extract binding expressions to variable",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 75
+                          },
+                          "newText": "const dest = { first: Math.random(), other: 1 };\nconst key_1 = key;\nexport const value: typeof value = dest[key_1];\nexport const other: typeof other = dest.other;"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixMissingTypeAnnotationOnExports",
+                  "fixAllDescription": "Add all missing type annotations"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 29
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 34
+                    }
+                  },
+                  "severity": 1,
+                  "code": 9019,
+                  "message": "Binding elements can't be exported directly with --isolatedDeclarations.",
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 29
+                },
+                "end": {
+                  "line": 1,
+                  "character": 34
+                }
+              },
+              "severity": 1,
+              "code": 9019,
+              "message": "Binding elements can't be exported directly with --isolatedDeclarations.",
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 74
+                      }
+                    },
+                    "newText": "const dest = { first: Math.random(), other: 1 };\nconst key_1 = key;\nexport const value: typeof value = dest[key_1];\nexport const other: typeof other = dest.other;"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Extract binding expressions to variable",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "add-annotation",
+                  "description": "Extract binding expressions to variable",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/main.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 2,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 2,
+                            "offset": 75
+                          },
+                          "newText": "const dest = { first: Math.random(), other: 1 };\nconst key_1 = key;\nexport const value = dest[key_1];\nexport const other = dest.other;"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixMissingTypeAnnotationOnExports",
+                  "fixAllDescription": "Add all missing type annotations"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 1,
+                      "character": 29
+                    },
+                    "end": {
+                      "line": 1,
+                      "character": 34
+                    }
+                  },
+                  "severity": 1,
+                  "code": 9019,
+                  "message": "Binding elements can't be exported directly with --isolatedDeclarations.",
+                  "source": "typescript"
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 29
+                },
+                "end": {
+                  "line": 1,
+                  "character": 34
+                }
+              },
+              "severity": 1,
+              "code": 9019,
+              "message": "Binding elements can't be exported directly with --isolatedDeclarations.",
+              "source": "typescript"
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/main.ts",
+                  "version": 2
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 1,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 1,
+                        "character": 74
+                      }
+                    },
+                    "newText": "const dest = { first: Math.random(), other: 1 };\nconst key_1 = key;\nexport const value = dest[key_1];\nexport const other = dest.other;"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Add all missing type annotations",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "add-annotation"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 1,
+                  "character": 22
+                },
+                "end": {
+                  "line": 1,
+                  "character": 27
+                }
+              },
+              "severity": 1,
+              "code": 9019,
+              "message": "Binding elements can't be exported directly with --isolatedDeclarations.",
+              "source": "typescript"
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

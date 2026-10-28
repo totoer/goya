@@ -1,0 +1,405 @@
+{
+  "schema_version": 1,
+  "name": "fix-local-export-many-list",
+  "project": {
+    "files": {
+      "/main.ts": "import { first, second } from \"./helper\";\nexport const value = first + second;\n",
+      "/helper.ts": "const first = 1, second = 2;\nexport const existing = 1;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 2,
+          "text": "import { first, second } from \"./helper\";\nexport const value = first + second;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/codeAction",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "range": {
+          "start": {
+            "line": 0,
+            "character": 0
+          },
+          "end": {
+            "line": 2,
+            "character": 0
+          }
+        },
+        "context": {
+          "diagnostics": [],
+          "only": [
+            "quickfix"
+          ]
+        }
+      },
+      "expected": [
+        {
+          "title": "Export 'first' from module './helper'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixImportNonExportedMember",
+                  "description": "Export 'first' from module './helper'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/helper.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 3,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 3,
+                            "offset": 1
+                          },
+                          "newText": "\nexport { first };\n"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixImportNonExportedMember",
+                  "fixAllDescription": "Export all referenced locals"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 9
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 14
+                    }
+                  },
+                  "message": "Module '\"./helper\"' declares 'first' locally, but it is not exported.",
+                  "severity": 1,
+                  "code": 2459,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/helper.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 6
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 11
+                          }
+                        }
+                      },
+                      "message": "'first' is declared here."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 9
+                },
+                "end": {
+                  "line": 0,
+                  "character": 14
+                }
+              },
+              "message": "Module '\"./helper\"' declares 'first' locally, but it is not exported.",
+              "severity": 1,
+              "code": 2459,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/helper.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 6
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 11
+                      }
+                    }
+                  },
+                  "message": "'first' is declared here."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/helper.ts",
+                  "version": null
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 0
+                      }
+                    },
+                    "newText": "\nexport { first };\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Export 'second' from module './helper'",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyCodeActionCommand",
+            "arguments": [
+              {
+                "action": {
+                  "fixName": "fixImportNonExportedMember",
+                  "description": "Export 'second' from module './helper'",
+                  "changes": [
+                    {
+                      "fileName": "{{ROOT_PATH}}/helper.ts",
+                      "textChanges": [
+                        {
+                          "start": {
+                            "line": 3,
+                            "offset": 1
+                          },
+                          "end": {
+                            "line": 3,
+                            "offset": 1
+                          },
+                          "newText": "\nexport { second };\n"
+                        }
+                      ]
+                    }
+                  ],
+                  "fixId": "fixImportNonExportedMember",
+                  "fixAllDescription": "Export all referenced locals"
+                },
+                "diagnostic": {
+                  "range": {
+                    "start": {
+                      "line": 0,
+                      "character": 16
+                    },
+                    "end": {
+                      "line": 0,
+                      "character": 22
+                    }
+                  },
+                  "message": "Module '\"./helper\"' declares 'second' locally, but it is not exported.",
+                  "severity": 1,
+                  "code": 2459,
+                  "source": "typescript",
+                  "relatedInformation": [
+                    {
+                      "location": {
+                        "uri": "{{ROOT_URI}}/helper.ts",
+                        "range": {
+                          "start": {
+                            "line": 0,
+                            "character": 17
+                          },
+                          "end": {
+                            "line": 0,
+                            "character": 23
+                          }
+                        }
+                      },
+                      "message": "'second' is declared here."
+                    }
+                  ]
+                },
+                "documentUri": "{{ROOT_URI}}/main.ts"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 16
+                },
+                "end": {
+                  "line": 0,
+                  "character": 22
+                }
+              },
+              "message": "Module '\"./helper\"' declares 'second' locally, but it is not exported.",
+              "severity": 1,
+              "code": 2459,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/helper.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 17
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 23
+                      }
+                    }
+                  },
+                  "message": "'second' is declared here."
+                }
+              ]
+            }
+          ],
+          "edit": {
+            "documentChanges": [
+              {
+                "textDocument": {
+                  "uri": "{{ROOT_URI}}/helper.ts",
+                  "version": null
+                },
+                "edits": [
+                  {
+                    "range": {
+                      "start": {
+                        "line": 2,
+                        "character": 0
+                      },
+                      "end": {
+                        "line": 2,
+                        "character": 0
+                      }
+                    },
+                    "newText": "\nexport { second };\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "isPreferred": false
+        },
+        {
+          "title": "Export all referenced locals",
+          "kind": "quickfix",
+          "command": {
+            "command": "_typescript.applyFixAllCodeAction",
+            "arguments": [
+              {
+                "tsActionId": "fixImportNonExportedMember"
+              }
+            ],
+            "title": ""
+          },
+          "diagnostics": [
+            {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 9
+                },
+                "end": {
+                  "line": 0,
+                  "character": 14
+                }
+              },
+              "message": "Module '\"./helper\"' declares 'first' locally, but it is not exported.",
+              "severity": 1,
+              "code": 2459,
+              "source": "typescript",
+              "relatedInformation": [
+                {
+                  "location": {
+                    "uri": "{{ROOT_URI}}/helper.ts",
+                    "range": {
+                      "start": {
+                        "line": 0,
+                        "character": 6
+                      },
+                      "end": {
+                        "line": 0,
+                        "character": 11
+                      }
+                    }
+                  },
+                  "message": "'first' is declared here."
+                }
+              ]
+            }
+          ],
+          "isPreferred": false,
+          "data": {
+            "globalId": 1,
+            "providerId": 2
+          }
+        }
+      ]
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "publishDiagnostics": {},
+        "codeAction": {
+          "resolveSupport": {
+            "properties": [
+              "edit"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

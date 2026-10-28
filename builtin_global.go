@@ -1,4 +1,4 @@
-package goja
+package goya
 
 import (
 	"errors"
@@ -10,7 +10,7 @@ import (
 	"sync"
 	"unicode/utf8"
 
-	"github.com/dop251/goja/unistring"
+	"github.com/totoer/goya/unistring"
 )
 
 const hexUpper = "0123456789ABCDEF"
@@ -348,6 +348,9 @@ func createGlobalObjectTemplate() *objectTemplate {
 	t.putStr("Reflect", func(r *Runtime) Value { return valueProp(r.getReflect(), true, false, true) })
 	t.putStr("Error", func(r *Runtime) Value { return valueProp(r.getError(), true, false, true) })
 	t.putStr("AggregateError", func(r *Runtime) Value { return valueProp(r.getAggregateError(), true, false, true) })
+	t.putStr("SuppressedError", func(r *Runtime) Value { return valueProp(r.getSuppressedError(), true, false, true) })
+	t.putStr("DisposableStack", func(r *Runtime) Value { return valueProp(r.getDisposableStack(false), true, false, true) })
+	t.putStr("AsyncDisposableStack", func(r *Runtime) Value { return valueProp(r.getDisposableStack(true), true, false, true) })
 	t.putStr("TypeError", func(r *Runtime) Value { return valueProp(r.getTypeError(), true, false, true) })
 	t.putStr("ReferenceError", func(r *Runtime) Value { return valueProp(r.getReferenceError(), true, false, true) })
 	t.putStr("SyntaxError", func(r *Runtime) Value { return valueProp(r.getSyntaxError(), true, false, true) })
@@ -356,14 +359,17 @@ func createGlobalObjectTemplate() *objectTemplate {
 	t.putStr("URIError", func(r *Runtime) Value { return valueProp(r.getURIError(), true, false, true) })
 	t.putStr("GoError", func(r *Runtime) Value { return valueProp(r.getGoError(), true, false, true) })
 
-	t.putStr("eval", func(r *Runtime) Value { return valueProp(r.getEval(), true, false, true) })
-
 	t.putStr("Math", func(r *Runtime) Value { return valueProp(r.getMath(), true, false, true) })
 	t.putStr("JSON", func(r *Runtime) Value { return valueProp(r.getJSON(), true, false, true) })
+	t.putStr("Atomics", func(r *Runtime) Value { return valueProp(r.getAtomics(), true, false, true) })
 	addTypedArrays(t)
+	t.putStr("Intl", func(r *Runtime) Value { return valueProp(r.getIntl(), true, false, true) })
+	t.putStr("SharedArrayBuffer", func(r *Runtime) Value { return valueProp(r.getSharedArrayBuffer(), true, false, true) })
 	t.putStr("Symbol", func(r *Runtime) Value { return valueProp(r.getSymbol(), true, false, true) })
 	t.putStr("WeakSet", func(r *Runtime) Value { return valueProp(r.getWeakSet(), true, false, true) })
 	t.putStr("WeakMap", func(r *Runtime) Value { return valueProp(r.getWeakMap(), true, false, true) })
+	t.putStr("WeakRef", func(r *Runtime) Value { return valueProp(r.getWeakRef(), true, false, true) })
+	t.putStr("FinalizationRegistry", func(r *Runtime) Value { return valueProp(r.getFinalizationRegistry(), true, false, true) })
 	t.putStr("Map", func(r *Runtime) Value { return valueProp(r.getMap(), true, false, true) })
 	t.putStr("Set", func(r *Runtime) Value { return valueProp(r.getSet(), true, false, true) })
 	t.putStr("Promise", func(r *Runtime) Value { return valueProp(r.getPromise(), true, false, true) })
@@ -400,15 +406,6 @@ func getGlobalObjectTemplate() *objectTemplate {
 		globalObjectTemplate = createGlobalObjectTemplate()
 	})
 	return globalObjectTemplate
-}
-
-func (r *Runtime) getEval() *Object {
-	ret := r.global.Eval
-	if ret == nil {
-		ret = r.newNativeFunc(r.builtin_eval, "eval", 1)
-		r.global.Eval = ret
-	}
-	return ret
 }
 
 func digitVal(d byte) int {

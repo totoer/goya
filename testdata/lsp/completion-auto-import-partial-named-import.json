@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "name": "completion-auto-import-partial-named-import",
+  "project": {
+    "files": {
+      "/main.ts": "import { appe }\n",
+      "/helper.ts": "/** Appends values. */\nexport function append(value:number):number{return value;}\nexport const first=1;\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts",
+      "/helper.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "import { appe }\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/completion",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 13
+        }
+      },
+      "expected": {
+        "items": [
+          {
+            "label": "append",
+            "kind": 3,
+            "sortText": "11",
+            "data": {
+              "cacheId": 1
+            },
+            "commitCharacters": [],
+            "insertTextFormat": 2,
+            "detail": "./helper",
+            "filterText": "import { append$1 } from \"./helper\";",
+            "textEdit": {
+              "range": {
+                "start": {
+                  "line": 0,
+                  "character": 0
+                },
+                "end": {
+                  "line": 0,
+                  "character": 15
+                }
+              },
+              "newText": "import { append$1 } from \"./helper\";"
+            }
+          },
+          {
+            "label": "type",
+            "kind": 14,
+            "sortText": "15",
+            "data": {
+              "cacheId": 2
+            },
+            "commitCharacters": [],
+            "textEdit": {
+              "newText": "type",
+              "insert": {
+                "start": {
+                  "line": 0,
+                  "character": 9
+                },
+                "end": {
+                  "line": 0,
+                  "character": 13
+                }
+              },
+              "replace": {
+                "start": {
+                  "line": 0,
+                  "character": 9
+                },
+                "end": {
+                  "line": 0,
+                  "character": 13
+                }
+              }
+            }
+          }
+        ],
+        "isIncomplete": false
+      }
+    },
+    {
+      "method": "completionItem/resolve",
+      "params": {},
+      "params_from_completion": {
+        "step": 1,
+        "index": 0
+      },
+      "expected": {
+        "label": "append",
+        "kind": 3,
+        "sortText": "11",
+        "data": {
+          "file": "/var/folders/n8/86dwcb052_14n9t7r0g7fc_h0000gn/T/goya-lsp-oracle-f_8ik8gk/main.ts",
+          "line": 1,
+          "offset": 14,
+          "entryNames": [
+            {
+              "name": "append",
+              "source": "./helper",
+              "data": {
+                "exportName": "append",
+                "exportMapKey": "6 10 append ",
+                "moduleSpecifier": "./helper",
+                "fileName": "/var/folders/n8/86dwcb052_14n9t7r0g7fc_h0000gn/T/goya-lsp-oracle-f_8ik8gk/helper.ts"
+              }
+            }
+          ]
+        },
+        "commitCharacters": [],
+        "insertTextFormat": 2,
+        "detail": "Auto import from './helper'\nfunction append(value: number): number",
+        "filterText": "import { append$1 } from \"./helper\";",
+        "textEdit": {
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 0
+            },
+            "end": {
+              "line": 0,
+              "character": 15
+            }
+          },
+          "newText": "import { append$1 } from \"./helper\";"
+        },
+        "documentation": {
+          "kind": "markdown",
+          "value": "Appends values."
+        }
+      }
+    }
+  ],
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "completion": {
+          "completionItem": {
+            "snippetSupport": true,
+            "commitCharactersSupport": true,
+            "labelDetailsSupport": true,
+            "insertReplaceSupport": true,
+            "documentationFormat": [
+              "markdown"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}

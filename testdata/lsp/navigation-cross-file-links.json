@@ -1,0 +1,276 @@
+{
+  "schema_version": 1,
+  "project": {
+    "files": {
+      "/main.ts": "import {Impl as Local} from \"./impl\";\nimport type {Contract} from \"./contract\";\nconst value: Contract = new Local();\nvalue.run();\nmissing;\n",
+      "/contract.ts": "export interface Contract { run(): number; }\n",
+      "/impl.ts": "import type {Contract} from \"./contract\";\nexport class Impl implements Contract { run(): number { return 42; } }\n"
+    },
+    "declarations": {},
+    "entry_points": [
+      "/main.ts"
+    ],
+    "compiler_options": {
+      "strict": true,
+      "target": "es2025",
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "lib": [
+        "es2025"
+      ],
+      "types": [],
+      "noEmit": true
+    }
+  },
+  "name": "navigation-cross-file-links",
+  "initialization": {
+    "capabilities": {
+      "textDocument": {
+        "definition": {
+          "linkSupport": true
+        },
+        "typeDefinition": {
+          "linkSupport": true
+        },
+        "implementation": {
+          "linkSupport": true
+        }
+      }
+    }
+  },
+  "steps": [
+    {
+      "method": "textDocument/didOpen",
+      "notification": true,
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts",
+          "languageId": "typescript",
+          "version": 1,
+          "text": "import {Impl as Local} from \"./impl\";\nimport type {Contract} from \"./contract\";\nconst value: Contract = new Local();\nvalue.run();\nmissing;\n"
+        }
+      }
+    },
+    {
+      "method": "textDocument/definition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 2,
+          "character": 29
+        }
+      },
+      "expected": [
+        {
+          "originSelectionRange": {
+            "start": {
+              "line": 2,
+              "character": 28
+            },
+            "end": {
+              "line": 2,
+              "character": 33
+            }
+          },
+          "targetRange": {
+            "start": {
+              "line": 1,
+              "character": 0
+            },
+            "end": {
+              "line": 1,
+              "character": 70
+            }
+          },
+          "targetUri": "{{ROOT_URI}}/impl.ts",
+          "targetSelectionRange": {
+            "start": {
+              "line": 1,
+              "character": 13
+            },
+            "end": {
+              "line": 1,
+              "character": 17
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/typeDefinition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 3,
+          "character": 1
+        }
+      },
+      "expected": [
+        {
+          "uri": "{{ROOT_URI}}/contract.ts",
+          "range": {
+            "start": {
+              "line": 0,
+              "character": 17
+            },
+            "end": {
+              "line": 0,
+              "character": 25
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/implementation",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 3,
+          "character": 7
+        }
+      },
+      "expected": [
+        {
+          "uri": "{{ROOT_URI}}/impl.ts",
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 40
+            },
+            "end": {
+              "line": 1,
+              "character": 43
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/definition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 0,
+          "character": 30
+        }
+      },
+      "expected": [
+        {
+          "originSelectionRange": {
+            "start": {
+              "line": 0,
+              "character": 28
+            },
+            "end": {
+              "line": 0,
+              "character": 36
+            }
+          },
+          "targetRange": {
+            "start": {
+              "line": 0,
+              "character": 0
+            },
+            "end": {
+              "line": 0,
+              "character": 0
+            }
+          },
+          "targetUri": "{{ROOT_URI}}/impl.ts",
+          "targetSelectionRange": {
+            "start": {
+              "line": 0,
+              "character": 0
+            },
+            "end": {
+              "line": 0,
+              "character": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "method": "textDocument/definition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 4,
+          "character": 1
+        }
+      },
+      "expected": []
+    },
+    {
+      "method": "textDocument/typeDefinition",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 4,
+          "character": 1
+        }
+      },
+      "expected": []
+    },
+    {
+      "method": "textDocument/implementation",
+      "params": {
+        "textDocument": {
+          "uri": "{{ROOT_URI}}/main.ts"
+        },
+        "position": {
+          "line": 4,
+          "character": 1
+        }
+      },
+      "expected": []
+    },
+    {
+      "method": "workspace/executeCommand",
+      "params": {
+        "command": "_typescript.goToSourceDefinition",
+        "arguments": [
+          "{{ROOT_URI}}/main.ts",
+          {
+            "line": 2,
+            "character": 29
+          }
+        ]
+      },
+      "expected": [
+        {
+          "uri": "{{ROOT_URI}}/impl.ts",
+          "range": {
+            "start": {
+              "line": 1,
+              "character": 13
+            },
+            "end": {
+              "line": 1,
+              "character": 17
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "oracle": {
+    "server_version": "6.0.2",
+    "typescript_version": "6.0.3",
+    "server_package_sha256": "d225b223a8a4764ecbd94bdba85d2ef185eaa7b9842a1a31c38c2bbe7f2fe9b9",
+    "typescript_package_sha256": "33cd0ee1beaa8c9e9d15a9da836c62ddea4c34a42d7c2d349dbc80d94165d22a"
+  }
+}
